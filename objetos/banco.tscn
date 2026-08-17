@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cgd6qrj2dtvvy"]
+
+[ext_resource type="Texture2D" uid="uid://gw5nbsv81xq" path="res://airport/2.png" id="1_6phna"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_coesq"]
+size = Vector2(98.65, 45.496)
+
+[node name="Banco" type="Node2D" unique_id=1530464021]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2008892912]
+texture = ExtResource("1_6phna")
+region_enabled = true
+region_rect = Rect2(192.30243, 242.528, 98.65759, 45.495987)
+metadata/_edit_group_ = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1867746005]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1316489083]
+shape = SubResource("RectangleShape2D_coesq")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1999282045]
+vertices = PackedVector2Array(-48, -24, 48, -24, 48, 24, -48, 24)
