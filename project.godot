@@ -11,8 +11,16 @@ config_version=5
 [application]
 
 config/name="aeromatica"
+run/main_scene="uid://dwkcqdr4joahc"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=960
+window/size/viewport_height=540
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 
 [physics]
 

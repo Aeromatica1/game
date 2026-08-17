@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://dwkcqdr4joahc"]
+
+[ext_resource type="PackedScene" uid="uid://b5tl1ffg0v87v" path="res://BotaoMenuPrincipal.tscn" id="1_0oe1n"]
+[ext_resource type="Texture2D" uid="uid://b7xdlmgk7x6ye" path="res://TelaDeFundo.png" id="1_ba235"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_n0due"]
+font_size = 70
+
+[node name="MarginContainer" type="TextureRect" unique_id=1078589025]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ba235")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=753685800]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 50
+
+[node name="Label" type="Label" parent="MarginContainer" unique_id=1956576736]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "Aeromática"
+label_settings = SubResource("LabelSettings_n0due")
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2083217931]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 25
+
+[node name="Button" parent="MarginContainer/VBoxContainer" unique_id=733232576 instance=ExtResource("1_0oe1n")]
+layout_mode = 2
+size_flags_horizontal = 5
+
+[node name="Button2" parent="MarginContainer/VBoxContainer" unique_id=1417732145 instance=ExtResource("1_0oe1n")]
+layout_mode = 2
+size_flags_horizontal = 5
+text = "Opções"
+
+[node name="Button3" parent="MarginContainer/VBoxContainer" unique_id=979281664 instance=ExtResource("1_0oe1n")]
+layout_mode = 2
+size_flags_horizontal = 5
+text = "Sair"
