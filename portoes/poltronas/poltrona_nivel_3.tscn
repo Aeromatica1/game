@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://b2hyhohfd83uq"]
+
+[ext_resource type="Texture2D" uid="uid://gw5nbsv81xq" path="res://airport/2.png" id="1_o2yph"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ar67c"]
+size = Vector2(192, 48)
+
+[node name="poltrona_nivel_3" type="Node2D" unique_id=47567587]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=787836382]
+texture = ExtResource("1_o2yph")
+region_enabled = true
+region_rect = Rect2(0, 192.97266, 193.93825, 48.471832)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=895164203]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1942354929]
+shape = SubResource("RectangleShape2D_ar67c")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1494194870]
+vertices = PackedVector2Array(-96, -24, 96, -24, 96, 24, -96, 24)

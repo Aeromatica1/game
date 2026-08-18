@@ -14,6 +14,14 @@ config/name="aeromatica"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[layer_names]
+
+2d_render/layer_1="mundo"
+2d_render/layer_2="moveis"
+2d_render/layer_3="npc"
+2d_render/layer_4="jogador"
+2d_render/layer_5="seat_trigger"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
