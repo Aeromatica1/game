@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://cuf205vndpvjn"]
+
+[ext_resource type="Texture2D" uid="uid://gw5nbsv81xq" path="res://airport/2.png" id="1_5g2f3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_karnn"]
+size = Vector2(242, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4n0ay"]
+size = Vector2(50, 34)
+
+[node name="Node2D" type="Node2D" unique_id=1872483171]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=469843627]
+texture = ExtResource("1_5g2f3")
+region_enabled = true
+region_rect = Rect2(192.19344, 576.14777, 337.46405, 95.02869)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=280748105]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=79371819]
+position = Vector2(47, 28)
+shape = SubResource("RectangleShape2D_karnn")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=1306573490]
+position = Vector2(-145, 31)
+shape = SubResource("RectangleShape2D_4n0ay")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1801264046]
+vertices = PackedVector2Array(-168, 16, -72, 8, 168, 8, 168, 48, -168, 48)

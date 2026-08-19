@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cb4k1ha4nc1ol"
-path="res://.godot/imported/balcaoN1.png-e134ee3b937dfa74469e770242f5f605.ctex"
+uid="uid://byph84esfkpo3"
+path="res://.godot/imported/novaloja.png-703670aa663a63fe98a2a9331b292af5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://balcaoN1.png"
-dest_files=["res://.godot/imported/balcaoN1.png-e134ee3b937dfa74469e770242f5f605.ctex"]
+source_file="res://novaloja.png"
+dest_files=["res://.godot/imported/novaloja.png-703670aa663a63fe98a2a9331b292af5.ctex"]
 
 [params]
 

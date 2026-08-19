@@ -14,6 +14,11 @@ config/name="aeromatica"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+
 [layer_names]
 
 2d_render/layer_1="mundo"
