@@ -1,17 +1,43 @@
 [gd_scene format=3 uid="uid://dwkcqdr4joahc"]
 
-[ext_resource type="PackedScene" uid="uid://tna523wxfcsl" path="res://BotoesCustom.tscn" id="1_0oe1n"]
+[ext_resource type="Texture2D" uid="uid://40f8d7jv8n7u" path="res://telaInicial/assets/fundo.jpg" id="1_ijq78"]
+[ext_resource type="Texture2D" uid="uid://eos6qq3nhbwg" path="res://telaInicial/assets/titulo.jpg" id="2_75lm6"]
+[ext_resource type="FontFile" uid="uid://dwy1fe5hfjva2" path="res://telaInicial/assets/silkscreen/slkscr.ttf" id="3_1s0v4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mpxv"]
-bg_color = Color(0.09019608, 0.38039216, 0.6, 1)
-draw_center = false
-expand_margin_left = 25.0
-expand_margin_top = 25.0
-expand_margin_right = 25.0
-expand_margin_bottom = 25.0
-shadow_size = 15
+bg_color = Color(0.09019608, 0.30980393, 0.50980395, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
 
-[node name="Control" type="MarginContainer" unique_id=1222460261]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gn3w"]
+bg_color = Color(0.14117648, 0.39215687, 0.6117647, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sd5ai"]
+bg_color = Color(0.09019608, 0.30980393, 0.50980395, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w7xim"]
+bg_color = Color(0.14117648, 0.39215687, 0.6117647, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
+
+[node name="MenuPrincipal" type="Control" unique_id=85327965]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -21,42 +47,60 @@ offset_right = 2.0
 offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_top = 25
 
-[node name="Label" type="Label" parent="." unique_id=1020491377]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-theme_override_constants/line_spacing = 2
-theme_override_constants/paragraph_spacing = 0
-theme_override_constants/shadow_offset_x = 7
-theme_override_constants/shadow_outline_size = 10
-theme_override_font_sizes/font_size = 60
-text = "AEROMATICA"
+[node name="Fundo" type="TextureRect" parent="." unique_id=1074476089]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 1149.0
+offset_bottom = 653.0
+texture = ExtResource("1_ijq78")
+expand_mode = 3
+stretch_mode = 6
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=561057994]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_6mpxv")
+[node name="Titulo" type="TextureRect" parent="." unique_id=2092209597]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -417.0
+offset_top = 81.0
+offset_right = 433.0
+offset_bottom = 167.0
+grow_horizontal = 2
+texture = ExtResource("2_75lm6")
+expand_mode = 2
+stretch_mode = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1374502697]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 25
-alignment = 1
+[node name="Botoes" type="VBoxContainer" parent="." unique_id=1842917308]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -100.0
+offset_right = 160.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
 
-[node name="Button" parent="PanelContainer/VBoxContainer" unique_id=525042461 instance=ExtResource("1_0oe1n")]
+[node name="BotaoJogar" type="Button" parent="Botoes" unique_id=29148864]
+custom_minimum_size = Vector2(320, 90)
 layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_colors/font_hover_color = Color(0.40026563, 0.37047568, 0.47117114, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.17254902, 1, 1, 1)
-theme_override_colors/icon_normal_color = Color(0.29070908, 0.28046554, 0.9745069, 1)
-theme_override_colors/icon_hover_color = Color(0.49788302, 1, 0.9353709, 1)
-theme_override_font_sizes/font_size = 45
+theme_override_fonts/font = ExtResource("3_1s0v4")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_6mpxv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1gn3w")
+text = "Jogar"
 
-[node name="Button2" parent="PanelContainer/VBoxContainer" unique_id=1992125394 instance=ExtResource("1_0oe1n")]
+[node name="BotaoOpcoes" type="Button" parent="Botoes" unique_id=1612070596]
+custom_minimum_size = Vector2(320, 90)
 layout_mode = 2
-theme_override_font_sizes/font_size = 45
-text = "Opções"
+theme_override_fonts/font = ExtResource("3_1s0v4")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_sd5ai")
+theme_override_styles/hover = SubResource("StyleBoxFlat_w7xim")
+text = "Opcoes"
