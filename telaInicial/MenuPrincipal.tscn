@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://40f8d7jv8n7u" path="res://telaInicial/assets/fundo.jpg" id="1_ijq78"]
 [ext_resource type="Texture2D" uid="uid://eos6qq3nhbwg" path="res://telaInicial/assets/titulo.jpg" id="2_75lm6"]
-[ext_resource type="FontFile" uid="uid://dwy1fe5hfjva2" path="res://telaInicial/assets/silkscreen/slkscr.ttf" id="3_1s0v4"]
+[ext_resource type="FontFile" uid="uid://l0a4ugx7t1rc" path="res://telaInicial/assets/pixel_operator/PixelOperator.ttf" id="3_1s0v4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mpxv"]
 bg_color = Color(0.09019608, 0.30980393, 0.50980395, 1)
@@ -29,6 +29,22 @@ border_width_bottom = 6
 border_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w7xim"]
+bg_color = Color(0.14117648, 0.39215687, 0.6117647, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7s0cl"]
+bg_color = Color(0.09019608, 0.30980393, 0.50980395, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yfgs6"]
 bg_color = Color(0.14117648, 0.39215687, 0.6117647, 1)
 border_width_left = 6
 border_width_top = 6
@@ -88,7 +104,7 @@ grow_vertical = 2
 theme_override_constants/separation = 20
 
 [node name="BotaoJogar" type="Button" parent="Botoes" unique_id=29148864]
-custom_minimum_size = Vector2(320, 90)
+custom_minimum_size = Vector2(320, 70)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_1s0v4")
 theme_override_font_sizes/font_size = 32
@@ -97,10 +113,19 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_1gn3w")
 text = "Jogar"
 
 [node name="BotaoOpcoes" type="Button" parent="Botoes" unique_id=1612070596]
-custom_minimum_size = Vector2(320, 90)
+custom_minimum_size = Vector2(320, 70)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_1s0v4")
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_sd5ai")
 theme_override_styles/hover = SubResource("StyleBoxFlat_w7xim")
-text = "Opcoes"
+text = "Opções"
+
+[node name="BotaoSair" type="Button" parent="Botoes" unique_id=2117349295]
+custom_minimum_size = Vector2(320, 70)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_1s0v4")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_7s0cl")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yfgs6")
+text = "Sair"
