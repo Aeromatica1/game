@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://dwkcqdr4joahc"]
+
+[ext_resource type="PackedScene" uid="uid://tna523wxfcsl" path="res://BotoesCustom.tscn" id="1_0oe1n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mpxv"]
+bg_color = Color(0.09019608, 0.38039216, 0.6, 1)
+draw_center = false
+expand_margin_left = 25.0
+expand_margin_top = 25.0
+expand_margin_right = 25.0
+expand_margin_bottom = 25.0
+shadow_size = 15
+
+[node name="Control" type="MarginContainer" unique_id=1222460261]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 25
+
+[node name="Label" type="Label" parent="." unique_id=1020491377]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/line_spacing = 2
+theme_override_constants/paragraph_spacing = 0
+theme_override_constants/shadow_offset_x = 7
+theme_override_constants/shadow_outline_size = 10
+theme_override_font_sizes/font_size = 60
+text = "AEROMATICA"
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=561057994]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_6mpxv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1374502697]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="Button" parent="PanelContainer/VBoxContainer" unique_id=525042461 instance=ExtResource("1_0oe1n")]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0.40026563, 0.37047568, 0.47117114, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.17254902, 1, 1, 1)
+theme_override_colors/icon_normal_color = Color(0.29070908, 0.28046554, 0.9745069, 1)
+theme_override_colors/icon_hover_color = Color(0.49788302, 1, 0.9353709, 1)
+theme_override_font_sizes/font_size = 45
+
+[node name="Button2" parent="PanelContainer/VBoxContainer" unique_id=1992125394 instance=ExtResource("1_0oe1n")]
+layout_mode = 2
+theme_override_font_sizes/font_size = 45
+text = "Opções"
