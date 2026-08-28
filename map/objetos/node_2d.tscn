@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://d04ndek1tyfpl"]
+
+[ext_resource type="Texture2D" uid="uid://tjrrrefn0n3d" path="res://airport/7.png" id="1_wtcfe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0e48y"]
+size = Vector2(144, 194)
+
+[node name="Node2D" type="Node2D" unique_id=267754327]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1805464342]
+position = Vector2(7.6293945e-06, 0)
+scale = Vector2(1.9545455, 2)
+texture = ExtResource("1_wtcfe")
+region_enabled = true
+region_rect = Rect2(584, 0, 176, 96)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1262049206]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1731188442]
+position = Vector2(96, -1)
+shape = SubResource("RectangleShape2D_0e48y")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=164159879]
