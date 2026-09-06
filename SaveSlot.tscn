@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://fpu5oujg4j2w"]
+
+[ext_resource type="Texture2D" uid="uid://cwl62cwl04cwq" path="res://fundo.jpg" id="1_2iuj3"]
+[ext_resource type="PackedScene" uid="uid://b3js48mtek7tn" path="res://Save.tscn" id="2_flycw"]
+[ext_resource type="Texture2D" uid="uid://baaoybvr0me03" path="res://titulo.jpg" id="3_flycw"]
+
+[node name="Control" type="Control" unique_id=571966553]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Fundo" type="TextureRect" parent="." unique_id=1314664284]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("1_2iuj3")
+expand_mode = 3
+stretch_mode = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Fundo" unique_id=995043253]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -414.0
+offset_right = 414.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="TextureButton" parent="Fundo/HBoxContainer" unique_id=1165264795 instance=ExtResource("2_flycw")]
+layout_mode = 2
+
+[node name="TextureButton2" parent="Fundo/HBoxContainer" unique_id=1268993652 instance=ExtResource("2_flycw")]
+layout_mode = 2
+
+[node name="TextureButton3" parent="Fundo/HBoxContainer" unique_id=1445781933 instance=ExtResource("2_flycw")]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1476254141]
+custom_minimum_size = Vector2(800, 80)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -820.0
+offset_right = 820.0
+offset_bottom = 180.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="Titulo" type="TextureRect" parent="MarginContainer" unique_id=2050379292]
+custom_minimum_size = Vector2(800, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_flycw")
+expand_mode = 3
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
