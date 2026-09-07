@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://dykofvlkpbe8d"]
+
+[ext_resource type="Script" uid="uid://wxosr5xpbm4w" path="res://Telas/Scripts/gerenciador_telas.gd" id="1_jr6vj"]
+[ext_resource type="PackedScene" uid="uid://c3egba45ye35x" path="res://Telas/Scenes/cadastro.tscn" id="2_deupt"]
+[ext_resource type="PackedScene" uid="uid://bcgwlv0eu3ck7" path="res://Telas/Scenes/login.tscn" id="3_6napt"]
+
+[node name="GerenciadorTelas" type="Node" unique_id=1570137647]
+script = ExtResource("1_jr6vj")
+
+[node name="Cadastro" parent="." unique_id=787969888 instance=ExtResource("2_deupt")]
+metadata/_edit_use_anchors_ = true
+
+[node name="Login" parent="." unique_id=733296674 instance=ExtResource("3_6napt")]
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" parent="Login/LoginArea" parent_id_path=PackedInt32Array(733296674, 798163012) index="0" unique_id=191503834]
+offset_left = 109.5
+offset_top = 61.0
+offset_right = -84.5
+offset_bottom = -69.0
+
+[connection signal="pressed" from="Cadastro/CadastroArea/VBoxContainer/LogarArea/LogarTexto/LogarBotao" to="." method="_on_logar_botao_pressed"]
+[connection signal="pressed" from="Login/LoginArea/VBoxContainer/RegistrarArea/RegistrarTexto/RegistrarBotao" to="." method="_on_registrar_botao_pressed"]
+
+[editable path="Cadastro"]
+[editable path="Login"]
