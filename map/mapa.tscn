@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://cuf0p62et7mrw" path="res://map/estabelecimentos/balcaoinfo_2.tscn" id="14_qdpnv"]
 [ext_resource type="PackedScene" uid="uid://cut345n2p4d4r" path="res://map/estabelecimentos/balcaoinfo.tscn" id="15_6dw3l"]
 [ext_resource type="PackedScene" uid="uid://mlyh8fdrodqk" path="res://map/objetos/telefones.tscn" id="16_u1hem"]
+[ext_resource type="PackedScene" uid="uid://illu5sgl426j" path="res://map/objetos/despacho.tscn" id="17_g1sof"]
 [ext_resource type="Texture2D" uid="uid://5c5ujlqfrbx5" path="res://map/portoes/balcoes/placa.png" id="17_wyady"]
 [ext_resource type="Texture2D" uid="uid://cb4k1ha4nc1ol" path="res://map/portoes/balcoes/balcaoN1.png" id="18_b0ac1"]
 [ext_resource type="PackedScene" uid="uid://2n3sc5kr1wju" path="res://map/portoes/poltronas/poltrona_nivel_1.tscn" id="19_e36m5"]
@@ -3469,6 +3470,9 @@ rotation = 1.5707964
 
 [node name="telefones" parent="Camera2D/Mundo/estabelecimentos" unique_id=1357770341 instance=ExtResource("16_u1hem")]
 position = Vector2(5224, -176)
+
+[node name="despacho" parent="Camera2D/Mundo/estabelecimentos" unique_id=1158266390 instance=ExtResource("17_g1sof")]
+position = Vector2(6624, -224)
 
 [node name="PlacasDinamicas" type="Node2D" parent="Camera2D" unique_id=511137986]
 
