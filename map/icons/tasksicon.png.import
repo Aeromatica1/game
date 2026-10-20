@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cqhq4ijul4q3e"
-path="res://.godot/imported/dollaricon.png-12884a48e70530e044d99ccd7d65b52f.ctex"
+uid="uid://cr0ffugxviieq"
+path="res://.godot/imported/tasksicon.png-be4f82772d69d76cc7d69b7d11e9031b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://dollaricon.png"
-dest_files=["res://.godot/imported/dollaricon.png-12884a48e70530e044d99ccd7d65b52f.ctex"]
+source_file="res://map/icons/tasksicon.png"
+dest_files=["res://.godot/imported/tasksicon.png-be4f82772d69d76cc7d69b7d11e9031b.ctex"]
 
 [params]
 

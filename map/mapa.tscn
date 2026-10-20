@@ -3372,8 +3372,6 @@ texture = ExtResource("4_pp7t8")
 region_enabled = true
 region_rect = Rect2(95.22876, 706.2987, 101.33374, 61.701294)
 
-[node name="Node2D2" type="Node2D" parent="Camera2D/Mundo" unique_id=149796389]
-
 [node name="Node2D" parent="Camera2D/Mundo" unique_id=1872483171 instance=ExtResource("8_sg0di")]
 position = Vector2(2744, -176)
 
