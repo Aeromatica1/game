@@ -1,9 +1,8 @@
 
 extends Node2D
 
-# ==========================================
 # CONFIGURACAO DO JOGO
-# ==========================================
+
 
 const GRID_SIZE: int = 8
 const CELL_SIZE: int = 32
@@ -114,9 +113,6 @@ var selected_slot: int = -1
 var score: int = 0
 var game_over: bool = false
 
-# ==========================================
-# INICIALIZACAO
-# ==========================================
 
 func _ready() -> void:
 	load_textures()
@@ -149,9 +145,7 @@ func reset_grid() -> void:
 		grid.append(row)
 
 
-# ==========================================
-# GERACAO DE PECAS
-# ==========================================
+
 
 func generate_pieces() -> void:
 	available_pieces.clear()
@@ -171,9 +165,7 @@ func generate_pieces() -> void:
 	queue_redraw()
 
 
-# ==========================================
-# DESENHO
-# ==========================================
+
 
 func _draw() -> void:
 	draw_interface()
@@ -478,9 +470,7 @@ func place_piece(
 
 
 
-# ==========================================
 # ELIMINACAO DE LINHAS E COLUNAS
-# ==========================================
 
 func clear_completed_lines() -> void:
 	var rows_to_clear: Array[int] = []
@@ -527,9 +517,7 @@ func clear_completed_lines() -> void:
 	score += cleared_count * GRID_SIZE
 
 
-# ==========================================
-# CONDICAO DE DERROTA
-# ==========================================
+
 
 func has_any_valid_move() -> bool:
 	for piece_name in available_pieces:
@@ -547,9 +535,7 @@ func has_any_valid_move() -> bool:
 	return false
 
 
-# ==========================================
 # CONTROLES DO MOUSE
-# ==========================================
 
 func _input(event: InputEvent) -> void:
 	if game_over:
