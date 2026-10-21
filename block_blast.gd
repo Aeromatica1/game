@@ -9,6 +9,7 @@ const CELL_SIZE: int = 32
 const CELL_GAP: int = 2
 const STEP: int = CELL_SIZE + CELL_GAP
 var placed_pieces: Array = []
+var next_piece_id: int = 0
 
 const BOARD_SIZE: int = (
 	GRID_SIZE * CELL_SIZE
@@ -31,6 +32,7 @@ const TRAY_POSITIONS := [
 # ==========================================
 
 const PIECE_TEXTURES = {
+	"-": "res://Assets/Pecas/--.png",
 	"I": "res://Assets/Pecas/I.png",
 	"O": "res://Assets/Pecas/O.png",
 	"T": "res://Assets/Pecas/T.png",
@@ -45,6 +47,12 @@ const PIECE_TEXTURES = {
 
 const SHAPES = {
 	"I": [
+		Vector2i(0,0),
+		Vector2i(0,1),
+		Vector2i(0,2),
+		Vector2i(0,3)
+	],
+	"-": [
 		Vector2i(0, 0),
 		Vector2i(1, 0),
 		Vector2i(2, 0),
@@ -237,16 +245,18 @@ func draw_grid() -> void:
 
 
 func draw_placed_blocks() -> void:
+	# Desenha cada celula separadamente. Assim, quando uma linha/coluna
+	# for eliminada, os pedacos correspondentes da mala tambem desaparecem.
 	for piece in placed_pieces:
 		var piece_name: String = piece["name"]
 		var origin: Vector2i = piece["origin"]
+		var piece_id: int = piece["id"]
 
 		if not textures.has(piece_name):
 			continue
 
 		var texture: Texture2D = textures[piece_name]
 		var cells: Array = SHAPES[piece_name]
-
 		var max_x: int = 0
 		var max_y: int = 0
 
@@ -254,26 +264,32 @@ func draw_placed_blocks() -> void:
 			max_x = max(max_x, cell.x)
 			max_y = max(max_y, cell.y)
 
-		var width: float = (
-			(max_x + 1) * CELL_SIZE
-			+ max_x * CELL_GAP
-		)
-		var height: float = (
-			(max_y + 1) * CELL_SIZE
-			+ max_y * CELL_GAP
-		)
+		# Divide a textura em partes correspondentes as celulas do formato.
+		# As artes devem ter a mesma proporcao do retangulo da peca.
+		var source_cell_width: float = float(texture.get_width()) / float(max_x + 1)
+		var source_cell_height: float = float(texture.get_height()) / float(max_y + 1)
 
-		var pos: Vector2 = cell_position(
-			origin.x,
-			origin.y
-		)
+		for cell in cells:
+			var target: Vector2i = origin + cell
 
-		draw_texture_rect(
-			texture,
-			Rect2(pos, Vector2(width, height)),
-			false
-		)
+			# Se a celula foi apagada, nao desenha mais aquele pedaco.
+			if not is_inside_grid(target):
+				continue
+			if grid[target.y][target.x] != piece_id:
+				continue
 
+			var source_rect := Rect2(
+				cell.x * source_cell_width,
+				cell.y * source_cell_height,
+				source_cell_width,
+				source_cell_height
+			)
+			var destination_rect := Rect2(
+				cell_position(target.x, target.y),
+				Vector2(CELL_SIZE, CELL_SIZE)
+			)
+
+			draw_texture_rect_region(texture, destination_rect, source_rect)
 
 
 func draw_piece_tray() -> void:
@@ -317,7 +333,6 @@ func draw_piece_preview(
 	preview_cell: float
 ) -> void:
 	var shape: Array = SHAPES[piece_name]
-
 	var max_x: int = 0
 	var max_y: int = 0
 
@@ -328,20 +343,31 @@ func draw_piece_preview(
 	var piece_width: float = (max_x + 1) * preview_cell
 	var piece_height: float = (max_y + 1) * preview_cell
 
-	# Usa a textura completa do tetramino na bandeja.
 	if textures.has(piece_name):
 		var texture: Texture2D = textures[piece_name]
 
+		# Escala uniforme: preserva a proporcao original da pixel art.
+		var scale_x: float = piece_width / float(texture.get_width())
+		var scale_y: float = piece_height / float(texture.get_height())
+		var scale_factor: float = min(scale_x, scale_y)
+		var draw_size := Vector2(
+			texture.get_width() * scale_factor,
+			texture.get_height() * scale_factor
+		)
+		var centered_origin := origin + Vector2(
+			(piece_width - draw_size.x) / 2.0,
+			(piece_height - draw_size.y) / 2.0
+		)
+
 		draw_texture_rect(
 			texture,
-			Rect2(
-				origin,
-				Vector2(piece_width, piece_height)
-			),
+			Rect2(centered_origin, draw_size),
+			false,
+			Color.WHITE,
 			false
 		)
 	else:
-		# Alternativa caso o asset ainda nao exista.
+		# Alternativa caso o arquivo de imagem nao exista.
 		for cell in shape:
 			draw_rect(
 				Rect2(
@@ -436,16 +462,21 @@ func place_piece(
 	if not can_place_piece(piece_name, origin):
 		return
 
-	# Registra a peca para desenhar sua textura completa.
+	# Cada peca recebe um identificador proprio. Isso evita confundir
+	# duas malas do mesmo tipo depois que uma linha for eliminada.
+	var piece_id: int = next_piece_id
+	next_piece_id += 1
+
 	placed_pieces.append({
+		"id": piece_id,
 		"name": piece_name,
 		"origin": origin
 	})
 
-	# Marca as celulas ocupadas.
+	# Guarda o identificador da peca em cada celula ocupada.
 	for cell in SHAPES[piece_name]:
 		var target: Vector2i = origin + cell
-		grid[target.y][target.x] = piece_name
+		grid[target.y][target.x] = piece_id
 
 	score += SHAPES[piece_name].size()
 
@@ -592,6 +623,8 @@ func reset_game() -> void:
 	score = 0
 	game_over = false
 	selected_slot = -1
+	placed_pieces.clear()
+	next_piece_id = 0
 
 	reset_grid()
 	generate_pieces()
