@@ -11,21 +11,14 @@ config_version=5
 [application]
 
 config/name="aeromatica"
-config/features=PackedStringArray("4.6", "GL Compatibility")
+run/main_scene="uid://dykofvlkpbe8d"
+config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
-
-[layer_names]
-
-2d_render/layer_1="mundo"
-2d_render/layer_2="moveis"
-2d_render/layer_3="npc"
-2d_render/layer_4="jogador"
-2d_render/layer_5="seat_trigger"
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 
 [physics]
 
