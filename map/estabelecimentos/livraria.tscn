@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://c4obtvkpuhr5w"]
+
+[ext_resource type="Texture2D" uid="uid://bdr04281wpsyt" path="res://map/estabelecimentos/livraria.png" id="1_8cw5q"]
+
+[node name="Sprite2D" type="Sprite2D" unique_id=278752728]
+position = Vector2(0, 4.7683716e-07)
+scale = Vector2(0.45161295, 0.43601894)
+texture = ExtResource("1_8cw5q")
+region_enabled = true
+region_rect = Rect2(146, 0, 558, 422)

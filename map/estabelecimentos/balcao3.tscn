@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://chh4c34073pbk"]
+
+[ext_resource type="Texture2D" uid="uid://43y7tfsicaci" path="res://airport/3.png" id="1_mfoei"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wxtkj"]
+size = Vector2(472, 66.5)
+
+[node name="Node2D" type="Node2D" unique_id=1337239408]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=887670684]
+position = Vector2(-12, -27.999998)
+scale = Vector2(1.1829575, 1.3465347)
+texture = ExtResource("1_mfoei")
+region_enabled = true
+region_rect = Rect2(368.28003, 480.66742, 399.08356, 101.77411)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=124601913]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1579257285]
+position = Vector2(-12, -1.25)
+shape = SubResource("RectangleShape2D_wxtkj")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1509850820]
+position = Vector2(-48, -24)
+vertices = PackedVector2Array(-200, -8, 200, -8, 200, 48, -200, 48)
