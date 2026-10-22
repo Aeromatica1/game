@@ -1,27 +1,26 @@
 [gd_scene format=4 uid="uid://l8cvyxby3mcb"]
 
-[ext_resource type="Texture2D" uid="uid://tjrrrefn0n3d" path="res://airport/7.png" id="1_pyrot"]
-[ext_resource type="Texture2D" uid="uid://r0enhll6k13d" path="res://airport/1.png" id="2_g1sof"]
-[ext_resource type="Texture2D" uid="uid://gw5nbsv81xq" path="res://airport/2.png" id="3_0k8i5"]
-[ext_resource type="Texture2D" uid="uid://43y7tfsicaci" path="res://airport/3.png" id="4_pp7t8"]
-[ext_resource type="Texture2D" uid="uid://80gmki85fdku" path="res://airport/4.png" id="5_r2d1j"]
-[ext_resource type="PackedScene" uid="uid://cgd6qrj2dtvvy" path="res://map/objetos/banco.tscn" id="6_50riv"]
-[ext_resource type="PackedScene" uid="uid://cuf205vndpvjn" path="res://map/estabelecimentos/balcao_empresa.tscn" id="8_sg0di"]
-[ext_resource type="Texture2D" uid="uid://dvrqruqcjxvxp" path="res://airport/5.png" id="9_m03sd"]
-[ext_resource type="PackedScene" uid="uid://32xpnvwoyo7l" path="res://map/objetos/ponte_embarque.tscn" id="9_pyrot"]
-[ext_resource type="Texture2D" uid="uid://bmya5oenywfnp" path="res://airport/6.png" id="10_g1sof"]
-[ext_resource type="Texture2D" uid="uid://byph84esfkpo3" path="res://map/estabelecimentos/novaloja.png" id="11_l567g"]
-[ext_resource type="PackedScene" uid="uid://chh4c34073pbk" path="res://map/estabelecimentos/balcao3.tscn" id="12_dh2m7"]
-[ext_resource type="PackedScene" uid="uid://b8mir5lbjx7c6" path="res://map/estabelecimentos/balcao_checkin.tscn" id="13_x30ii"]
-[ext_resource type="PackedScene" uid="uid://cuf0p62et7mrw" path="res://map/estabelecimentos/balcaoinfo_2.tscn" id="14_qdpnv"]
-[ext_resource type="PackedScene" uid="uid://cut345n2p4d4r" path="res://map/estabelecimentos/balcaoinfo.tscn" id="15_6dw3l"]
-[ext_resource type="PackedScene" uid="uid://mlyh8fdrodqk" path="res://map/objetos/telefones.tscn" id="16_u1hem"]
-[ext_resource type="PackedScene" uid="uid://illu5sgl426j" path="res://map/objetos/despacho.tscn" id="17_g1sof"]
-[ext_resource type="Texture2D" uid="uid://5c5ujlqfrbx5" path="res://map/portoes/balcoes/placa.png" id="17_wyady"]
-[ext_resource type="Texture2D" uid="uid://cb4k1ha4nc1ol" path="res://map/portoes/balcoes/balcaoN1.png" id="18_b0ac1"]
-[ext_resource type="PackedScene" uid="uid://2n3sc5kr1wju" path="res://map/portoes/poltronas/poltrona_nivel_1.tscn" id="19_e36m5"]
-[ext_resource type="PackedScene" uid="uid://du2a7aoeene1q" path="res://map/portoes/portao_n_1.tscn" id="20_db5or"]
-[ext_resource type="PackedScene" uid="uid://mnjy238kb0ka" path="res://map/portoes/janelas.tscn" id="21_2nuym"]
+[ext_resource type="Texture2D" uid="uid://tjrrrefn0n3d" path="res://tilesets/7.png" id="1_pyrot"]
+[ext_resource type="Texture2D" uid="uid://r0enhll6k13d" path="res://tilesets/1.png" id="2_g1sof"]
+[ext_resource type="Texture2D" uid="uid://gw5nbsv81xq" path="res://tilesets/2.png" id="3_0k8i5"]
+[ext_resource type="Texture2D" uid="uid://43y7tfsicaci" path="res://tilesets/3.png" id="4_pp7t8"]
+[ext_resource type="Texture2D" uid="uid://80gmki85fdku" path="res://tilesets/4.png" id="5_r2d1j"]
+[ext_resource type="PackedScene" uid="uid://cgd6qrj2dtvvy" path="res://map/cenas/objetos/banco.tscn" id="6_50riv"]
+[ext_resource type="PackedScene" uid="uid://cuf205vndpvjn" path="res://map/cenas/estabelecimentos/balcao_empresa.tscn" id="8_sg0di"]
+[ext_resource type="Texture2D" uid="uid://dvrqruqcjxvxp" path="res://tilesets/5.png" id="9_m03sd"]
+[ext_resource type="PackedScene" uid="uid://32xpnvwoyo7l" path="res://map/cenas/objetos/ponte_embarque.tscn" id="9_pyrot"]
+[ext_resource type="Texture2D" uid="uid://byph84esfkpo3" path="res://map/assets/novaloja.png" id="11_l567g"]
+[ext_resource type="PackedScene" uid="uid://chh4c34073pbk" path="res://map/cenas/estabelecimentos/balcao3.tscn" id="12_dh2m7"]
+[ext_resource type="PackedScene" uid="uid://b8mir5lbjx7c6" path="res://map/cenas/estabelecimentos/balcao_checkin.tscn" id="13_x30ii"]
+[ext_resource type="PackedScene" uid="uid://cuf0p62et7mrw" path="res://map/cenas/estabelecimentos/balcaoinfo_2.tscn" id="14_qdpnv"]
+[ext_resource type="PackedScene" uid="uid://cut345n2p4d4r" path="res://map/cenas/estabelecimentos/balcaoinfo.tscn" id="15_6dw3l"]
+[ext_resource type="PackedScene" uid="uid://mlyh8fdrodqk" path="res://map/cenas/objetos/telefones.tscn" id="16_u1hem"]
+[ext_resource type="PackedScene" uid="uid://illu5sgl426j" path="res://map/cenas/objetos/despacho.tscn" id="17_g1sof"]
+[ext_resource type="Texture2D" uid="uid://5c5ujlqfrbx5" path="res://map/cenas/portoes/balcoes/placa.png" id="17_wyady"]
+[ext_resource type="Texture2D" uid="uid://cb4k1ha4nc1ol" path="res://map/cenas/portoes/balcoes/balcaoN1.png" id="18_b0ac1"]
+[ext_resource type="PackedScene" uid="uid://2n3sc5kr1wju" path="res://map/cenas/poltronas/poltrona_nivel_1.tscn" id="19_e36m5"]
+[ext_resource type="PackedScene" uid="uid://du2a7aoeene1q" path="res://map/cenas/portoes/portao_n_1.tscn" id="20_db5or"]
+[ext_resource type="PackedScene" uid="uid://mnjy238kb0ka" path="res://map/cenas/portoes/janelas.tscn" id="21_2nuym"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6fw57"]
 resource_name = "objetos"
@@ -3276,9 +3275,6 @@ sources/2 = SubResource("TileSetAtlasSource_pyrot")
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_agbal"]
 load_path = "res://.godot/imported/4.png-466af8643f55f4f5f56cdf2dd61a15f0.ctex"
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0k8i5"]
-size = Vector2(192, 88)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ltv3l"]
 size = Vector2(992, 255)
 
@@ -3403,19 +3399,6 @@ texture = SubResource("CompressedTexture2D_agbal")
 flip_h = true
 region_enabled = true
 region_rect = Rect2(288, 0, 240, 192)
-
-[node name="caminhaogasolina" type="AnimatableBody2D" parent="Camera2D/Mundo/Areaexterna/TileMapLayer" unique_id=106580460]
-position = Vector2(23, 112)
-
-[node name="Sprite2D" type="Sprite2D" parent="Camera2D/Mundo/Areaexterna/TileMapLayer/caminhaogasolina" unique_id=1589910052]
-position = Vector2(-81, 472)
-texture = ExtResource("10_g1sof")
-region_enabled = true
-region_rect = Rect2(480, -8, 192, 112)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/Mundo/Areaexterna/TileMapLayer/caminhaogasolina" unique_id=1500387758]
-position = Vector2(-81, 476)
-shape = SubResource("RectangleShape2D_0k8i5")
 
 [node name="Sprite2D" type="Sprite2D" parent="Camera2D/Mundo" unique_id=2042664893]
 
