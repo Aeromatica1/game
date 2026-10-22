@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="aeromatica"
-run/main_scene="uid://dwkcqdr4joahc"
+run/main_scene="uid://dykofvlkpbe8d"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
