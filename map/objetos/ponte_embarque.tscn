@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://32xpnvwoyo7l"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_agbal"]
+load_path = "res://.godot/imported/4.png-466af8643f55f4f5f56cdf2dd61a15f0.ctex"
+
+[node name="ponte_embarque" type="Sprite2D" unique_id=525699968]
+z_index = 9
+texture = SubResource("CompressedTexture2D_agbal")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(288, 0, 240, 192)

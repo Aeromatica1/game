@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://bak2v2hi4celj"]
+
+[ext_resource type="Texture2D" uid="uid://gw5nbsv81xq" path="res://airport/2.png" id="1_sm8vy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oh2wn"]
+size = Vector2(192, 48)
+
+[node name="Poltrona_nivel_2" type="Node2D" unique_id=1494080039]
+
+[node name="Fileira1" type="Node2D" parent="." unique_id=961557261]
+
+[node name="Linha1" type="Sprite2D" parent="Fileira1" unique_id=2036231090]
+texture = ExtResource("1_sm8vy")
+region_enabled = true
+region_rect = Rect2(0, 48, 192, 48)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Fileira1/Linha1" unique_id=1535251213]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fileira1/Linha1/StaticBody2D" unique_id=977720356]
+shape = SubResource("RectangleShape2D_oh2wn")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="Fileira1/Linha1/StaticBody2D" unique_id=886891690]
+vertices = PackedVector2Array(-96, -24, 96, -24, 96, 24, -96, 24)
+
+[node name="Linha2" type="Sprite2D" parent="Fileira1" unique_id=163523046]
+position = Vector2(224, 0)
+texture = ExtResource("1_sm8vy")
+region_enabled = true
+region_rect = Rect2(0, 48, 192, 48)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Fileira1/Linha2" unique_id=2127543656]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fileira1/Linha2/StaticBody2D" unique_id=1305117361]
+shape = SubResource("RectangleShape2D_oh2wn")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="Fileira1/Linha2/StaticBody2D" unique_id=775188964]
+vertices = PackedVector2Array(-96, -24, 96, -24, 96, 24, -96, 24)
+
+[node name="Linha3" type="Sprite2D" parent="Fileira1" unique_id=2132600175]
+position = Vector2(0, 56)
+texture = ExtResource("1_sm8vy")
+region_enabled = true
+region_rect = Rect2(0, 48, 192, 48)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Fileira1/Linha3" unique_id=389580542]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fileira1/Linha3/StaticBody2D" unique_id=561541514]
+shape = SubResource("RectangleShape2D_oh2wn")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="Fileira1/Linha3/StaticBody2D" unique_id=1010528117]
+vertices = PackedVector2Array(-96, -24, 96, -24, 96, 24, -96, 24)
+
+[node name="Linha4" type="Sprite2D" parent="Fileira1" unique_id=2056916432]
+position = Vector2(224, 56)
+texture = ExtResource("1_sm8vy")
+region_enabled = true
+region_rect = Rect2(0, 48, 192, 48)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Fileira1/Linha4" unique_id=2080673485]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fileira1/Linha4/StaticBody2D" unique_id=1679900689]
+shape = SubResource("RectangleShape2D_oh2wn")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="Fileira1/Linha4/StaticBody2D" unique_id=1635866431]
+vertices = PackedVector2Array(-96, -24, 96, -24, 96, 24, -96, 24)
+
+[node name="Linha5" type="Sprite2D" parent="Fileira1" unique_id=1169159391]
+position = Vector2(0, 112)
+texture = ExtResource("1_sm8vy")
+region_enabled = true
+region_rect = Rect2(0, 48, 192, 48)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Fileira1/Linha5" unique_id=96051615]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fileira1/Linha5/StaticBody2D" unique_id=1499029578]
+shape = SubResource("RectangleShape2D_oh2wn")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="Fileira1/Linha5/StaticBody2D" unique_id=1109938296]
+vertices = PackedVector2Array(-96, -24, 96, -24, 96, 24, -96, 24)
+
+[node name="Linha6" type="Sprite2D" parent="Fileira1" unique_id=1931300945]
+position = Vector2(224, 112)
+texture = ExtResource("1_sm8vy")
+region_enabled = true
+region_rect = Rect2(0, 48, 192, 48)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Fileira1/Linha6" unique_id=61166455]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fileira1/Linha6/StaticBody2D" unique_id=1727657984]
+shape = SubResource("RectangleShape2D_oh2wn")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="Fileira1/Linha6/StaticBody2D" unique_id=413704665]
+vertices = PackedVector2Array(-96, -24, 96, -24, 96, 24, -96, 24)
