@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://bcgwlv0eu3ck7"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ilb3f"]
+font_size = 50
+
+[node name="Login" type="Control" unique_id=733296674]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LoginLabel" type="Label" parent="." unique_id=63365049]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 117.0
+grow_horizontal = 2
+text = "Login"
+label_settings = SubResource("LabelSettings_ilb3f")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LoginArea" type="Panel" parent="." unique_id=798163012]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -346.5
+offset_top = -188.0
+offset_right = 346.5
+offset_bottom = 188.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LoginArea" unique_id=191503834]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 110.0
+offset_top = 60.0
+offset_right = -84.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="UsuarioArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=1584024410]
+layout_mode = 2
+
+[node name="UsuarioTexto" type="RichTextLabel" parent="LoginArea/VBoxContainer/UsuarioArea" unique_id=1701902035]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Usuário"
+vertical_alignment = 1
+
+[node name="UsuarioCampo" type="TextEdit" parent="LoginArea/VBoxContainer/UsuarioArea" unique_id=1310199169]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SenhaArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=1531825776]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="SenhaTexto" type="RichTextLabel" parent="LoginArea/VBoxContainer/SenhaArea" unique_id=1096305170]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Senha"
+vertical_alignment = 1
+
+[node name="SenhaCampo" type="TextEdit" parent="LoginArea/VBoxContainer/SenhaArea" unique_id=1650121714]
+custom_minimum_size = Vector2(0, 60)
+custom_maximum_size = Vector2(-1, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Enviar" type="Button" parent="LoginArea/VBoxContainer" unique_id=1430755410]
+layout_mode = 2
+text = "Enviar"
+icon_alignment = 1
+vertical_icon_alignment = 2
+
+[node name="RegistrarArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=766677735]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="RegistrarTexto" type="RichTextLabel" parent="LoginArea/VBoxContainer/RegistrarArea" unique_id=1345353022]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "Não tem uma conta? [url=address]Registre-se[/url]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RegistrarBotao" type="Button" parent="LoginArea/VBoxContainer/RegistrarArea/RegistrarTexto" unique_id=905076272]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.66400003
+anchor_top = 0.53300005
+anchor_right = 0.66400003
+anchor_bottom = 0.53300005
+offset_left = -44.83603
+offset_top = -11.980003
+offset_right = 45.16397
+offset_bottom = 12.019997
+icon_alignment = 1
+vertical_icon_alignment = 2
