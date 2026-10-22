@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://b3js48mtek7tn"]
+
+[ext_resource type="Texture2D" uid="uid://putha6fcnbgb" path="res://SaveSlot.png" id="1_1jg0j"]
+
+[node name="TextureButton" type="TextureButton" unique_id=1165264795]
+custom_minimum_size = Vector2(256, 384)
+offset_right = 1024.0
+offset_bottom = 1536.0
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("1_1jg0j")
+ignore_texture_size = true
+stretch_mode = 5
