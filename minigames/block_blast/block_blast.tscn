@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://d1a5f3jr1wufr"]
+
+[ext_resource type="Script" uid="uid://cejvarkkmlxxt" path="res://minigames/block_blast/block_blast.gd" id="1_2qw4d"]
+
+[node name="BlockBlast" type="Control" unique_id=2030031577]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_2qw4d")

@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://d1a5f3jr1wufr"]
-
-[ext_resource type="Script" uid="uid://cejvarkkmlxxt" path="res://scripts/block_blast.gd" id="1_e1irp"]
-
-[node name="BlockBlast" type="Node2D" unique_id=760504809]
-script = ExtResource("1_e1irp")

@@ -14,6 +14,10 @@ config/name="aeromatica"
 run/main_scene="uid://dykofvlkpbe8d"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
+[autoload]
+
+SignalBus="*res://minigames/minesweeper/signal_bus.gd"
+
 [display]
 
 window/stretch/mode="viewport"

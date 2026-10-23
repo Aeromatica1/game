@@ -1,0 +1,167 @@
+[gd_scene format=3 uid="uid://6buicxxj4a1p"]
+
+[ext_resource type="Script" uid="uid://dw01ibkhrxce7" path="res://minigames/minesweeper/game.gd" id="1_x0mb2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xgd6b"]
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_d4yan"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_b1gra"]
+font_size = 18
+
+[node name="Game" type="Control" unique_id=943779248]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_x0mb2")
+metadata/_edit_vertical_guides_ = [-158.0]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1881095363]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.242188, 0.242188, 0.242188, 1)
+
+[node name="Control" type="Control" parent="." unique_id=1260294379]
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Easy" type="Button" parent="Control" unique_id=1559447730]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 393.0
+offset_right = 208.0
+offset_bottom = 441.0
+focus_mode = 1
+theme_override_font_sizes/font_size = 18
+text = "Easy"
+
+[node name="Normal" type="Button" parent="Control" unique_id=2130317563]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 473.0
+offset_right = 208.0
+offset_bottom = 521.0
+focus_mode = 1
+theme_override_font_sizes/font_size = 18
+text = "Normal"
+
+[node name="Hard" type="Button" parent="Control" unique_id=1803129898]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 553.0
+offset_right = 208.0
+offset_bottom = 601.0
+focus_mode = 1
+theme_override_font_sizes/font_size = 18
+text = "Hard"
+
+[node name="CustomGame" type="Button" parent="Control" unique_id=1259448169]
+layout_mode = 0
+offset_left = 928.0
+offset_top = 549.0
+offset_right = 1104.0
+offset_bottom = 613.0
+focus_mode = 1
+theme_override_font_sizes/font_size = 18
+text = "Custom game"
+
+[node name="MineCounter" type="Label" parent="Control" unique_id=2083323881]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 48.0
+offset_right = 224.0
+offset_bottom = 82.0
+text = "MINES: 999999"
+label_settings = SubResource("LabelSettings_xgd6b")
+
+[node name="TimeElapsed" type="Label" parent="Control" unique_id=522113185]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 96.0
+offset_right = 224.0
+offset_bottom = 130.0
+text = "TIME: 999:99"
+label_settings = SubResource("LabelSettings_xgd6b")
+
+[node name="Message" type="Label" parent="Control" unique_id=44367767]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 192.0
+offset_right = 224.0
+offset_bottom = 237.0
+text = "MESSAGE"
+label_settings = SubResource("LabelSettings_d4yan")
+
+[node name="RowCounter" type="Label" parent="Control" unique_id=1276439209]
+layout_mode = 0
+offset_left = 928.0
+offset_top = 293.0
+offset_right = 1104.0
+offset_bottom = 327.0
+text = "Rows: 999"
+label_settings = SubResource("LabelSettings_b1gra")
+
+[node name="ColumnCounter" type="Label" parent="Control" unique_id=1894839890]
+layout_mode = 0
+offset_left = 928.0
+offset_top = 373.0
+offset_right = 1104.0
+offset_bottom = 407.0
+text = "Columns: 999"
+label_settings = SubResource("LabelSettings_b1gra")
+
+[node name="MineCounter2" type="Label" parent="Control" unique_id=994684892]
+layout_mode = 0
+offset_left = 928.0
+offset_top = 453.0
+offset_right = 1104.0
+offset_bottom = 487.0
+text = "Mines: 999"
+label_settings = SubResource("LabelSettings_b1gra")
+
+[node name="RowSlider" type="HSlider" parent="Control" unique_id=130674655]
+layout_mode = 0
+offset_left = 928.0
+offset_top = 325.0
+offset_right = 1104.0
+offset_bottom = 341.0
+theme_override_constants/center_grabber = -1
+min_value = 4.0
+max_value = 24.0
+value = 4.0
+scrollable = false
+
+[node name="ColumnSlider" type="HSlider" parent="Control" unique_id=1899407761]
+layout_mode = 0
+offset_left = 928.0
+offset_top = 405.0
+offset_right = 1104.0
+offset_bottom = 421.0
+theme_override_constants/center_grabber = -1
+min_value = 4.0
+max_value = 24.0
+value = 4.0
+scrollable = false
+
+[node name="MineSlider" type="HSlider" parent="Control" unique_id=1033710026]
+layout_mode = 0
+offset_left = 928.0
+offset_top = 485.0
+offset_right = 1104.0
+offset_bottom = 501.0
+theme_override_constants/center_grabber = -1
+min_value = 5.0
+value = 5.0
+scrollable = false
+
+[node name="Timer" type="Timer" parent="." unique_id=293282625]
