@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://dykofvlkpbe8d"]
+
+[ext_resource type="Script" uid="uid://wxosr5xpbm4w" path="res://scripts/gerenciador_telas.gd" id="1_jr6vj"]
+[ext_resource type="PackedScene" uid="uid://c3egba45ye35x" path="res://cenas/cadastro/cadastro.tscn" id="2_deupt"]
+[ext_resource type="PackedScene" uid="uid://bcgwlv0eu3ck7" path="res://cenas/login/login.tscn" id="3_6napt"]
+[ext_resource type="PackedScene" uid="uid://dwkcqdr4joahc" path="res://cenas/menu_principal/menu_principal.tscn" id="4_bi4f8"]
+[ext_resource type="PackedScene" uid="uid://fpu5oujg4j2w" path="res://cenas/save_slot/SaveSlot.tscn" id="5_5hkwe"]
+
+[node name="GerenciadorTelas" type="Node" unique_id=1570137647]
+script = ExtResource("1_jr6vj")
+
+[node name="Cadastro" parent="." unique_id=787969888 instance=ExtResource("2_deupt")]
+metadata/_edit_use_anchors_ = true
+
+[node name="Login" parent="." unique_id=733296674 instance=ExtResource("3_6napt")]
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" parent="Login/LoginArea" parent_id_path=PackedInt32Array(733296674, 798163012) index="0" unique_id=191503834]
+offset_left = 109.5
+offset_top = 61.0
+offset_right = -84.5
+offset_bottom = -69.0
+
+[node name="MenuPrincipal" parent="." unique_id=85327965 instance=ExtResource("4_bi4f8")]
+metadata/_edit_use_anchors_ = true
+
+[node name="SaveSlot" parent="." unique_id=571966553 instance=ExtResource("5_5hkwe")]
+
+[connection signal="pressed" from="Cadastro/CadastroArea/VBoxContainer/EnviarCadastro" to="." method="_on_enviar_cadastro_pressed"]
+[connection signal="pressed" from="Cadastro/CadastroArea/VBoxContainer/LogarArea/LogarTexto/LogarBotao" to="." method="_on_logar_botao_pressed"]
+[connection signal="pressed" from="Login/LoginArea/VBoxContainer/EnviarLogin" to="." method="_on_enviar_login_pressed"]
+[connection signal="pressed" from="Login/LoginArea/VBoxContainer/RegistrarArea/RegistrarTexto/RegistrarBotao" to="." method="_on_registrar_botao_pressed"]
+[connection signal="pressed" from="MenuPrincipal/Botoes/BotaoJogar" to="." method="_on_botao_jogar_pressed"]
+[connection signal="pressed" from="MenuPrincipal/Botoes/BotaoOpcoes" to="." method="_on_botao_opcoes_pressed"]
+[connection signal="pressed" from="MenuPrincipal/Botoes/BotaoSair" to="." method="_on_botao_sair_pressed"]
+[connection signal="pressed" from="SaveSlot/Fundo/HBoxContainer/add1" to="." method="_on_add_1_pressed"]
+[connection signal="pressed" from="SaveSlot/Fundo/HBoxContainer/add2" to="." method="_on_add_2_pressed"]
+[connection signal="pressed" from="SaveSlot/Fundo/HBoxContainer/add3" to="." method="_on_add_3_pressed"]
+
+[editable path="Cadastro"]
+[editable path="Login"]
+[editable path="MenuPrincipal"]
+[editable path="SaveSlot"]

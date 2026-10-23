@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://r441yuannl8p"]
+
+[ext_resource type="PackedScene" uid="uid://b2hyhohfd83uq" path="res://cenas/poltronas/poltrona_nivel_3.tscn" id="1_srp5s"]
+[ext_resource type="Texture2D" uid="uid://43y7tfsicaci" path="res://tilesets/3.png" id="2_ncn7l"]
+[ext_resource type="Texture2D" uid="uid://5c5ujlqfrbx5" path="res://cenas/portoes/balcoes/placa.png" id="3_2jdr8"]
+[ext_resource type="Texture2D" uid="uid://cb4k1ha4nc1ol" path="res://cenas/portoes/balcoes/balcaoN1.png" id="4_8egre"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k4gye"]
+
+[node name="PortaoN3" type="Node2D" unique_id=821442634]
+
+[node name="Componentes" type="Node2D" parent="." unique_id=976567793]
+
+[node name="Poltrona" type="Node2D" parent="Componentes" unique_id=2077465143]
+
+[node name="poltrona_nivel_3" parent="Componentes/Poltrona" unique_id=47567587 instance=ExtResource("1_srp5s")]
+
+[node name="poltrona_nivel_4" parent="Componentes/Poltrona" unique_id=738755375 instance=ExtResource("1_srp5s")]
+position = Vector2(544, 0)
+
+[node name="Carpete" type="Node2D" parent="Componentes" unique_id=1772448993]
+
+[node name="Sprite2D" type="Sprite2D" parent="Componentes/Carpete" unique_id=821541551]
+position = Vector2(384, 136)
+rotation = 1.5707964
+texture = ExtResource("2_ncn7l")
+region_enabled = true
+region_rect = Rect2(404, 692, 268, 72)
+
+[node name="Placa" type="Node2D" parent="Componentes" unique_id=564851791]
+z_index = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Componentes/Placa" unique_id=1865150146]
+position = Vector2(224, -56)
+texture = ExtResource("3_2jdr8")
+
+[node name="Balcao" type="Node2D" parent="Componentes" unique_id=738452398]
+position = Vector2(0, -3)
+
+[node name="Sprite2D" type="Sprite2D" parent="Componentes/Balcao" unique_id=36606167]
+z_index = 1
+position = Vector2(384, 195)
+texture = ExtResource("4_8egre")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1302214588]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=97769905]
+shape = SubResource("RectangleShape2D_k4gye")
