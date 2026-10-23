@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b3js48mtek7tn"]
 
-[ext_resource type="Texture2D" uid="uid://putha6fcnbgb" path="res://assets/SaveSlot.png" id="1_1jg0j"]
+[ext_resource type="Texture2D" uid="uid://putha6fcnbgb" path="res://assets/background/SaveSlot.png" id="1_1jg0j"]
 
 [node name="TextureButton" type="TextureButton" unique_id=1165264795]
 custom_minimum_size = Vector2(256, 384)

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://fpu5oujg4j2w"]
 
-[ext_resource type="Texture2D" uid="uid://40f8d7jv8n7u" path="res://assets/fundo.jpg" id="1_rili7"]
+[ext_resource type="Texture2D" uid="uid://40f8d7jv8n7u" path="res://assets/background/fundo.jpg" id="1_rili7"]
 [ext_resource type="PackedScene" uid="uid://b3js48mtek7tn" path="res://cenas/save_slot/Save.tscn" id="2_flycw"]
-[ext_resource type="Texture2D" uid="uid://eos6qq3nhbwg" path="res://assets/titulo.jpg" id="3_rili7"]
+[ext_resource type="Texture2D" uid="uid://eos6qq3nhbwg" path="res://assets/background/titulo.jpg" id="3_rili7"]
 
 [node name="Control" type="Control" unique_id=571966553]
 layout_mode = 3

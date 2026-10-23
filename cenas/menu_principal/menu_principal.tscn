@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dwkcqdr4joahc"]
 
-[ext_resource type="Texture2D" uid="uid://40f8d7jv8n7u" path="res://assets/fundo.jpg" id="1_ijq78"]
-[ext_resource type="Texture2D" uid="uid://eos6qq3nhbwg" path="res://assets/titulo.jpg" id="2_75lm6"]
+[ext_resource type="Texture2D" uid="uid://40f8d7jv8n7u" path="res://assets/background/fundo.jpg" id="1_ijq78"]
+[ext_resource type="Texture2D" uid="uid://eos6qq3nhbwg" path="res://assets/background/titulo.jpg" id="2_75lm6"]
 [ext_resource type="FontFile" uid="uid://l0a4ugx7t1rc" path="res://assets/pixel_operator/PixelOperator.ttf" id="3_1s0v4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mpxv"]
