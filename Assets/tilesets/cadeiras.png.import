@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c2myidouhgjop"
-path="res://.godot/imported/cadeiras.png-b3aa8dfaad9d329f796b64fe58f2c0e8.ctex"
+path="res://.godot/imported/cadeiras.png-fdde20d70ac086c58f9e2a1ec2c393b5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/cadeiras.png"
-dest_files=["res://.godot/imported/cadeiras.png-b3aa8dfaad9d329f796b64fe58f2c0e8.ctex"]
+source_file="res://Assets/tilesets/cadeiras.png"
+dest_files=["res://.godot/imported/cadeiras.png-fdde20d70ac086c58f9e2a1ec2c393b5.ctex"]
 
 [params]
 

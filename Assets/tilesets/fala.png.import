@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b4cuj22d3u34j"
-path="res://.godot/imported/fala.png-8c3c6de8bdc961901101db00da8b1305.ctex"
+path="res://.godot/imported/fala.png-7e4e269b5d3b2564704d73ed080aefc0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/fala.png"
-dest_files=["res://.godot/imported/fala.png-8c3c6de8bdc961901101db00da8b1305.ctex"]
+source_file="res://Assets/tilesets/fala.png"
+dest_files=["res://.godot/imported/fala.png-7e4e269b5d3b2564704d73ed080aefc0.ctex"]
 
 [params]
 

@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://4i5w0q0cd6pc"]
+
+[ext_resource type="Texture2D" uid="uid://cxkfjguklbt32" path="res://Assets/Pecas/Grid.png" id="1_mc344"]
+
+[node name="Grid" type="Node2D" unique_id=262605961]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1177683730]
+position = Vector2(539, 289)
+texture = ExtResource("1_mc344")

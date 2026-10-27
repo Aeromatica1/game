@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://byph84esfkpo3"
-path="res://.godot/imported/novaloja.png-44b4f5134fb3990a1cd820cb79aa8fe8.ctex"
+path="res://.godot/imported/novaloja.png-0d2d6d82ed17ae398ee4f27a348b7254.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/areas/novaloja.png"
-dest_files=["res://.godot/imported/novaloja.png-44b4f5134fb3990a1cd820cb79aa8fe8.ctex"]
+source_file="res://Assets/areas/novaloja.png"
+dest_files=["res://.godot/imported/novaloja.png-0d2d6d82ed17ae398ee4f27a348b7254.ctex"]
 
 [params]
 

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cvqbae240sjti"]
+
+[ext_resource type="Script" uid="uid://dxcbuv8g7ccfs" path="res://minigames/block_blast/main.gd" id="1_lwgfm"]
+[ext_resource type="PackedScene" uid="uid://4i5w0q0cd6pc" path="res://minigames/block_blast/Grid.tscn" id="2_wkd16"]
+[ext_resource type="Script" uid="uid://c6tx7ioq3fy4t" path="res://minigames/block_blast/grid.gd" id="3_6knx5"]
+
+[node name="Main" type="Node2D" unique_id=803543180]
+script = ExtResource("1_lwgfm")
+
+[node name="Grid" parent="." unique_id=262605961 instance=ExtResource("2_wkd16")]
+script = ExtResource("3_6knx5")
