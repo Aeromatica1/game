@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bcgwlv0eu3ck7" path="res://login/login.tscn" id="3_6napt"]
 [ext_resource type="PackedScene" uid="uid://dwkcqdr4joahc" path="res://menu_principal/menu_principal.tscn" id="4_bi4f8"]
 [ext_resource type="PackedScene" uid="uid://fpu5oujg4j2w" path="res://save_slot/save_slot.tscn" id="5_5hkwe"]
-[ext_resource type="PackedScene" uid="uid://d1a5f3jr1wufr" path="res://minigames/block_blast/block_blast.tscn" id="6_oswh0"]
+[ext_resource type="PackedScene" uid="uid://cvqbae240sjti" path="res://minigames/block_blast/Main.tscn" id="7_oswh0"]
 [ext_resource type="PackedScene" uid="uid://6buicxxj4a1p" path="res://minigames/minesweeper/game.tscn" id="7_u051b"]
 
 [node name="GerenciadorTelas" type="Node" unique_id=1570137647]
@@ -28,9 +28,15 @@ metadata/_edit_use_anchors_ = true
 
 [node name="SaveSlot" parent="." unique_id=571966553 instance=ExtResource("5_5hkwe")]
 
-[node name="BlockBlast" parent="." unique_id=760504809 instance=ExtResource("6_oswh0")]
-
 [node name="Minesweeper" parent="." unique_id=433698761 instance=ExtResource("7_u051b")]
+
+[node name="BlockBlast" type="Control" parent="." unique_id=1947145170]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Main" parent="BlockBlast" unique_id=803543180 instance=ExtResource("7_oswh0")]
 
 [connection signal="pressed" from="Cadastro/CadastroArea/VBoxContainer/EnviarCadastro" to="." method="_on_enviar_cadastro_pressed"]
 [connection signal="pressed" from="Cadastro/CadastroArea/VBoxContainer/LogarArea/LogarTexto/LogarBotao" to="." method="_on_logar_botao_pressed"]
@@ -47,5 +53,4 @@ metadata/_edit_use_anchors_ = true
 [editable path="Login"]
 [editable path="MenuPrincipal"]
 [editable path="SaveSlot"]
-[editable path="BlockBlast"]
 [editable path="Minesweeper"]
