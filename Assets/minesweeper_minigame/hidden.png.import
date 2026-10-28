@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bt7bsduen8vax"
-path="res://.godot/imported/hidden.png-16d77075e1ac95573fa362be86da89eb.ctex"
+path="res://.godot/imported/hidden.png-66eba82bf64bc24ae4e0d09a4baa3c37.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/minesweeper_minigame/hidden.png"
-dest_files=["res://.godot/imported/hidden.png-16d77075e1ac95573fa362be86da89eb.ctex"]
+source_file="res://assets/minesweeper_minigame/hidden.png"
+dest_files=["res://.godot/imported/hidden.png-66eba82bf64bc24ae4e0d09a4baa3c37.ctex"]
 
 [params]
 

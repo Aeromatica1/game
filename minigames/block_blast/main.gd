@@ -2,7 +2,7 @@ extends Node2D
 ## Cena Main (Node2D) com a cena do Grid instanciada como filha chamada "Grid".
 ## Coloque as imagens das peças em res://pecas/ (ou mude PECA_DIR).
 
-const PECA_DIR := "res://Assets/Pecas/"
+const PECA_DIR := "res://assets/pecas/"
 
 # Formatos conferidos com a transparência das suas imagens (cada célula = 16 px).
 const DEFS := {

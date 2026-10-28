@@ -1,23 +1,48 @@
 [gd_scene format=3 uid="uid://6buicxxj4a1p"]
 
-[ext_resource type="Script" uid="uid://dw01ibkhrxce7" path="res://minigames/minesweeper/game.gd" id="1_x0mb2"]
+[ext_resource type="Script" uid="uid://bt8ohl3flm4lc" path="res://minigames/minesweeper/game.gd" id="1_game"]
+[ext_resource type="FontFile" uid="uid://drp158mr06j5w" path="res://assets/pixel_operator/PixelOperatorMono-Bold.ttf" id="2_font"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_xgd6b"]
-font_size = 24
+[sub_resource type="ButtonGroup" id="ButtonGroup_level"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_d4yan"]
-font_size = 32
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_led"]
+content_margin_left = 8.0
+content_margin_top = 2.0
+content_margin_right = 8.0
+content_margin_bottom = 2.0
+bg_color = Color(0.04, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.12, 0.12, 0.12, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_b1gra"]
-font_size = 18
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 18.0
+content_margin_top = 16.0
+content_margin_right = 18.0
+content_margin_bottom = 16.0
+bg_color = Color(0.17, 0.17, 0.17, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.5, 0.5, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
-[node name="Game" type="Control" unique_id=943779248]
+[node name="Game" type="Control" unique_id=335353651]
 layout_mode = 3
-anchors_preset = 0
-script = ExtResource("1_x0mb2")
-metadata/_edit_vertical_guides_ = [-158.0]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_game")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1881095363]
+[node name="Background" type="ColorRect" parent="." unique_id=1003873935]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,8 +51,161 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.242188, 0.242188, 0.242188, 1)
 
-[node name="Control" type="Control" parent="." unique_id=1260294379]
-z_index = 2
+[node name="Margin" type="MarginContainer" parent="." unique_id=529365274]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="Margin" unique_id=739443503]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TopBar" type="HBoxContainer" parent="Margin/VBox" unique_id=1972278319]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BackButton" type="Button" parent="Margin/VBox/TopBar" unique_id=740566032]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Voltar"
+
+[node name="Separator" type="VSeparator" parent="Margin/VBox/TopBar" unique_id=1276034596]
+layout_mode = 2
+
+[node name="BtnBeginner" type="Button" parent="Margin/VBox/TopBar" unique_id=2049577679]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "9 × 9 · 10 minas"
+focus_mode = 0
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_level")
+text = "Iniciante"
+
+[node name="BtnIntermediate" type="Button" parent="Margin/VBox/TopBar" unique_id=1196948107]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "16 × 16 · 40 minas"
+focus_mode = 0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_level")
+text = "Intermediário"
+
+[node name="BtnExpert" type="Button" parent="Margin/VBox/TopBar" unique_id=1417515820]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "30 × 16 · 99 minas"
+focus_mode = 0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_level")
+text = "Especialista"
+
+[node name="BtnCustom" type="Button" parent="Margin/VBox/TopBar" unique_id=1281061965]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Escolha colunas, linhas e minas"
+focus_mode = 0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_level")
+text = "Personalizado"
+
+[node name="Spacer" type="Control" parent="Margin/VBox/TopBar" unique_id=645041189]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarksCheck" type="CheckBox" parent="Margin/VBox/TopBar" unique_id=285493289]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Clique direito alterna bandeira → ? → vazio"
+focus_mode = 0
+text = "Marcas (?)"
+
+[node name="RecordsButton" type="Button" parent="Margin/VBox/TopBar" unique_id=472276276]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Recordes"
+
+[node name="Hud" type="HBoxContainer" parent="Margin/VBox" unique_id=1011162404]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="BestLabel" type="Label" parent="Margin/VBox/Hud" unique_id=1707321591]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+text = "Recorde: --"
+vertical_alignment = 1
+
+[node name="MinesPanel" type="PanelContainer" parent="Margin/VBox/Hud" unique_id=1508929657]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_led")
+
+[node name="MinesLabel" type="Label" parent="Margin/VBox/Hud/MinesPanel" unique_id=363790165]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.15, 0.1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+text = "010"
+horizontal_alignment = 1
+
+[node name="Face" type="Control" parent="Margin/VBox/Hud" unique_id=474456961]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+
+[node name="TimePanel" type="PanelContainer" parent="Margin/VBox/Hud" unique_id=1880741977]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_led")
+
+[node name="TimeLabel" type="Label" parent="Margin/VBox/Hud/TimePanel" unique_id=1341541835]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.15, 0.1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+text = "000"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="Margin/VBox/Hud" unique_id=598521215]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BoardArea" type="Control" parent="Margin/VBox" unique_id=1560844130]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Board" type="Control" parent="Margin/VBox/BoardArea" unique_id=353425083]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_right = 288.0
+offset_bottom = 288.0
+
+[node name="Overlay" type="Control" parent="." unique_id=657756027]
+unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,133 +213,170 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Easy" type="Button" parent="Control" unique_id=1559447730]
-layout_mode = 0
-offset_left = 48.0
-offset_top = 393.0
-offset_right = 208.0
-offset_bottom = 441.0
-focus_mode = 1
-theme_override_font_sizes/font_size = 18
-text = "Easy"
+[node name="Dim" type="ColorRect" parent="Overlay" unique_id=1898514574]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
 
-[node name="Normal" type="Button" parent="Control" unique_id=2130317563]
-layout_mode = 0
-offset_left = 48.0
-offset_top = 473.0
-offset_right = 208.0
-offset_bottom = 521.0
-focus_mode = 1
-theme_override_font_sizes/font_size = 18
-text = "Normal"
+[node name="Center" type="CenterContainer" parent="Overlay" unique_id=283559806]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="Hard" type="Button" parent="Control" unique_id=1803129898]
-layout_mode = 0
-offset_left = 48.0
-offset_top = 553.0
-offset_right = 208.0
-offset_bottom = 601.0
-focus_mode = 1
-theme_override_font_sizes/font_size = 18
-text = "Hard"
+[node name="CustomPanel" type="PanelContainer" parent="Overlay/Center" unique_id=26374300]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
-[node name="CustomGame" type="Button" parent="Control" unique_id=1259448169]
-layout_mode = 0
-offset_left = 928.0
-offset_top = 549.0
-offset_right = 1104.0
-offset_bottom = 613.0
-focus_mode = 1
-theme_override_font_sizes/font_size = 18
-text = "Custom game"
+[node name="VBox" type="VBoxContainer" parent="Overlay/Center/CustomPanel" unique_id=1735808880]
+layout_mode = 2
+theme_override_constants/separation = 12
 
-[node name="MineCounter" type="Label" parent="Control" unique_id=2083323881]
-layout_mode = 0
-offset_left = 48.0
-offset_top = 48.0
-offset_right = 224.0
-offset_bottom = 82.0
-text = "MINES: 999999"
-label_settings = SubResource("LabelSettings_xgd6b")
+[node name="Title" type="Label" parent="Overlay/Center/CustomPanel/VBox" unique_id=845996824]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Campo personalizado"
+horizontal_alignment = 1
 
-[node name="TimeElapsed" type="Label" parent="Control" unique_id=522113185]
-layout_mode = 0
-offset_left = 48.0
-offset_top = 96.0
-offset_right = 224.0
-offset_bottom = 130.0
-text = "TIME: 999:99"
-label_settings = SubResource("LabelSettings_xgd6b")
+[node name="Grid" type="GridContainer" parent="Overlay/Center/CustomPanel/VBox" unique_id=1186414791]
+layout_mode = 2
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 10
+columns = 3
 
-[node name="Message" type="Label" parent="Control" unique_id=44367767]
-layout_mode = 0
-offset_left = 48.0
-offset_top = 192.0
-offset_right = 224.0
-offset_bottom = 237.0
-text = "MESSAGE"
-label_settings = SubResource("LabelSettings_d4yan")
+[node name="ColsLabel" type="Label" parent="Overlay/Center/CustomPanel/VBox/Grid" unique_id=515410479]
+layout_mode = 2
+text = "Colunas"
 
-[node name="RowCounter" type="Label" parent="Control" unique_id=1276439209]
-layout_mode = 0
-offset_left = 928.0
-offset_top = 293.0
-offset_right = 1104.0
-offset_bottom = 327.0
-text = "Rows: 999"
-label_settings = SubResource("LabelSettings_b1gra")
+[node name="ColsSlider" type="HSlider" parent="Overlay/Center/CustomPanel/VBox/Grid" unique_id=669021198]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+min_value = 9.0
+max_value = 30.0
+value = 9.0
 
-[node name="ColumnCounter" type="Label" parent="Control" unique_id=1894839890]
-layout_mode = 0
-offset_left = 928.0
-offset_top = 373.0
-offset_right = 1104.0
-offset_bottom = 407.0
-text = "Columns: 999"
-label_settings = SubResource("LabelSettings_b1gra")
+[node name="ColsValue" type="Label" parent="Overlay/Center/CustomPanel/VBox/Grid" unique_id=1017879033]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "9"
+horizontal_alignment = 2
 
-[node name="MineCounter2" type="Label" parent="Control" unique_id=994684892]
-layout_mode = 0
-offset_left = 928.0
-offset_top = 453.0
-offset_right = 1104.0
-offset_bottom = 487.0
-text = "Mines: 999"
-label_settings = SubResource("LabelSettings_b1gra")
+[node name="RowsLabel" type="Label" parent="Overlay/Center/CustomPanel/VBox/Grid" unique_id=1648572936]
+layout_mode = 2
+text = "Linhas"
 
-[node name="RowSlider" type="HSlider" parent="Control" unique_id=130674655]
-layout_mode = 0
-offset_left = 928.0
-offset_top = 325.0
-offset_right = 1104.0
-offset_bottom = 341.0
-theme_override_constants/center_grabber = -1
-min_value = 4.0
+[node name="RowsSlider" type="HSlider" parent="Overlay/Center/CustomPanel/VBox/Grid" unique_id=266759013]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+min_value = 9.0
 max_value = 24.0
-value = 4.0
-scrollable = false
+value = 9.0
 
-[node name="ColumnSlider" type="HSlider" parent="Control" unique_id=1899407761]
-layout_mode = 0
-offset_left = 928.0
-offset_top = 405.0
-offset_right = 1104.0
-offset_bottom = 421.0
-theme_override_constants/center_grabber = -1
-min_value = 4.0
-max_value = 24.0
-value = 4.0
-scrollable = false
+[node name="RowsValue" type="Label" parent="Overlay/Center/CustomPanel/VBox/Grid" unique_id=138899725]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "9"
+horizontal_alignment = 2
 
-[node name="MineSlider" type="HSlider" parent="Control" unique_id=1033710026]
-layout_mode = 0
-offset_left = 928.0
-offset_top = 485.0
-offset_right = 1104.0
-offset_bottom = 501.0
-theme_override_constants/center_grabber = -1
-min_value = 5.0
-value = 5.0
-scrollable = false
+[node name="MinesCaption" type="Label" parent="Overlay/Center/CustomPanel/VBox/Grid" unique_id=936832484]
+layout_mode = 2
+text = "Minas"
 
-[node name="Timer" type="Timer" parent="." unique_id=293282625]
+[node name="MinesSlider" type="HSlider" parent="Overlay/Center/CustomPanel/VBox/Grid" unique_id=2124401938]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+min_value = 10.0
+max_value = 64.0
+value = 10.0
+
+[node name="MinesValue" type="Label" parent="Overlay/Center/CustomPanel/VBox/Grid" unique_id=1578419775]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "10"
+horizontal_alignment = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Overlay/Center/CustomPanel/VBox" unique_id=1486599900]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="CustomStart" type="Button" parent="Overlay/Center/CustomPanel/VBox/Buttons" unique_id=662551140]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+focus_mode = 0
+text = "Iniciar"
+
+[node name="CustomCancel" type="Button" parent="Overlay/Center/CustomPanel/VBox/Buttons" unique_id=2008073715]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+focus_mode = 0
+text = "Cancelar"
+
+[node name="ScoresPanel" type="PanelContainer" parent="Overlay/Center" unique_id=1883177070]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Overlay/Center/ScoresPanel" unique_id=410455013]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Overlay/Center/ScoresPanel/VBox" unique_id=1249304620]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Melhores tempos"
+horizontal_alignment = 1
+
+[node name="ScoresText" type="Label" parent="Overlay/Center/ScoresPanel/VBox" unique_id=35897988]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+
+[node name="Buttons" type="HBoxContainer" parent="Overlay/Center/ScoresPanel/VBox" unique_id=1174770437]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="ResetScoresButton" type="Button" parent="Overlay/Center/ScoresPanel/VBox/Buttons" unique_id=1103847445]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+focus_mode = 0
+text = "Zerar recordes"
+
+[node name="CloseScoresButton" type="Button" parent="Overlay/Center/ScoresPanel/VBox/Buttons" unique_id=728113889]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+focus_mode = 0
+text = "Fechar"

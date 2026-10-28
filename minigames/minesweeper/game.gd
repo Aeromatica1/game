@@ -1,464 +1,779 @@
-### MINESWEEPER Godot 4.3 example - by Awf Ibrahim (@awfyboy)
-extends Node
+extends Control
+## Campo Minado (Minesweeper) do Aeromática.
+##
+## O tabuleiro é desenhado por um único Control (_draw) e todo o input passa por
+## ele. Isso permite o comportamento do jogo original:
+##  - revelar ao SOLTAR o botão esquerdo (dá pra arrastar para fora e cancelar)
+##  - botão direito alterna bandeira (e "?" se as marcas estiverem ligadas)
+##  - "chording": esquerdo+direito juntos, ou botão do meio, num número já
+##    revelado abre os vizinhos se a quantidade de bandeiras bater
+##  - primeiro clique sempre seguro (e sempre abre uma região)
+##  - cronômetro só começa no primeiro clique; contadores de 3 dígitos
+##  - rosto que reinicia (sorrindo, "oh", morto, de óculos) e tecla F2
+##  - ao perder: mostra minas, bandeiras erradas e a mina que explodiu
+##  - ao ganhar: marca as minas restantes e grava o recorde (best time)
 
-# states for the tiles
-enum states {SAFE, CAUTION, MINE}
+signal voltar_pressed
 
-# texture resources
-const CAUTION_1 = preload("res://assets/minesweeper_minigame/1.png")
-const CAUTION_2 = preload("res://assets/minesweeper_minigame/2.png")
-const CAUTION_3 = preload("res://assets/minesweeper_minigame/3.png")
-const CAUTION_4 = preload("res://assets/minesweeper_minigame/4.png")
-const CAUTION_5 = preload("res://assets/minesweeper_minigame/5.png")
-const CAUTION_6 = preload("res://assets/minesweeper_minigame/6.png")
-const CAUTION_7 = preload("res://assets/minesweeper_minigame/7.png")
-const CAUTION_8 = preload("res://assets/minesweeper_minigame/8.png")
-const MINE = preload("res://assets/minesweeper_minigame/mine.png")
-const MINE_SELECTED = preload("res://assets/minesweeper_minigame/mine_selected.png")
-const FLAG = preload("res://assets/minesweeper_minigame/flag.png")
-const HIDDEN = preload("res://assets/minesweeper_minigame/hidden.png")
-const SAFE = preload("res://assets/minesweeper_minigame/safe.png")
+enum Cell { HIDDEN, FLAGGED, QUESTION, REVEALED }
+enum State { READY, PLAYING, WON, LOST }
 
-# node references
-@onready var mine_counter: Label = $Control/MineCounter
-@onready var time_elapsed: Label = $Control/TimeElapsed
-@onready var message: Label = $Control/Message
-@onready var timer: Timer = $Timer
-@onready var row_counter: Label = $Control/RowCounter
-@onready var column_counter: Label = $Control/ColumnCounter
-@onready var mine_counter_2: Label = $Control/MineCounter2
-@onready var row_slider: HSlider = $Control/RowSlider
-@onready var column_slider: HSlider = $Control/ColumnSlider
-@onready var mine_slider: HSlider = $Control/MineSlider
+const Scores = preload("res://minigames/minesweeper/minesweeper_scores.gd")
 
-# game related values
-const TILE = preload("res://minigames/minesweeper/tile.tscn")
-const GRID_SIZE: int = 32
+const TEX_HIDDEN: Texture2D = preload("res://assets/minesweeper_minigame/hidden.png")
+const TEX_SAFE: Texture2D = preload("res://assets/minesweeper_minigame/safe.png")
+const TEX_FLAG: Texture2D = preload("res://assets/minesweeper_minigame/flag.png")
+const TEX_MINE: Texture2D = preload("res://assets/minesweeper_minigame/mine.png")
+const TEX_MINE_HIT: Texture2D = preload("res://assets/minesweeper_minigame/mine_selected.png")
+## índice = quantidade de minas vizinhas (0 usa TEX_SAFE)
+const NUMBER_TEXTURES = [
+	null,
+	preload("res://assets/minesweeper_minigame/1.png"),
+	preload("res://assets/minesweeper_minigame/2.png"),
+	preload("res://assets/minesweeper_minigame/3.png"),
+	preload("res://assets/minesweeper_minigame/4.png"),
+	preload("res://assets/minesweeper_minigame/5.png"),
+	preload("res://assets/minesweeper_minigame/6.png"),
+	preload("res://assets/minesweeper_minigame/7.png"),
+	preload("res://assets/minesweeper_minigame/8.png"),
+]
+const MARK_FONT: Font = preload("res://assets/pixel_operator/PixelOperatorMono-Bold.ttf")
 
-@export var total_rows: int = 12
-@export var total_columns: int = 8
-@export var total_mines: int = 20
+const COLOR_WRONG_FLAG := Color(1.0, 0.25, 0.25)
+const COLOR_QUESTION := Color(0.92, 0.92, 0.92)
+const COLOR_FACE := Color(1.0, 0.85, 0.15)
 
-# I'm using a 1D array (which is harder honestly) but you may adapt this to a 2D array
-var grid: Array[Tile] = []
+## dificuldades oficiais do Campo Minado
+const CUSTOM := "custom"
+const LEVELS := {
+	"beginner": {"name": "Iniciante", "cols": 9, "rows": 9, "mines": 10},
+	"intermediate": {"name": "Intermediário", "cols": 16, "rows": 16, "mines": 40},
+	"expert": {"name": "Especialista", "cols": 30, "rows": 16, "mines": 99},
+}
+const CUSTOM_MIN_MINES := 10
 
-var is_first_click: bool = true
-var can_click: bool = true
-var minutes: int = 0
-var seconds: int = 0
+const MAX_CELL_SIZE := 32.0
+const MIN_CELL_SIZE := 12.0
 
-# used for user flagging tiles
-var mine_guesses: int = 0
+@onready var back_button: Button = %BackButton
+@onready var btn_beginner: Button = %BtnBeginner
+@onready var btn_intermediate: Button = %BtnIntermediate
+@onready var btn_expert: Button = %BtnExpert
+@onready var btn_custom: Button = %BtnCustom
+@onready var marks_check: CheckBox = %MarksCheck
+@onready var records_button: Button = %RecordsButton
 
+@onready var best_label: Label = %BestLabel
+@onready var mines_label: Label = %MinesLabel
+@onready var time_label: Label = %TimeLabel
+@onready var status_label: Label = %StatusLabel
+@onready var face: Control = %Face
+@onready var board_area: Control = %BoardArea
+@onready var board: Control = %Board
 
-# return the size of the viewport
-func get_viewport_size() -> Vector2:
-	return get_viewport().get_visible_rect().size
+@onready var overlay: Control = %Overlay
+@onready var dim: Control = %Dim
+@onready var custom_panel: Control = %CustomPanel
+@onready var cols_slider: HSlider = %ColsSlider
+@onready var rows_slider: HSlider = %RowsSlider
+@onready var mines_slider: HSlider = %MinesSlider
+@onready var cols_value: Label = %ColsValue
+@onready var rows_value: Label = %RowsValue
+@onready var mines_value: Label = %MinesValue
+@onready var custom_start: Button = %CustomStart
+@onready var custom_cancel: Button = %CustomCancel
+@onready var scores_panel: Control = %ScoresPanel
+@onready var scores_text: Label = %ScoresText
+@onready var reset_scores_button: Button = %ResetScoresButton
+@onready var close_scores_button: Button = %CloseScoresButton
 
+# configuração do jogo atual
+var level_key: String = "beginner"
+var cols: int = 9
+var rows: int = 9
+var mine_count: int = 10
+var marks_enabled: bool = false
 
-# add a tile scene onto the given position and set a virtual position
-# store their references as elements of the grid
-func add_tile(pos: Vector2, virtual_pos: int, row: int, column: int) -> void:
-	## create new instance of a tile and add it to the root node
-	var tile_instance: Tile = TILE.instantiate()
-	add_child(tile_instance)
-	
-	## set initial values and states of the tile
-	tile_instance.position = pos
-	tile_instance.virtual_pos = virtual_pos
-	tile_instance.row = row
-	tile_instance.column = column
-	tile_instance.state = states.SAFE
-	tile_instance.texture_normal = HIDDEN
-	
-	## store its reference as an element of the grid
-	grid.append(tile_instance)
+# estado do tabuleiro (arrays lineares: índice = linha * cols + coluna)
+var mines := PackedByteArray()      # 1 = tem mina
+var adjacent := PackedByteArray()   # minas vizinhas
+var cells := PackedByteArray()      # valores de Cell
+var exploded: int = -1              # mina que o jogador acionou
+var revealed_count: int = 0
+var flag_count: int = 0
 
+var state: State = State.READY
+var elapsed: float = 0.0            # segundos de jogo (só conta com a tela visível)
+var shown_seconds: int = -1
+var status_text: String = ""
 
-# update the time elapsed counter
-func update_time() -> void:
-	time_elapsed.text = "Time: %02d:%02d" % [minutes, seconds]
+# input
+var cell_size: float = MAX_CELL_SIZE
+var hover: int = -1
+var left_down: bool = false
+var right_down: bool = false
+var middle_down: bool = false
+var chord_armed: bool = false       # o gesto atual é um chord
+var chord_fired: bool = false       # o chord já foi executado neste gesto
+var face_pressed: bool = false
+var reset_armed: bool = false
 
-
-# update mine counter
-func update_mine_guess_counter() -> void:
-	## if it is the first click, make the amount of mines hidden
-	## this is done because, mines are generated only after the first click
-	## so edge cases like mines > total tiles need to be checked
-	if is_first_click:
-		mine_counter.text = "Mines: ???"
-	else:
-		mine_counter.text = "Mines: %s" % mine_guesses
-
-
-# update custom game's row counter
-func update_row_custom_counter(value: int) -> void:
-	row_counter.text = "Rows: %s" % value
-
-
-# update custom game's column counter
-func update_column_custom_counter(value: int) -> void:
-	column_counter.text = "Columns: %s" % value
-
-
-# update custom game's row counter
-func update_mine_custom_counter(value: int) -> void:
-	mine_counter_2.text = "Mines: %s" % value
-
-
-# clear the grid and create new game
-func reset_game() -> void:
-	## reset default values
-	is_first_click = true
-	can_click = true
-	minutes = 0
-	seconds = 0
-	mine_guesses = 0
-	update_mine_guess_counter()
-	message.hide()
-	update_time()
-	timer.start()
-	
-	## ensure that the grid isn't already empty before clearing
-	if grid.size() > 0:
-		for i in range(grid.size()):
-			var tile: Tile = grid[i]
-			tile.queue_free()
-		grid.clear()
+var level_buttons: Dictionary = {}
+var scores: Scores
 
 
-# create tiles inside of the grid
-func generate_tiles(rows: int, columns: int, mines: int) -> void:
-	## first, reset any existing grid
-	reset_game()
-	
-	## add tiles to the root node and grid
-	## the tile scenes are treated like abstract objects
-	## they will have 'virtual positions' based on the grid
-	## these positions are simply their index position on the grid array
-	## columns for x-axis and rows for y-axis
-	for y in range(rows):
-		for x in range(columns):
-			## calculate offsets for tile position
-			var grid_width: int = GRID_SIZE * columns
-			var grid_height: int = GRID_SIZE * rows
-			var screen_width: int = get_viewport_size().x
-			var screen_height: int = get_viewport_size().y
-			var hor_offset: int = ((screen_width - grid_width)/2)
-			var ver_offset: int = ((screen_height - grid_height)/2)
-			
-			## add new tile and set its position and virtual position
-			var tile_pos: Vector2 = Vector2((GRID_SIZE * x) + hor_offset, (GRID_SIZE * y) + ver_offset)
-			var virtual_pos: int = x + (y * columns)
-			add_tile(tile_pos, virtual_pos, y, x)
-
-
-# assign random tiles as mines and nearby tiles as caution tiles
-# this will not be done in tile generation, it will be done on the first tile click
-# this will prevent the user from accidentally selecting a mine on the first click
-func assign_tiles(rows: int, columns: int, mines: int, first_tile: Tile) -> void:
-	## randomly select some tiles to be mines
-	## ensure that no tile can be selected more than once
-	## this is done by creating a copy of the grid, shuffling it, then getting elements from the back
-	var grid_copy = grid.duplicate(true)
-	grid_copy.shuffle()
-	
-	## remove the first tile clicked and its nearby tiles from the grid_copy
-	## these tiles won't be selected as mines
-	first_tile.state = states.SAFE
-	grid_copy.erase(first_tile)
-	
-	var nearby_tiles_before: Array[Tile] = get_nearby_tiles(first_tile, total_rows, total_columns)
-	for nearby_tile in nearby_tiles_before:
-		grid_copy.erase(nearby_tile)
-	
-	## prevent mine count from being greater than the maximum tiles or less than 0
-	## there should at least be nine tiles that are not mines, so max is total tiles - 9
-	var mine_count: int = clamp(mines, 0, (rows * columns) - 9)
-	
-	## update mine_guesses and total mines to ensure they match
-	## mine guesses is added here because the user may have flagged a tile before mine assignment
-	mine_guesses += mine_count
-	total_mines = mine_count
-	
-	## assign some tiles as mines
-	for i in range(mine_count):
-		var tile: Tile = grid_copy.pop_back()
-		tile.state = states.MINE
-	
-	## update grid to have caution tiles
-	## tiles with mines next to them should be a caution tile
-	## update 'mine_nearby' for each mine next to the tile
-	for y in range(rows):
-		for x in range(columns):
-			## get current tile of this loop
-			var tile: Tile = grid[x + (y * columns)]
-			
-			## if this tile is a mine, ignore it and immediately skip to the next iteration
-			if tile.state == states.MINE:
-				continue
-			
-			## get the tiles nearby this tile
-			var nearby_tiles_after: Array[Tile] = get_nearby_tiles(tile, rows, columns)
-			
-			## if a nearby tile is a mine, increment 'mines_nearby' and set state to caution
-			for nearby_tile in nearby_tiles_after:
-				if nearby_tile.state == states.MINE:
-					tile.state = states.CAUTION
-					tile.mines_nearby += 1
-
-
-# get the nearby tiles from the given tile
-# use current row and current column of the given tile to find the nearby tiles
-func get_nearby_tiles(tile: Tile, total_rows: int, total_columns: int) -> Array[Tile]:
-	## get row and column of this tile
-	var row: int = tile.row
-	var column: int = tile.column
-	
-	## append nearby tiles' index to this array
-	var nearby_tiles: Array[Tile] = []
-	
-	## all possible nearby tiles, including out-of-bounds tiles
-	var top_left: int = (column - 1) + ((row - 1) * total_columns)
-	var top: int = column + ((row - 1) * total_columns)
-	var top_right: int = (column + 1) + ((row - 1) * total_columns)
-	var left: int = (column - 1) + (row * total_columns)
-	var right: int = (column + 1) + (row * total_columns)
-	var bottom_left: int = (column - 1) + ((row + 1) * total_columns)
-	var bottom: int = column + ((row + 1) * total_columns)
-	var bottom_right: int = (column + 1) + ((row + 1) * total_columns)
-	
-	## the first and last tiles of each nearby row
-	var left_bound: int = row * total_columns
-	var right_bound: int = (row * total_columns) + total_columns - 1
-	var top_left_bound: int = (row - 1) * total_columns
-	var top_right_bound: int = ((row - 1) * total_columns) + total_columns - 1
-	var bottom_left_bound: int = (row + 1) * total_columns
-	var bottom_right_bound: int = ((row + 1) * total_columns) + total_columns - 1
-	
-	## append tiles that are within bounds of the grid
-	if top_left >= 0 and top_left >= top_left_bound:
-		nearby_tiles.append(grid[top_left])
-	if top >= 0:
-		nearby_tiles.append(grid[top])
-	if top_right >= 0 and top_right <= top_right_bound:
-		nearby_tiles.append(grid[top_right])
-	if left >= 0 and left >= left_bound:
-		nearby_tiles.append(grid[left])
-	if right < (total_rows * total_columns) and right <= right_bound:
-		nearby_tiles.append(grid[right])
-	if bottom_left < (total_rows * total_columns) and bottom_left >= bottom_left_bound:
-		nearby_tiles.append(grid[bottom_left])
-	if bottom < (total_rows * total_columns):
-		nearby_tiles.append(grid[bottom])
-	if bottom_right < (total_rows * total_columns) and bottom_right <= bottom_right_bound:
-		nearby_tiles.append(grid[bottom_right])
-	
-	## return the list of possible nearby tiles
-	return nearby_tiles
-
-
-# reveal the tile selected from the grid
-func reveal_tile(tile: Tile) -> void:
-	## after reveal, the tile shouldn't be clickable
-	tile.is_hidden = false
-	
-	## update texture and do actions based on its state
-	match tile.state:
-		states.SAFE:
-			tile.texture_normal = SAFE
-		
-		## if this is a mine tile, end the game and reveal all mines
-		states.MINE:
-			reveal_mines()
-			timer.stop()
-			message.show()
-			message.text = "You Lost!"
-			can_click = false
-			tile.texture_normal = MINE_SELECTED
-		
-		## if this is a caution tile, check the number of bombs nearby
-		## you can probably just check the integer and get the texture using a string
-		## I did it this way since I preload my textures anyways
-		states.CAUTION:
-			match tile.mines_nearby:
-				1:
-					tile.texture_normal = CAUTION_1
-				2:
-					tile.texture_normal = CAUTION_2
-				3:
-					tile.texture_normal = CAUTION_3
-				4:
-					tile.texture_normal = CAUTION_4
-				5:
-					tile.texture_normal = CAUTION_5
-				6:
-					tile.texture_normal = CAUTION_6
-				7:
-					tile.texture_normal = CAUTION_7
-				8:
-					tile.texture_normal = CAUTION_8
-
-
-# reveal any tiles near this tile
-# if a nearby tile is safe, recurse this function on that tile as well
-# continue recursion until a caution tile is found
-func reveal_nearby_tiles(tile: Tile) -> void:
-	## reveal the pressed tile
-	reveal_tile(tile)
-	
-	## if the tile is a mine tile or caution tile, stop recursion
-	if tile.state == states.CAUTION or tile.state == states.MINE:
-		return
-	
-	## otherwise, this tile is a safe tile
-	## get nearby tiles
-	var nearby_tiles: Array[Tile] = get_nearby_tiles(tile, total_rows, total_columns)
-	
-	## for each nearby tile that is hidden, recurse this function for that tile
-	for nearby_tile in nearby_tiles:
-		if nearby_tile.is_hidden == true:
-			## if the tile was flagged, update the mine guess counter
-			if nearby_tile.is_flagged:
-				mine_guesses += 1
-			reveal_nearby_tiles(nearby_tile)
-
-
-# reveal all the mines in the grid
-func reveal_mines() -> void:
-	for tile in grid:
-		if tile.state == states.MINE:
-			tile.texture_normal = MINE
-			tile.is_hidden = false
-
-
-# check if the user has won
-# this is done by checking if the remaining tiles are all mines
-func check_win() -> bool:
-	## get the remaining tiles
-	var remaining_tiles: int = 0
-	for tile in grid:
-		if tile.is_hidden:
-			remaining_tiles += 1
-	
-	## check if the remaining tiles and total mines are equal
-	if remaining_tiles == total_mines:
-		return true
-	return false
-
-
-# initialize new game at the start of program
 func _ready() -> void:
-	## connect to tile pressed signal from the SignalBus
-	SignalBus.tile_pressed.connect(on_tile_pressed)
-	
-	## set custom game sliders to some default values
-	row_slider.value = 11
-	column_slider.value = 12
-	mine_slider.value = 20
-	update_row_custom_counter(row_slider.value)
-	update_column_custom_counter(column_slider.value)
-	update_mine_custom_counter(mine_slider.value)
-	
-	## start a new easy game
-	_on_easy_pressed()
+	scores = Scores.new()
+	marks_enabled = bool(scores.settings.get("marks", false))
+	marks_check.set_pressed_no_signal(marks_enabled)
+
+	level_buttons = {
+		"beginner": btn_beginner,
+		"intermediate": btn_intermediate,
+		"expert": btn_expert,
+		CUSTOM: btn_custom,
+	}
+
+	# tabuleiro e rosto
+	board.draw.connect(_draw_board)
+	board.gui_input.connect(_on_board_gui_input)
+	board.mouse_exited.connect(_on_board_mouse_exited)
+	board_area.resized.connect(_layout_board)
+	face.draw.connect(_draw_face)
+	face.gui_input.connect(_on_face_gui_input)
+
+	# barra superior
+	back_button.pressed.connect(func() -> void: voltar_pressed.emit())
+	btn_beginner.pressed.connect(_start_level.bind("beginner"))
+	btn_intermediate.pressed.connect(_start_level.bind("intermediate"))
+	btn_expert.pressed.connect(_start_level.bind("expert"))
+	btn_custom.pressed.connect(_open_custom)
+	marks_check.toggled.connect(_on_marks_toggled)
+	records_button.pressed.connect(_open_scores)
+
+	# janelas (personalizado / recordes)
+	dim.gui_input.connect(_on_dim_gui_input)
+	cols_slider.value_changed.connect(_on_custom_slider_changed)
+	rows_slider.value_changed.connect(_on_custom_slider_changed)
+	mines_slider.value_changed.connect(_on_custom_slider_changed)
+	custom_start.pressed.connect(_on_custom_start)
+	custom_cancel.pressed.connect(_close_overlay)
+	reset_scores_button.pressed.connect(_on_reset_scores_pressed)
+	close_scores_button.pressed.connect(_close_overlay)
+
+	_start_level("beginner")
 
 
-# call when a tile is pressed
-func on_tile_pressed(virtual_pos: int, mouse_button: int) -> void:
-	## get the tile that was just pressed
-	var tile: Tile = grid[virtual_pos]
-	
-	## check if the user can click
-	if can_click:
-		## if right clicked, toggle the tile flagging
-		if mouse_button == MOUSE_BUTTON_RIGHT:
-			if tile.texture_normal == HIDDEN:
-				tile.texture_normal = FLAG
-				tile.is_flagged = true
-				mine_guesses -= 1
+# =============================================================================
+#  Novo jogo
+# =============================================================================
+
+func _start_level(key: String) -> void:
+	var cfg: Dictionary = LEVELS[key]
+	level_key = key
+	cols = int(cfg["cols"])
+	rows = int(cfg["rows"])
+	mine_count = int(cfg["mines"])
+	new_game()
+
+
+## Reinicia com a configuração atual (é o que o rosto e o F2 fazem).
+func new_game() -> void:
+	var total := cols * rows
+	mines = _new_bytes(total)
+	adjacent = _new_bytes(total)
+	cells = _new_bytes(total)
+
+	revealed_count = 0
+	flag_count = 0
+	exploded = -1
+	elapsed = 0.0
+	shown_seconds = -1
+	state = State.READY
+	status_text = ""
+
+	hover = -1
+	left_down = false
+	right_down = false
+	middle_down = false
+	chord_armed = false
+	chord_fired = false
+	face_pressed = false
+
+	_sync_level_buttons()
+	_layout_board()
+	_refresh_hud()
+	board.queue_redraw()
+	face.queue_redraw()
+
+
+func _new_bytes(length: int) -> PackedByteArray:
+	var bytes := PackedByteArray()
+	bytes.resize(length)
+	bytes.fill(0)
+	return bytes
+
+
+func _sync_level_buttons() -> void:
+	var button: Button = level_buttons.get(level_key)
+	if button != null:
+		button.set_pressed_no_signal(true)
+
+
+# =============================================================================
+#  Regras
+# =============================================================================
+
+func _playable() -> bool:
+	return state == State.READY or state == State.PLAYING
+
+
+func _row(i: int) -> int:
+	return floori(i / float(cols))
+
+
+func _col(i: int) -> int:
+	return i % cols
+
+
+func _neighbors(i: int) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	var r := _row(i)
+	var c := _col(i)
+	for dr in range(-1, 2):
+		for dc in range(-1, 2):
+			if dr == 0 and dc == 0:
+				continue
+			var nr := r + dr
+			var nc := c + dc
+			if nr >= 0 and nr < rows and nc >= 0 and nc < cols:
+				out.append(nr * cols + nc)
+	return out
+
+
+## As minas só são sorteadas no primeiro clique: a casa clicada e seus vizinhos
+## ficam livres, então o primeiro clique nunca perde e sempre abre uma região.
+func _place_mines(first: int) -> void:
+	var total := cols * rows
+	mine_count = mini(mine_count, total - 1)
+
+	var blocked := {first: true}
+	for nb in _neighbors(first):
+		blocked[nb] = true
+
+	var candidates: Array[int] = []
+	for i in total:
+		if not blocked.has(i):
+			candidates.append(i)
+	# tabuleiro quase cheio de minas: protege só a casa clicada
+	if candidates.size() < mine_count:
+		candidates.clear()
+		for i in total:
+			if i != first:
+				candidates.append(i)
+
+	candidates.shuffle()
+	for k in mine_count:
+		mines[candidates[k]] = 1
+
+	for i in total:
+		if mines[i] == 1:
+			continue
+		var count := 0
+		for nb in _neighbors(i):
+			count += mines[nb]
+		adjacent[i] = count
+
+
+## Revela uma casa escondida/marcada com "?" (o primeiro clique sorteia as minas).
+func _reveal_cell(i: int) -> void:
+	if state == State.READY:
+		_place_mines(i)
+		state = State.PLAYING
+		elapsed = 0.0
+	if mines[i] == 1:
+		_lose(i)
+	else:
+		_flood_reveal(i)
+
+
+## Abre a casa e, se for um zero, todas as vizinhas (iterativo: sem estouro de
+## pilha em tabuleiros grandes). Casas com bandeira nunca são abertas.
+func _flood_reveal(start: int) -> void:
+	var stack: Array[int] = [start]
+	while not stack.is_empty():
+		var i: int = stack.pop_back()
+		if cells[i] == Cell.REVEALED or cells[i] == Cell.FLAGGED:
+			continue
+		cells[i] = Cell.REVEALED
+		revealed_count += 1
+		if adjacent[i] != 0:
+			continue
+		for nb in _neighbors(i):
+			if cells[nb] == Cell.HIDDEN or cells[nb] == Cell.QUESTION:
+				stack.append(nb)
+
+
+## Chord: num número revelado cuja contagem de bandeiras vizinhas é igual ao
+## número, abre todas as vizinhas que não têm bandeira (pode explodir).
+func _chord(i: int) -> void:
+	if state != State.PLAYING or cells[i] != Cell.REVEALED or adjacent[i] == 0:
+		return
+	var flags := 0
+	var targets: Array[int] = []
+	for nb in _neighbors(i):
+		if cells[nb] == Cell.FLAGGED:
+			flags += 1
+		elif cells[nb] == Cell.HIDDEN or cells[nb] == Cell.QUESTION:
+			targets.append(nb)
+	if flags != adjacent[i]:
+		return
+	for t in targets:
+		if state != State.PLAYING:
+			break
+		if cells[t] == Cell.HIDDEN or cells[t] == Cell.QUESTION:
+			_reveal_cell(t)
+	_check_win()
+
+
+## Bandeira -> ("?" se as marcas estiverem ligadas) -> vazio.
+func _toggle_mark(i: int) -> void:
+	match cells[i]:
+		Cell.HIDDEN:
+			cells[i] = Cell.FLAGGED
+			flag_count += 1
+		Cell.FLAGGED:
+			flag_count -= 1
+			cells[i] = Cell.QUESTION if marks_enabled else Cell.HIDDEN
+		Cell.QUESTION:
+			cells[i] = Cell.HIDDEN
+
+
+func _check_win() -> void:
+	if state == State.PLAYING and revealed_count == cols * rows - mine_count:
+		_win()
+
+
+func _lose(hit: int) -> void:
+	state = State.LOST
+	exploded = hit
+	status_text = "Perdeu!"
+
+
+func _win() -> void:
+	state = State.WON
+	for i in cols * rows:
+		if mines[i] == 1:
+			cells[i] = Cell.FLAGGED
+	flag_count = mine_count
+
+	var ms := maxi(1, roundi(elapsed * 1000.0))
+	status_text = "Venceu! %s" % _format_ms(ms)
+	# só as dificuldades oficiais têm recorde (como no jogo original)
+	if level_key != CUSTOM:
+		var result: Dictionary = scores.submit(level_key, ms)
+		if bool(result["new_record"]):
+			status_text = "Novo recorde! %s" % _format_ms(ms)
+
+
+# =============================================================================
+#  Tempo
+# =============================================================================
+
+func _process(delta: float) -> void:
+	# o cronômetro para se a tela estiver escondida ou com uma janela aberta
+	if state != State.PLAYING or overlay.visible or not is_visible_in_tree():
+		return
+	elapsed += delta
+	var secs := mini(int(elapsed), 999)
+	if secs != shown_seconds:
+		shown_seconds = secs
+		_refresh_time()
+
+
+func _format_ms(ms: int) -> String:
+	return "%.2f s" % (ms / 1000.0)
+
+
+# =============================================================================
+#  HUD
+# =============================================================================
+
+func _refresh_hud() -> void:
+	mines_label.text = "%03d" % (mine_count - flag_count)
+	_refresh_time()
+	status_label.text = status_text
+
+	if level_key == CUSTOM:
+		best_label.text = "Personalizado: sem recorde"
+	else:
+		var best := scores.best_ms(level_key)
+		best_label.text = "Recorde: %s" % (_format_ms(best) if best > 0 else "--")
+
+
+func _refresh_time() -> void:
+	time_label.text = "%03d" % mini(int(elapsed), 999)
+
+
+# =============================================================================
+#  Tabuleiro: layout e desenho
+# =============================================================================
+
+func _layout_board() -> void:
+	var area := board_area.size
+	if area.x <= 0.0 or area.y <= 0.0:
+		return
+	cell_size = clampf(floorf(minf(area.x / cols, area.y / rows)), MIN_CELL_SIZE, MAX_CELL_SIZE)
+	board.size = Vector2(cols, rows) * cell_size
+	board.position = ((area - board.size) * 0.5).floor()
+	board.queue_redraw()
+
+
+func _draw_board() -> void:
+	var cell_vec := Vector2(cell_size, cell_size)
+	for r in rows:
+		for c in cols:
+			_draw_cell(r * cols + c, Rect2(Vector2(c, r) * cell_size, cell_vec))
+
+
+func _revealed_texture(i: int) -> Texture2D:
+	var n: int = adjacent[i]
+	if n > 0:
+		return NUMBER_TEXTURES[n]
+	return TEX_SAFE
+
+
+func _draw_cell(i: int, rect: Rect2) -> void:
+	var cell: int = cells[i]
+	var tex: Texture2D = TEX_HIDDEN
+	var question := false
+	var wrong_flag := false
+
+	if state == State.LOST:
+		if i == exploded:
+			tex = TEX_MINE_HIT
+		elif mines[i] == 1 and cell != Cell.FLAGGED:
+			tex = TEX_MINE
+		elif cell == Cell.FLAGGED:
+			if mines[i] == 1:
+				tex = TEX_FLAG
 			else:
-				tile.texture_normal = HIDDEN
-				tile.is_flagged = false
-				mine_guesses += 1
-			
-			## update the mine guess counter so it reflets the amount of flags
-			update_mine_guess_counter()
-		
-		## if left clicked, reveal the tile
-		## ensure tile isn't flagged and the user can press tiles
-		elif mouse_button == MOUSE_BUTTON_LEFT and not tile.is_flagged:
-			## if it is the first click, start assigning mines to the tiles
-			## it is done here to ensure that the user's first click will never be a mine
-			if is_first_click:
-				assign_tiles(total_rows, total_columns, total_mines, tile)
-				is_first_click = false
-			
-			## reveal this tile and any nearby tiles that are safe
-			## repeat until it reaches a caution tile
-			reveal_nearby_tiles(tile)
-			
-			## update the mine guess counter after a tile is pressed
-			update_mine_guess_counter()
-			
-			## check if the user has won
-			if check_win():
-				## flag the remaining tiles
-				for mine_tile in grid:
-					if mine_tile.is_hidden:
-						mine_tile.texture_normal = FLAG
-						mine_tile.is_flagged = true
-				
-				mine_guesses = 0
-				message.show()
-				message.text = "You Won!"
-				timer.stop()
-				can_click = false
+				tex = TEX_MINE
+				wrong_flag = true   # bandeira em casa sem mina
+		elif cell == Cell.REVEALED:
+			tex = _revealed_texture(i)
+		elif cell == Cell.QUESTION:
+			question = true
+	else:
+		if cell == Cell.REVEALED:
+			tex = _revealed_texture(i)
+		elif cell == Cell.FLAGGED:
+			tex = TEX_FLAG
+		elif cell == Cell.QUESTION:
+			question = true
+		# casa "afundada" enquanto o botão está pressionado
+		if (cell == Cell.HIDDEN or cell == Cell.QUESTION) and _is_pressed_preview(i):
+			tex = TEX_SAFE
+			question = false
+
+	board.draw_texture_rect(tex, rect, false)
+
+	if wrong_flag:
+		var m := cell_size * 0.18
+		var w := maxf(2.0, cell_size * 0.09)
+		board.draw_line(rect.position + Vector2(m, m), rect.end - Vector2(m, m), COLOR_WRONG_FLAG, w)
+		board.draw_line(Vector2(rect.position.x + m, rect.end.y - m), Vector2(rect.end.x - m, rect.position.y + m), COLOR_WRONG_FLAG, w)
+	if question:
+		var base := Vector2(rect.position.x, rect.position.y + cell_size * 0.76)
+		board.draw_string(MARK_FONT, base, "?", HORIZONTAL_ALIGNMENT_CENTER, cell_size, int(cell_size * 0.75), COLOR_QUESTION)
 
 
-func _on_timer_timeout() -> void:
-	seconds += 1
-	if seconds > 60:
-		minutes += 1
-		seconds = 0
-	update_time()
+func _is_near(i: int, j: int) -> bool:
+	return absi(_row(i) - _row(j)) <= 1 and absi(_col(i) - _col(j)) <= 1
 
 
-func _on_easy_pressed() -> void:
-	total_rows = 10
-	total_columns = 10
-	total_mines = 12
-	generate_tiles(total_rows, total_columns, total_mines)
+func _is_pressed_preview(i: int) -> bool:
+	if hover < 0 or not _playable():
+		return false
+	if middle_down or (left_down and right_down):
+		return _is_near(i, hover)
+	return left_down and i == hover
 
 
-func _on_normal_pressed() -> void:
-	total_rows = 16
-	total_columns = 12
-	total_mines = 25
-	generate_tiles(total_rows, total_columns, total_mines)
+# =============================================================================
+#  Rosto
+# =============================================================================
+
+func _draw_face() -> void:
+	var box := face.size
+	var center := box * 0.5
+	var fr := minf(box.x, box.y) * 0.5 * 0.62
+
+	# botão com chanfro (afundado enquanto está pressionado)
+	var light := Color(0.62, 0.62, 0.62)
+	var dark := Color(0.12, 0.12, 0.12)
+	face.draw_rect(Rect2(Vector2.ZERO, box), Color(0.40, 0.40, 0.40))
+	var top_left := dark if face_pressed else light
+	var bottom_right := light if face_pressed else dark
+	face.draw_rect(Rect2(0, 0, box.x, 3), top_left)
+	face.draw_rect(Rect2(0, 0, 3, box.y), top_left)
+	face.draw_rect(Rect2(0, box.y - 3, box.x, 3), bottom_right)
+	face.draw_rect(Rect2(box.x - 3, 0, 3, box.y), bottom_right)
+
+	face.draw_circle(center, fr, COLOR_FACE)
+	face.draw_arc(center, fr, 0.0, TAU, 32, Color.BLACK, 2.0)
+
+	var eye_y := center.y - fr * 0.25
+	var eye_dx := fr * 0.38
+	var smile_center := Vector2(center.x, center.y + fr * 0.05)
+
+	if state == State.LOST:
+		# olhos em X e boca triste
+		var k := fr * 0.16
+		for side in [-1.0, 1.0]:
+			var e := Vector2(center.x + side * eye_dx, eye_y)
+			face.draw_line(e + Vector2(-k, -k), e + Vector2(k, k), Color.BLACK, 2.0)
+			face.draw_line(e + Vector2(-k, k), e + Vector2(k, -k), Color.BLACK, 2.0)
+		face.draw_arc(Vector2(center.x, center.y + fr * 0.65), fr * 0.38, deg_to_rad(200), deg_to_rad(340), 12, Color.BLACK, 2.0)
+	elif state == State.WON:
+		# óculos escuros e sorriso
+		face.draw_rect(Rect2(center.x - fr * 0.78, eye_y - fr * 0.22, fr * 1.56, fr * 0.1), Color.BLACK)
+		for side in [-1.0, 1.0]:
+			face.draw_rect(Rect2(center.x + side * eye_dx - fr * 0.27, eye_y - fr * 0.2, fr * 0.54, fr * 0.38), Color.BLACK)
+		face.draw_arc(smile_center, fr * 0.55, deg_to_rad(25), deg_to_rad(155), 14, Color.BLACK, 2.0)
+	elif _playable() and hover >= 0 and (left_down or middle_down):
+		# "oh!" enquanto o botão está pressionado no tabuleiro
+		for side in [-1.0, 1.0]:
+			face.draw_circle(Vector2(center.x + side * eye_dx, eye_y), fr * 0.14, Color.BLACK)
+		face.draw_circle(Vector2(center.x, center.y + fr * 0.42), fr * 0.16, Color.BLACK)
+	else:
+		for side in [-1.0, 1.0]:
+			face.draw_circle(Vector2(center.x + side * eye_dx, eye_y), fr * 0.1, Color.BLACK)
+		face.draw_arc(smile_center, fr * 0.55, deg_to_rad(25), deg_to_rad(155), 14, Color.BLACK, 2.0)
 
 
-func _on_hard_pressed() -> void:
-	total_rows = 18
-	total_columns = 16
-	total_mines = 40
-	generate_tiles(total_rows, total_columns, total_mines)
+func _on_face_gui_input(event: InputEvent) -> void:
+	var mb := event as InputEventMouseButton
+	if mb == null or mb.button_index != MOUSE_BUTTON_LEFT:
+		return
+	if mb.pressed:
+		face_pressed = true
+		face.queue_redraw()
+	else:
+		var inside := Rect2(Vector2.ZERO, face.size).has_point(mb.position)
+		face_pressed = false
+		face.queue_redraw()
+		if inside:
+			new_game()
 
 
-func _on_custom_game_pressed() -> void:
-	total_rows = row_slider.value
-	total_columns = column_slider.value
-	total_mines = mine_slider.value
-	generate_tiles(total_rows, total_columns, total_mines)
+# =============================================================================
+#  Input do tabuleiro
+# =============================================================================
+
+func _cell_at(pos: Vector2) -> int:
+	if pos.x < 0.0 or pos.y < 0.0:
+		return -1
+	var c := int(pos.x / cell_size)
+	var r := int(pos.y / cell_size)
+	if c >= cols or r >= rows:
+		return -1
+	return r * cols + c
 
 
-func _on_row_slider_value_changed(value: float) -> void:
-	update_row_custom_counter(value)
+func _on_board_mouse_exited() -> void:
+	if hover != -1:
+		hover = -1
+		board.queue_redraw()
+		face.queue_redraw()
 
 
-func _on_column_slider_value_changed(value: float) -> void:
-	update_column_custom_counter(value)
+func _on_board_gui_input(event: InputEvent) -> void:
+	var motion := event as InputEventMouseMotion
+	if motion != null:
+		var h := _cell_at(motion.position)
+		if h != hover:
+			hover = h
+			if left_down or middle_down:
+				board.queue_redraw()
+				face.queue_redraw()
+		return
+
+	var mb := event as InputEventMouseButton
+	if mb == null:
+		return
+	var button := mb.button_index
+	if button != MOUSE_BUTTON_LEFT and button != MOUSE_BUTTON_RIGHT and button != MOUSE_BUTTON_MIDDLE:
+		return
+
+	hover = _cell_at(mb.position)
+	if mb.pressed:
+		_on_button_down(button, hover)
+	else:
+		_on_button_up(button, hover)
+
+	_refresh_hud()
+	board.queue_redraw()
+	face.queue_redraw()
 
 
-func _on_mine_slider_value_changed(value: float) -> void:
-	update_mine_custom_counter(value)
+func _on_button_down(button: int, idx: int) -> void:
+	match button:
+		MOUSE_BUTTON_LEFT:
+			left_down = true
+		MOUSE_BUTTON_RIGHT:
+			right_down = true
+		MOUSE_BUTTON_MIDDLE:
+			middle_down = true
+	if not _playable():
+		return
+
+	if middle_down or (left_down and right_down):
+		chord_armed = true
+	elif button == MOUSE_BUTTON_RIGHT and idx >= 0 and not chord_armed:
+		_toggle_mark(idx)
+
+
+func _on_button_up(button: int, idx: int) -> void:
+	var was_chord := chord_armed
+	match button:
+		MOUSE_BUTTON_LEFT:
+			left_down = false
+		MOUSE_BUTTON_RIGHT:
+			right_down = false
+		MOUSE_BUTTON_MIDDLE:
+			middle_down = false
+
+	if _playable() and idx >= 0:
+		if was_chord:
+			# o chord é executado na primeira soltura do gesto
+			if not chord_fired:
+				chord_fired = true
+				_chord(idx)
+		elif button == MOUSE_BUTTON_LEFT:
+			if cells[idx] == Cell.HIDDEN or cells[idx] == Cell.QUESTION:
+				_reveal_cell(idx)
+				_check_win()
+
+	if not (left_down or right_down or middle_down):
+		chord_armed = false
+		chord_fired = false
+
+
+# =============================================================================
+#  Marcas (?)
+# =============================================================================
+
+func _on_marks_toggled(enabled: bool) -> void:
+	marks_enabled = enabled
+	scores.settings["marks"] = enabled
+	scores.save_to_disk()
+	if not enabled:
+		for i in cells.size():
+			if cells[i] == Cell.QUESTION:
+				cells[i] = Cell.HIDDEN
+		board.queue_redraw()
+
+
+# =============================================================================
+#  Janelas: campo personalizado e recordes
+# =============================================================================
+
+func _max_mines(c: int, r: int) -> int:
+	# mesmo limite do jogo original: no máximo (colunas-1) x (linhas-1)
+	return (c - 1) * (r - 1)
+
+
+func _open_custom() -> void:
+	cols_slider.set_value_no_signal(cols)
+	rows_slider.set_value_no_signal(rows)
+	mines_slider.max_value = _max_mines(cols, rows)
+	mines_slider.set_value_no_signal(mine_count)
+	_update_custom_labels()
+	overlay.show()
+	custom_panel.show()
+	scores_panel.hide()
+
+
+func _on_custom_slider_changed(_value: float) -> void:
+	var c := int(cols_slider.value)
+	var r := int(rows_slider.value)
+	mines_slider.max_value = _max_mines(c, r)
+	_update_custom_labels()
+
+
+func _update_custom_labels() -> void:
+	cols_value.text = str(int(cols_slider.value))
+	rows_value.text = str(int(rows_slider.value))
+	mines_value.text = str(int(mines_slider.value))
+
+
+func _on_custom_start() -> void:
+	cols = int(cols_slider.value)
+	rows = int(rows_slider.value)
+	mine_count = clampi(int(mines_slider.value), CUSTOM_MIN_MINES, _max_mines(cols, rows))
+	level_key = CUSTOM
+	_close_overlay()
+	new_game()
+
+
+func _open_scores() -> void:
+	reset_armed = false
+	reset_scores_button.text = "Zerar recordes"
+	_refresh_scores_text()
+	overlay.show()
+	scores_panel.show()
+	custom_panel.hide()
+
+
+func _refresh_scores_text() -> void:
+	var lines := PackedStringArray()
+	for key in LEVELS:
+		lines.append(String(LEVELS[key]["name"]))
+		var top := scores.top(key)
+		if top.is_empty():
+			lines.append("   --")
+		for k in top.size():
+			var entry: Dictionary = top[k]
+			lines.append("  %d. %s   %s" % [k + 1, _format_ms(int(entry["time_ms"])).lpad(9), String(entry["date"])])
+		lines.append("")
+	scores_text.text = "\n".join(lines).strip_edges()
+
+
+func _on_reset_scores_pressed() -> void:
+	# confirmação em dois cliques para não apagar os recordes sem querer
+	if not reset_armed:
+		reset_armed = true
+		reset_scores_button.text = "Confirmar?"
+		return
+	scores.reset()
+	reset_armed = false
+	reset_scores_button.text = "Zerar recordes"
+	_refresh_scores_text()
+	_refresh_hud()
+
+
+func _close_overlay() -> void:
+	overlay.hide()
+	custom_panel.hide()
+	scores_panel.hide()
+	_sync_level_buttons()   # cancelar o "Personalizado" volta o destaque ao nível atual
+
+
+func _on_dim_gui_input(event: InputEvent) -> void:
+	var mb := event as InputEventMouseButton
+	if mb != null and mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+		_close_overlay()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_visible_in_tree():
+		return
+	if overlay.visible and event.is_action_pressed("ui_cancel"):
+		_close_overlay()
+		get_viewport().set_input_as_handled()
+		return
+	var key := event as InputEventKey
+	if key != null and key.pressed and not key.echo and key.keycode == KEY_F2 and not overlay.visible:
+		new_game()
+		get_viewport().set_input_as_handled()

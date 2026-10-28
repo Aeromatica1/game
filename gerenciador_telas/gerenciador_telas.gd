@@ -61,6 +61,10 @@ func _on_add_2_pressed() -> void:
 	minesweeper.visible = true
 	save_slot.visible = false
 
+func _on_minesweeper_voltar_pressed() -> void:
+	minesweeper.visible = false
+	save_slot.visible = true
+
 func _on_add_3_pressed() -> void:
 	get_tree().change_scene_to_file("res://mapa/mapa.tscn")
 	save_slot.visible = false

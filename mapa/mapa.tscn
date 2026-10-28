@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://2n3sc5kr1wju" path="res://mapa/poltronas/poltrona_nivel_1.tscn" id="19_e36m5"]
 [ext_resource type="PackedScene" uid="uid://du2a7aoeene1q" path="res://mapa/portoes/portao_n_1.tscn" id="20_db5or"]
 [ext_resource type="PackedScene" uid="uid://mnjy238kb0ka" path="res://mapa/portoes/janelas.tscn" id="21_2nuym"]
+[ext_resource type="PackedScene" path="res://player/player.tscn" id="99_player"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6fw57"]
 resource_name = "objetos"
@@ -3372,6 +3373,9 @@ region_rect = Rect2(95.22876, 706.2987, 101.33374, 61.701294)
 
 [node name="Node2D" parent="Camera2D/Mundo" unique_id=1872483171 instance=ExtResource("8_sg0di")]
 position = Vector2(2744, -176)
+
+[node name="Player" parent="Camera2D/Mundo" unique_id=877658340 instance=ExtResource("99_player")]
+position = Vector2(-100, 192)
 
 [node name="Janelas" type="Node2D" parent="Camera2D/Mundo" unique_id=1771137810]
 
