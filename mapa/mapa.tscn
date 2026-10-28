@@ -21,7 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://2n3sc5kr1wju" path="res://mapa/poltronas/poltrona_nivel_1.tscn" id="19_e36m5"]
 [ext_resource type="PackedScene" uid="uid://du2a7aoeene1q" path="res://mapa/portoes/portao_n_1.tscn" id="20_db5or"]
 [ext_resource type="PackedScene" uid="uid://mnjy238kb0ka" path="res://mapa/portoes/janelas.tscn" id="21_2nuym"]
-[ext_resource type="PackedScene" path="res://player/player.tscn" id="99_player"]
+[ext_resource type="PackedScene" uid="uid://ug37puwf0nck" path="res://player/player.tscn" id="99_player"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6fw57"]
 resource_name = "objetos"
@@ -3274,7 +3274,6 @@ tile_size = Vector2i(32, 32)
 sources/2 = SubResource("TileSetAtlasSource_pyrot")
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_agbal"]
-load_path = "res://.godot/imported/4.png-466af8643f55f4f5f56cdf2dd61a15f0.ctex"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ltv3l"]
 size = Vector2(992, 255)
