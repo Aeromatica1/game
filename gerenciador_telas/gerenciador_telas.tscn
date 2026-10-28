@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://cvqbae240sjti" path="res://minigames/block_blast/Main.tscn" id="7_oswh0"]
 [ext_resource type="PackedScene" uid="uid://6buicxxj4a1p" path="res://minigames/minesweeper/game.tscn" id="7_u051b"]
 
+[sub_resource type="ButtonGroup" id="ButtonGroup_oswh0"]
+
 [node name="GerenciadorTelas" type="Node" unique_id=1570137647]
 script = ExtResource("1_jr6vj")
 
@@ -29,6 +31,18 @@ metadata/_edit_use_anchors_ = true
 [node name="SaveSlot" parent="." unique_id=571966553 instance=ExtResource("5_5hkwe")]
 
 [node name="Minesweeper" parent="." unique_id=433698761 instance=ExtResource("7_u051b")]
+
+[node name="BtnBeginner" parent="Minesweeper/Margin/VBox/TopBar" parent_id_path=PackedInt32Array(433698761, 1972278319) index="2" unique_id=2049577679]
+button_group = SubResource("ButtonGroup_oswh0")
+
+[node name="BtnIntermediate" parent="Minesweeper/Margin/VBox/TopBar" parent_id_path=PackedInt32Array(433698761, 1972278319) index="3" unique_id=1196948107]
+button_group = SubResource("ButtonGroup_oswh0")
+
+[node name="BtnExpert" parent="Minesweeper/Margin/VBox/TopBar" parent_id_path=PackedInt32Array(433698761, 1972278319) index="4" unique_id=1417515820]
+button_group = SubResource("ButtonGroup_oswh0")
+
+[node name="BtnCustom" parent="Minesweeper/Margin/VBox/TopBar" parent_id_path=PackedInt32Array(433698761, 1972278319) index="5" unique_id=1281061965]
+button_group = SubResource("ButtonGroup_oswh0")
 
 [node name="BlockBlast" type="Control" parent="." unique_id=1947145170]
 layout_mode = 3

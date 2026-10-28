@@ -84,7 +84,6 @@ func geracao_pseudoaleatoria() -> String:
 		if n not in saco and n not in ultimos_tres:
 			candidatas.append(n)
 
-	# segurança: se o filtro dos últimos três esvaziar a lista, ignora ele
 	if candidatas.is_empty():
 		for n in nomes_validos:
 			if n not in saco:
@@ -99,8 +98,6 @@ func geracao_pseudoaleatoria() -> String:
 
 	if saco.size() == nomes_validos.size():
 		saco.clear()
-
-	return nome
 
 	return nome
 	
