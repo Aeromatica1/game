@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dj6r0eviplwrd"]
+
+[ext_resource type="Script" uid="uid://ca30wg2wefmv3" path="res://npc/npc.gd" id="1_npc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_npc"]
+size = Vector2(24, 16)
+
+[node name="Npc" type="CharacterBody2D" unique_id=1742643095]
+z_index = 2
+collision_layer = 8
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_npc")
+
+[node name="Corpo" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+
+[node name="Cabeca" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+z_index = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_npc")
