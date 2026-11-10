@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://c5r24mcug1d1l"]
+
+[ext_resource type="Script" uid="uid://cgtaq1jbvnodu" path="res://questoes/tela_questao.gd" id="1_tela"]
+
+[node name="TelaQuestao" type="CanvasLayer" unique_id=1943726828]
+layer = 100
+script = ExtResource("1_tela")

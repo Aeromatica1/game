@@ -1,0 +1,34 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://npc/funcionario.gd" id="1_func"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_func"]
+size = Vector2(24, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_zona"]
+radius = 100.0
+
+[node name="Funcionario" type="StaticBody2D"]
+z_index = 2
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_func")
+
+[node name="Corpo" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+
+[node name="Cabeca" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+z_index = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_func")
+
+[node name="Zona" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Zona"]
+position = Vector2(0, -8)
+shape = SubResource("CircleShape2D_zona")

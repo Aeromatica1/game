@@ -9,16 +9,19 @@ extends CharacterBody2D
 @export var aceleracao: float = 1200.0
 @export var atrito: float = 1600.0
 @export var camera_zoom: Vector2 = Vector2(1, 1)
+## Linha (em px do sprite de 28) onde a cabeça termina. A cabeça é desenhada num z_index maior,
+## então ela nunca fica escondida atrás do corpo de outro personagem.
+@export var linha_cabeca: int = 19
 
-const TAMANHO_CELULA := Vector2i(28, 28)
-const DIRECOES := ["baixo", "esquerda", "cima", "direita"]
+const Sprites := preload("res://npc/personagem_sprites.gd")
 const FPS_ANDAR := 8.0
 const FPS_CORRER := 12.0
 
 var direcao_olhando: String = "baixo"
 var correndo: bool = false
 
-@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var corpo: AnimatedSprite2D = $AnimatedSprite2D
+@onready var cabeca: AnimatedSprite2D = $Cabeca
 @onready var camera: Camera2D = $Camera2D
 
 
@@ -62,51 +65,28 @@ func _atualizar_animacao(movendo: bool) -> void:
 	var nome := "parado_" + direcao_olhando
 	if movendo:
 		nome = ("correr_" if correndo else "andar_") + direcao_olhando
-	if sprite.animation != nome:
+	if corpo.animation != nome:
 		# ao trocar entre andar/correr, mantém o frame para o ciclo não reiniciar
-		var mesmo_tipo := nome.get_slice("_", 0) != "parado" and sprite.animation.get_slice("_", 0) != "parado"
-		var frame_atual := sprite.frame
-		sprite.play(nome)
+		var mesmo_tipo := nome.get_slice("_", 0) != "parado" and corpo.animation.get_slice("_", 0) != "parado"
+		var frame_atual := corpo.frame
+		corpo.play(nome)
+		cabeca.play(nome)
 		if mesmo_tipo:
-			sprite.set_frame_and_progress(frame_atual, 0.0)
-	elif not sprite.is_playing():
-		sprite.play(nome)
+			corpo.set_frame_and_progress(frame_atual, 0.0)
+		cabeca.set_frame_and_progress(corpo.frame, corpo.frame_progress)
+	elif not corpo.is_playing():
+		corpo.play(nome)
+		cabeca.play(nome)
 
 
 func _montar_animacoes() -> void:
 	var textura: Texture2D = preload("res://assets/player/personagem.png")
-	var frames := SpriteFrames.new()
-	frames.remove_animation("default")
-
-	for linha in DIRECOES.size():
-		var dir: String = DIRECOES[linha]
-
-		# parado (um único frame)
-		frames.add_animation("parado_" + dir)
-		frames.set_animation_loop("parado_" + dir, false)
-		frames.add_frame("parado_" + dir, _frame(textura, 0, linha))
-
-		# andar: parado, passo A, parado, passo B
-		frames.add_animation("andar_" + dir)
-		frames.set_animation_speed("andar_" + dir, FPS_ANDAR)
-		for coluna in [1, 0, 2, 0]:
-			frames.add_frame("andar_" + dir, _frame(textura, coluna, linha))
-
-		# correr: mesmo ciclo usando as colunas 3-5
-		frames.add_animation("correr_" + dir)
-		frames.set_animation_speed("correr_" + dir, FPS_CORRER)
-		for coluna in [4, 3, 5, 3]:
-			frames.add_frame("correr_" + dir, _frame(textura, coluna, linha))
-
-	sprite.sprite_frames = frames
-	sprite.play("parado_baixo")
-
-
-func _frame(textura: Texture2D, coluna: int, linha: int) -> AtlasTexture:
-	var atlas := AtlasTexture.new()
-	atlas.atlas = textura
-	atlas.region = Rect2(Vector2(coluna, linha) * Vector2(TAMANHO_CELULA), Vector2(TAMANHO_CELULA))
-	return atlas
+	var frames := Sprites.montar(textura, linha_cabeca, true, FPS_ANDAR, FPS_CORRER)
+	corpo.sprite_frames = frames["corpo"]
+	cabeca.sprite_frames = frames["cabeca"]
+	Sprites.posicionar(corpo, cabeca, linha_cabeca)
+	corpo.play("parado_baixo")
+	cabeca.play("parado_baixo")
 
 
 ## Cria as ações de input por código, então não é preciso mexer no Project Settings.
@@ -115,7 +95,7 @@ func _registrar_inputs() -> void:
 	_acao("mover_direita", [KEY_D, KEY_RIGHT])
 	_acao("mover_cima", [KEY_W, KEY_UP])
 	_acao("mover_baixo", [KEY_S, KEY_DOWN])
-	_acao("correr", [KEY_SPACE])
+	_acao("correr", [KEY_SHIFT])
 
 
 func _acao(nome: StringName, teclas: Array) -> void:
