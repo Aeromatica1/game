@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://ug37puwf0nck" path="res://player/player.tscn" id="99_player"]
 [ext_resource type="Script" uid="uid://yqbkgsrbmxyk" path="res://npc/passageiros_manager.gd" id="100_passageiros"]
 [ext_resource type="PackedScene" path="res://npc/funcionario.tscn" id="101_funcionario"]
+[ext_resource type="Script" path="res://aluguel/espaco_aluguel.gd" id="102_aluguel"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6fw57"]
 resource_name = "objetos"
@@ -3448,30 +3449,35 @@ region_rect = Rect2(288, 0, 240, 192)
 [node name="estabelecimentos" type="Node2D" parent="Camera2D/Mundo" unique_id=308210321]
 
 [node name="Novaloja" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1058556688]
+script = ExtResource("102_aluguel")
 z_index = 2
 position = Vector2(3272.0002, -236)
 scale = Vector2(1.365855, 1.317073)
 texture = ExtResource("11_l567g")
 
 [node name="Novaloja2" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1458464802]
+script = ExtResource("102_aluguel")
 z_index = 2
 position = Vector2(3800.0002, -236.00006)
 scale = Vector2(1.365855, 1.317073)
 texture = ExtResource("11_l567g")
 
 [node name="Novaloja3" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1993066143]
+script = ExtResource("102_aluguel")
 z_index = 2
 position = Vector2(4304, -235)
 scale = Vector2(1.365855, 1.317073)
 texture = ExtResource("11_l567g")
 
 [node name="Novaloja4" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=2089350247]
+script = ExtResource("102_aluguel")
 z_index = 2
 position = Vector2(5678.9995, -235)
 scale = Vector2(1.365855, 1.317073)
 texture = ExtResource("11_l567g")
 
 [node name="Novaloja5" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=88954956]
+script = ExtResource("102_aluguel")
 z_index = 2
 position = Vector2(6127.9995, -236)
 scale = Vector2(1.365855, 1.317073)
