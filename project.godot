@@ -14,6 +14,10 @@ config/name="aeromatica"
 run/main_scene="uid://dykofvlkpbe8d"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
+[autoload]
+
+Supabase="*uid://buruhkr3c5wpx"
+
 [display]
 
 window/stretch/mode="viewport"
