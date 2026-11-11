@@ -23,3 +23,11 @@
 ## Cabeça e colisão
 - NPCs, funcionários e jogador são desenhados em duas partes (corpo e cabeça); a cabeça tem z_index maior,
   então nunca some atrás do corpo de outro personagem. A linha de corte é `linha_cabeca` (padrão 19 px).
+
+## Aluguel de áreas (sinal de "+")
+- Os 5 sprites `Novaloja*` em `Mundo/estabelecimentos` usam `aluguel/espaco_aluguel.gd`. Perto deles aparece
+  "T / clique - Alugar espaço"; apertar **T** ou **clicar** no "+" abre `aluguel/tela_escolha_area.gd`
+  (lanchonete, livraria, cafeteria, loja; teclas 1-4 ou mouse) e depois a `tela_questao` (só o espaço em branco).
+- Sinal `area_alugada(tipo, acertou)` no espaço avisa o fim do fluxo — é o ponto para trocar o "+" pela loja.
+- Ícones das áreas: `assets/areas/`. A "Loja" ainda não tem ícone (edite `OPCOES` em `tela_escolha_area.gd`).
+- Ajuste a distância de ativação com `folga_lateral/cima/baixo` no Inspector de cada `Novaloja`.
