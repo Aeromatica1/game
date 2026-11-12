@@ -8,6 +8,9 @@ extends StaticBody2D
 const Sprites := preload("res://npc/personagem_sprites.gd")
 const BancoQuestoes := preload("res://questoes/banco_questoes.gd")
 const TelaQuestao := preload("res://questoes/tela_questao.tscn")
+const TelaMinigame := preload("res://minigames/tela_minigame.gd")
+
+enum Acao { QUESTAO, MINIGAME }
 const TEXTURA_PADRAO := "res://assets/npc/personagem.png"
 
 @export var nome_funcionario: String = "Funcionário"
@@ -19,6 +22,13 @@ const TEXTURA_PADRAO := "res://assets/npc/personagem.png"
 @export var textura: Texture2D
 ## Variação de cor das roupas (0 a 1). -1 = sem alteração.
 @export_range(-1.0, 1.0) var matiz: float = -1.0
+## O que acontece ao apertar E: abrir uma questão de matemática ou um minigame.
+@export var acao: Acao = Acao.QUESTAO
+## Usado quando `acao` = MINIGAME. Arraste aqui a cena do minigame
+## (ex.: minigames/minesweeper/game.tscn ou minigames/block_blast/Main.tscn).
+@export var minigame: PackedScene
+## Texto que aparece perto do funcionário. Vazio = "E - Falar" (questão) ou "E - Jogar" (minigame).
+@export var texto_dica: String = ""
 @export var olhar_para_jogador: bool = true
 @export var linha_cabeca: int = 19
 
@@ -46,7 +56,7 @@ func _ready() -> void:
 	_olhar(direcao)
 
 	_dica = Label.new()
-	_dica.text = "E - Falar"
+	_dica.text = texto_dica if texto_dica != "" else ("E - Jogar" if acao == Acao.MINIGAME and minigame != null else "E - Falar")
 	_dica.add_theme_font_size_override("font_size", 16)
 	_dica.add_theme_color_override("font_outline_color", Color.BLACK)
 	_dica.add_theme_constant_override("outline_size", 6)
@@ -72,11 +82,21 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _interagir() -> void:
+	var titulo := nome_funcionario if cargo == "" else "%s  •  %s" % [nome_funcionario, cargo]
+	if acao == Acao.MINIGAME:
+		if minigame == null:
+			push_warning("%s: acao = MINIGAME mas nenhuma cena em `minigame`." % name)
+			return
+		var host := get_tree().get_first_node_in_group("tela_minigame")
+		if host == null:
+			host = TelaMinigame.new()
+			get_tree().root.add_child(host)
+		host.abrir(minigame, titulo)
+		return
 	var tela := get_tree().get_first_node_in_group("tela_questao")
 	if tela == null:
 		tela = TelaQuestao.instantiate()
 		get_tree().root.add_child(tela)
-	var titulo := nome_funcionario if cargo == "" else "%s  •  %s" % [nome_funcionario, cargo]
 	tela.abrir(BancoQuestoes.proxima_questao(contexto), titulo)
 
 

@@ -9,7 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://cuf205vndpvjn" path="res://mapa/estabelecimentos/balcao_empresa.tscn" id="8_sg0di"]
 [ext_resource type="Texture2D" uid="uid://dvrqruqcjxvxp" path="res://assets/tilesets/5.png" id="9_m03sd"]
 [ext_resource type="PackedScene" uid="uid://32xpnvwoyo7l" path="res://mapa/objetos/ponte_embarque.tscn" id="9_pyrot"]
+[ext_resource type="PackedScene" uid="uid://cvqbae240sjti" path="res://minigames/block_blast/Main.tscn" id="11_idjp5"]
 [ext_resource type="Texture2D" uid="uid://byph84esfkpo3" path="res://assets/areas/novaloja.png" id="11_l567g"]
+[ext_resource type="PackedScene" uid="uid://6buicxxj4a1p" path="res://minigames/minesweeper/game.tscn" id="12_axask"]
 [ext_resource type="PackedScene" uid="uid://chh4c34073pbk" path="res://mapa/estabelecimentos/balcao3.tscn" id="12_dh2m7"]
 [ext_resource type="PackedScene" uid="uid://b8mir5lbjx7c6" path="res://mapa/estabelecimentos/balcao_checkin.tscn" id="13_x30ii"]
 [ext_resource type="PackedScene" uid="uid://cuf0p62et7mrw" path="res://mapa/estabelecimentos/balcaoinfo_2.tscn" id="14_qdpnv"]
@@ -24,7 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://ug37puwf0nck" path="res://player/player.tscn" id="99_player"]
 [ext_resource type="Script" uid="uid://yqbkgsrbmxyk" path="res://npc/passageiros_manager.gd" id="100_passageiros"]
 [ext_resource type="PackedScene" path="res://npc/funcionario.tscn" id="101_funcionario"]
-[ext_resource type="Script" path="res://aluguel/espaco_aluguel.gd" id="102_aluguel"]
+[ext_resource type="Script" uid="uid://m3dgn21eigvf" path="res://aluguel/espaco_aluguel.gd" id="102_aluguel"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6fw57"]
 resource_name = "objetos"
@@ -3385,33 +3387,47 @@ script = ExtResource("100_passageiros")
 chao = NodePath("../Chão")
 jogador = NodePath("../Player")
 
-[node name="Func_Checkin" parent="Camera2D/Mundo" instance=ExtResource("101_funcionario")]
-position = Vector2(1216, -200)
+[node name="Func_Checkin" parent="Camera2D/Mundo" unique_id=310538071 instance=ExtResource("101_funcionario")]
+position = Vector2(1202, -195)
 nome_funcionario = "Atendente"
 cargo = "Check-in"
 contexto = "checkin"
 matiz = 0.0
+acao = 1
+minigame = ExtResource("11_idjp5")
 
-[node name="Func_Info" parent="Camera2D/Mundo" instance=ExtResource("101_funcionario")]
+[node name="Func_Info" parent="Camera2D/Mundo" unique_id=23584488 instance=ExtResource("101_funcionario")]
 position = Vector2(0, -192)
 nome_funcionario = "Atendente"
 cargo = "Informações"
 contexto = "info"
 matiz = 0.45
 
-[node name="Func_Empresa" parent="Camera2D/Mundo" instance=ExtResource("101_funcionario")]
+[node name="Func_Empresa" parent="Camera2D/Mundo" unique_id=1911737166 instance=ExtResource("101_funcionario")]
 position = Vector2(2776, -198)
 nome_funcionario = "Atendente"
 cargo = "Balcão da companhia"
 contexto = "empresa"
 matiz = 0.7
 
-[node name="Func_Pesagem" parent="Camera2D/Mundo" instance=ExtResource("101_funcionario")]
+[node name="Func_Esteiras" parent="Camera2D/Mundo" unique_id=667485869 instance=ExtResource("101_funcionario")]
+position = Vector2(6583, -211)
+nome_funcionario = "Atendente"
+cargo = "Pesagem de bagagem"
+contexto = "pesagem"
+matiz = 0.2
+acao = 1
+texto_dica = "E - Jogar"
+
+[node name="Func_Inspecao" parent="Camera2D/Mundo" unique_id=1035112327 instance=ExtResource("101_funcionario")]
 position = Vector2(4804, -216)
 nome_funcionario = "Atendente"
 cargo = "Pesagem de bagagem"
 contexto = "pesagem"
 matiz = 0.2
+acao = 1
+minigame = ExtResource("12_axask")
+texto_dica = "E - Jogar"
 
 [node name="Janelas" type="Node2D" parent="Camera2D/Mundo" unique_id=1771137810]
 
@@ -3449,39 +3465,39 @@ region_rect = Rect2(288, 0, 240, 192)
 [node name="estabelecimentos" type="Node2D" parent="Camera2D/Mundo" unique_id=308210321]
 
 [node name="Novaloja" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1058556688]
-script = ExtResource("102_aluguel")
 z_index = 2
 position = Vector2(3272.0002, -236)
 scale = Vector2(1.365855, 1.317073)
 texture = ExtResource("11_l567g")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja2" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1458464802]
-script = ExtResource("102_aluguel")
 z_index = 2
 position = Vector2(3800.0002, -236.00006)
 scale = Vector2(1.365855, 1.317073)
 texture = ExtResource("11_l567g")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja3" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1993066143]
-script = ExtResource("102_aluguel")
 z_index = 2
 position = Vector2(4304, -235)
 scale = Vector2(1.365855, 1.317073)
 texture = ExtResource("11_l567g")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja4" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=2089350247]
-script = ExtResource("102_aluguel")
 z_index = 2
 position = Vector2(5678.9995, -235)
 scale = Vector2(1.365855, 1.317073)
 texture = ExtResource("11_l567g")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja5" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=88954956]
-script = ExtResource("102_aluguel")
 z_index = 2
 position = Vector2(6127.9995, -236)
 scale = Vector2(1.365855, 1.317073)
 texture = ExtResource("11_l567g")
+script = ExtResource("102_aluguel")
 
 [node name="balcaopesagem" parent="Camera2D/Mundo/estabelecimentos" unique_id=1337239408 instance=ExtResource("12_dh2m7")]
 position = Vector2(4816, -168)

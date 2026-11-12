@@ -2,6 +2,9 @@ extends Node2D
 ## Cena Main (Node2D) com a cena do Grid instanciada como filha chamada "Grid".
 ## Coloque as imagens das peças em res://pecas/ (ou mude PECA_DIR).
 
+## Emitido no game over quando o jogo está embutido no mapa (em vez de recarregar a cena).
+signal fechar_pedido
+
 const PECA_DIR := "res://assets/pecas/"
 
 # Formatos conferidos com a transparência das suas imagens (cada célula = 16 px).
@@ -174,7 +177,10 @@ func _checar_game_over() -> void:
 	fim = true
 	label.text = "GAME OVER  -  Pontos: %d" % pontos
 	await get_tree().create_timer(2.5).timeout
-	get_tree().reload_current_scene()
+	if has_meta("embutido"):
+		fechar_pedido.emit()
+	else:
+		get_tree().reload_current_scene()
 
 
 func _atualizar_label() -> void:
