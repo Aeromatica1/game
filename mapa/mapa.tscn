@@ -10,10 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://cuf205vndpvjn" path="res://mapa/estabelecimentos/balcao_empresa.tscn" id="8_sg0di"]
 [ext_resource type="Texture2D" uid="uid://dvrqruqcjxvxp" path="res://assets/tilesets/5.png" id="9_m03sd"]
 [ext_resource type="PackedScene" uid="uid://32xpnvwoyo7l" path="res://mapa/objetos/ponte_embarque.tscn" id="9_pyrot"]
-[ext_resource type="Texture2D" uid="uid://byph84esfkpo3" path="res://assets/areas/novaloja.png" id="11_l567g"]
 [ext_resource type="PackedScene" uid="uid://chh4c34073pbk" path="res://mapa/estabelecimentos/balcao3.tscn" id="12_dh2m7"]
 [ext_resource type="PackedScene" uid="uid://b8mir5lbjx7c6" path="res://mapa/estabelecimentos/balcao_checkin.tscn" id="13_x30ii"]
 [ext_resource type="PackedScene" uid="uid://cuf0p62et7mrw" path="res://mapa/estabelecimentos/balcaoinfo_2.tscn" id="14_qdpnv"]
+[ext_resource type="Texture2D" uid="uid://bvfaaomu7wwb" path="res://assets/tilesets/novaloja.png" id="16_ktkrk"]
 [ext_resource type="PackedScene" uid="uid://mlyh8fdrodqk" path="res://mapa/objetos/telefones.tscn" id="16_u1hem"]
 [ext_resource type="Texture2D" uid="uid://76vmgeh4e2d3" path="res://assets/tilesets/novoportao.png" id="17_3davs"]
 [ext_resource type="PackedScene" uid="uid://illu5sgl426j" path="res://mapa/objetos/despacho.tscn" id="17_g1sof"]
@@ -27,6 +27,8 @@
 [ext_resource type="PackedScene" uid="uid://dfidtp2xfp0eg" path="res://mapa/estabelecimentos/despacho_1.tscn" id="27_axask"]
 [ext_resource type="PackedScene" uid="uid://biodv20fmbffb" path="res://mapa/objetos/plantas.tscn" id="29_el40d"]
 [ext_resource type="PackedScene" uid="uid://b2ye7b15ss7kh" path="res://mapa/objetos/malas.tscn" id="30_ktkrk"]
+[ext_resource type="PackedScene" uid="uid://pfw0jvvp5ksr" path="res://assets/areas/placaterminal.tscn" id="31_ktkrk"]
+[ext_resource type="PackedScene" uid="uid://k1ai7li7j5g2" path="res://mapa/portoes/janelasmenores.tscn" id="32_utegi"]
 [ext_resource type="PackedScene" uid="uid://ug37puwf0nck" path="res://player/player.tscn" id="99_player"]
 [ext_resource type="Script" uid="uid://yqbkgsrbmxyk" path="res://npc/passageiros_manager.gd" id="100_passageiros"]
 [ext_resource type="PackedScene" path="res://npc/funcionario.tscn" id="101_funcionario"]
@@ -3281,8 +3283,6 @@ texture_region_size = Vector2i(32, 32)
 tile_size = Vector2i(32, 32)
 sources/2 = SubResource("TileSetAtlasSource_pyrot")
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_agbal"]
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ltv3l"]
 size = Vector2(992, 255)
 
@@ -3367,6 +3367,42 @@ position = Vector2(8183, -24)
 z_index = 1
 position = Vector2(8729, -22)
 
+[node name="Banco17" parent="Camera2D/Mundo/Chão" unique_id=184495623 instance=ExtResource("6_50riv")]
+z_index = 1
+position = Vector2(9272, -22)
+
+[node name="Banco18" parent="Camera2D/Mundo/Chão" unique_id=1013198532 instance=ExtResource("6_50riv")]
+z_index = 1
+position = Vector2(9816, -21)
+
+[node name="Banco19" parent="Camera2D/Mundo/Chão" unique_id=520264539 instance=ExtResource("6_50riv")]
+z_index = 1
+position = Vector2(10361, -21)
+
+[node name="Banco20" parent="Camera2D/Mundo/Chão" unique_id=1835550200 instance=ExtResource("6_50riv")]
+z_index = 1
+position = Vector2(10904, -22)
+
+[node name="Banco21" parent="Camera2D/Mundo/Chão" unique_id=873049857 instance=ExtResource("6_50riv")]
+z_index = 1
+position = Vector2(11449, -22)
+
+[node name="Banco22" parent="Camera2D/Mundo/Chão" unique_id=400220821 instance=ExtResource("6_50riv")]
+z_index = 1
+position = Vector2(11993, -21)
+
+[node name="Banco23" parent="Camera2D/Mundo/Chão" unique_id=2129074053 instance=ExtResource("6_50riv")]
+z_index = 1
+position = Vector2(12538, -21)
+
+[node name="Banco24" parent="Camera2D/Mundo/Chão" unique_id=632500586 instance=ExtResource("6_50riv")]
+z_index = 1
+position = Vector2(13081, -21)
+
+[node name="Banco25" parent="Camera2D/Mundo/Chão" unique_id=1020566726 instance=ExtResource("6_50riv")]
+z_index = 1
+position = Vector2(13624, -21)
+
 [node name="maquinas" type="Node2D" parent="Camera2D/Mundo/Chão" unique_id=856875665]
 
 [node name="lanches" type="Node2D" parent="Camera2D/Mundo/Chão/maquinas" unique_id=464894016]
@@ -3398,10 +3434,12 @@ region_rect = Rect2(382.15915, 389.3931, 385.84085, 91.698395)
 [node name="lixeiras" type="Node2D" parent="Camera2D/Mundo/Chão/maquinas" unique_id=1014814326]
 
 [node name="lixeiras2" parent="Camera2D/Mundo/Chão/maquinas" unique_id=2098207429 instance=ExtResource("7_jt830")]
-position = Vector2(12931, -172)
+position = Vector2(9390, -155)
 
 [node name="Node2D" parent="Camera2D/Mundo/Chão/maquinas" unique_id=1357770341 instance=ExtResource("16_u1hem")]
 position = Vector2(11923, -174)
+
+[node name="bancos" type="Node2D" parent="Camera2D/Mundo/Chão" unique_id=1908771632]
 
 [node name="Node2D" parent="Camera2D/Mundo" unique_id=1872483171 instance=ExtResource("8_sg0di")]
 position = Vector2(2744, -176)
@@ -3457,21 +3495,11 @@ tile_set = SubResource("TileSet_a04ho")
 [node name="ponte_embarque" parent="Camera2D/Mundo/Areaexterna/TileMapLayer" unique_id=525699968 instance=ExtResource("9_pyrot")]
 position = Vector2(399, 424)
 
-[node name="ponte_embarque2" type="Sprite2D" parent="Camera2D/Mundo/Areaexterna/TileMapLayer" unique_id=1210595813]
-z_index = 9
-position = Vector2(1695, 419)
-texture = SubResource("CompressedTexture2D_agbal")
-flip_h = true
-region_enabled = true
-region_rect = Rect2(288, 0, 240, 192)
+[node name="ponte_embarque2" parent="Camera2D/Mundo/Areaexterna/TileMapLayer" unique_id=1519572406 instance=ExtResource("9_pyrot")]
+position = Vector2(1689, 418)
 
-[node name="ponte_embarque3" type="Sprite2D" parent="Camera2D/Mundo/Areaexterna/TileMapLayer" unique_id=1837974709]
-z_index = 9
-position = Vector2(3007, 424)
-texture = SubResource("CompressedTexture2D_agbal")
-flip_h = true
-region_enabled = true
-region_rect = Rect2(288, 0, 240, 192)
+[node name="ponte_embarque3" parent="Camera2D/Mundo/Areaexterna/TileMapLayer" unique_id=1611301305 instance=ExtResource("9_pyrot")]
+position = Vector2(3000, 419)
 
 [node name="Sprite2D" type="Sprite2D" parent="Camera2D/Mundo" unique_id=2042664893]
 
@@ -3482,75 +3510,75 @@ position = Vector2(9857, -229)
 
 [node name="Novaloja" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1058556688]
 z_index = 2
-position = Vector2(3272.0002, -236)
-scale = Vector2(1.365855, 1.317073)
-texture = ExtResource("11_l567g")
+position = Vector2(3213, -234)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 
-[node name="Novaloja2" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1458464802]
+[node name="Novaloja2" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1187193576]
 z_index = 2
-position = Vector2(3800.0002, -236.00006)
-scale = Vector2(1.365855, 1.317073)
-texture = ExtResource("11_l567g")
+position = Vector2(3792.9998, -234)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 
-[node name="Novaloja3" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1993066143]
+[node name="Novaloja3" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1722418918]
 z_index = 2
-position = Vector2(4304, -235)
-scale = Vector2(1.365855, 1.317073)
-texture = ExtResource("11_l567g")
+position = Vector2(4297.001, -234)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 
-[node name="Novaloja4" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=2089350247]
+[node name="Novaloja4" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1969216332]
 z_index = 2
-position = Vector2(5678.9995, -235)
-scale = Vector2(1.365855, 1.317073)
-texture = ExtResource("11_l567g")
+position = Vector2(5672.9995, -235)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 
-[node name="Novaloja5" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=88954956]
+[node name="Novaloja5" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=188344000]
 z_index = 2
-position = Vector2(6127.9995, -236)
-scale = Vector2(1.365855, 1.317073)
-texture = ExtResource("11_l567g")
+position = Vector2(6122.001, -235)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 
-[node name="Novaloja6" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1930703644]
+[node name="Novaloja6" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=589078271]
 z_index = 2
-position = Vector2(8562.001, -237)
-scale = Vector2(1.365855, 1.317073)
-texture = ExtResource("11_l567g")
+position = Vector2(8558.001, -235)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 
-[node name="Novaloja7" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=377884561]
+[node name="Novaloja7" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1466044388]
 z_index = 2
-position = Vector2(8947, -237)
-scale = Vector2(1.365855, 1.317073)
-texture = ExtResource("11_l567g")
+position = Vector2(8943.001, -236)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 
-[node name="Novaloja8" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1016743607]
+[node name="Novaloja8" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=516005786]
 z_index = 2
-position = Vector2(10834, -237)
-scale = Vector2(1.365855, 1.317073)
-texture = ExtResource("11_l567g")
+position = Vector2(10836.001, -236)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 
-[node name="Novaloja9" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=402405987]
+[node name="Novaloja9" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=414636000]
 z_index = 2
-position = Vector2(11219, -236)
-scale = Vector2(1.365855, 1.317073)
-texture = ExtResource("11_l567g")
+position = Vector2(11210.001, -235)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 
-[node name="Novaloja10" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1427345795]
+[node name="Novaloja10" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=646654571]
 z_index = 2
-position = Vector2(11601.001, -237)
-scale = Vector2(1.365855, 1.317073)
-texture = ExtResource("11_l567g")
+position = Vector2(11596.001, -235)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 
-[node name="Novaloja11" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1941826537]
+[node name="Novaloja11" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1230878153]
 z_index = 2
-position = Vector2(13106.001, -236)
-scale = Vector2(1.365855, 1.317073)
-texture = ExtResource("11_l567g")
+position = Vector2(13103.001, -236)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 
-[node name="Novaloja12" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1266364077]
+[node name="Novaloja12" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1906419935]
 z_index = 2
-position = Vector2(13526.001, -236)
-scale = Vector2(1.365855, 1.317073)
-texture = ExtResource("11_l567g")
+position = Vector2(13515.002, -235)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 
 [node name="balcaopesagem" parent="Camera2D/Mundo/estabelecimentos" unique_id=1337239408 instance=ExtResource("12_dh2m7")]
 position = Vector2(4816, -168)
@@ -3789,7 +3817,7 @@ region_rect = Rect2(578.21643, 190.40533, 189.78357, 70.006836)
 
 [node name="Janelas1" parent="." unique_id=947571968 instance=ExtResource("21_2nuym")]
 z_index = 7
-position = Vector2(-448, 280)
+position = Vector2(-448, 281)
 
 [node name="Janelas2" parent="." unique_id=483643635 instance=ExtResource("21_2nuym")]
 z_index = 5
@@ -3799,9 +3827,8 @@ position = Vector2(3392, 280)
 z_index = 5
 position = Vector2(7231, 280)
 
-[node name="Janelas4" parent="." unique_id=23743887 instance=ExtResource("21_2nuym")]
-z_index = 5
-position = Vector2(11072, 280)
+[node name="Janelas4" parent="." unique_id=48405273 instance=ExtResource("32_utegi")]
+position = Vector2(11068, 280)
 
 [node name="painel" parent="." unique_id=1519811945 instance=ExtResource("25_idjp5")]
 position = Vector2(6989, -305)
@@ -3830,3 +3857,6 @@ position = Vector2(1545, -300)
 
 [node name="Node2D" parent="." unique_id=176342342 instance=ExtResource("8_sg0di")]
 position = Vector2(2654, -297)
+
+[node name="placaterminal" parent="." unique_id=540938001 instance=ExtResource("31_ktkrk")]
+position = Vector2(297, 554)

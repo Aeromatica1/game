@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://ejlp2jtib0cv"]
+
+[ext_resource type="Texture2D" uid="uid://l7ce45ncp4bv" path="res://assets/areas/sushis.png" id="1_eaeyj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c0xmb"]
+size = Vector2(233, 194)
+
+[node name="sushi" type="Node2D" unique_id=209036236]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1848490433]
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D" unique_id=1185425139]
+position = Vector2(0, 1.0000019)
+scale = Vector2(0.425738, 0.36194035)
+texture = ExtResource("1_eaeyj")
+region_enabled = true
+region_rect = Rect2(90, 82, 542, 536)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1071622432]
+position = Vector2(0.5, 3)
+shape = SubResource("RectangleShape2D_c0xmb")

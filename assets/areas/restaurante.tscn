@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://brlrl15j2ij8h"]
+
+[ext_resource type="Texture2D" uid="uid://prdqevt8mp84" path="res://assets/areas/restaurante.png" id="1_aiahs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_utegi"]
+size = Vector2(222, 227)
+
+[node name="StaticBody2D" type="StaticBody2D" unique_id=1309898405]
+
+[node name="predio" type="Sprite2D" parent="." unique_id=1438352613]
+scale = Vector2(0.19636527, 0.18875)
+texture = ExtResource("1_aiahs")
+region_enabled = true
+region_rect = Rect2(148, 138, 1128, 1200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2106705333]
+position = Vector2(-1, -0.5)
+shape = SubResource("RectangleShape2D_utegi")
+
+[node name="cadeiras" type="Sprite2D" parent="." unique_id=832129385]
+position = Vector2(-90, 141)
+scale = Vector2(0.19058299, 0.19166669)
+texture = ExtResource("1_aiahs")
+region_enabled = true
+region_rect = Rect2(1966, 558, 446, 240)
+
+[node name="cadeiras2" type="Sprite2D" parent="." unique_id=137841898]
+position = Vector2(1, 187)
+scale = Vector2(0.19058299, 0.19166669)
+texture = ExtResource("1_aiahs")
+region_enabled = true
+region_rect = Rect2(1966, 558, 446, 240)
+
+[node name="cadeiras3" type="Sprite2D" parent="." unique_id=409837616]
+position = Vector2(86, 142)
+scale = Vector2(0.19058299, 0.19166669)
+texture = ExtResource("1_aiahs")
+region_enabled = true
+region_rect = Rect2(1966, 558, 446, 240)
