@@ -14,7 +14,7 @@ extends CanvasLayer
 signal resposta_escolhida(questao: Dictionary, indice: int, acertou: Variant)
 signal fechada(respondida: bool)
 
-@export var fonte: Font
+@export var fonte: Font = preload("res://assets/pixel_operator/PixelOperator.ttf")
 @export var cor_fundo: Color = Color(0.08, 0.11, 0.2)
 @export var cor_borda: Color = Color(0.35, 0.6, 1.0)
 
