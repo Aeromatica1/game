@@ -32,13 +32,18 @@ func listar_saves() -> Dictionary:
 
 ## Cria o save + aeroporto inicial. Retorna o id (uuid) do aeroporto em `data`.
 func criar_save(numero_slot: int) -> Dictionary:
-	return await Supabase.rpc("criar_save_slot", {"p_numero": numero_slot})
+	return await Supabase.call_rpc("criar_save_slot", {"p_numero": numero_slot})
 
 func apagar_save(save_slot_id: String) -> Dictionary:
 	return await Supabase.request(S + "save_slot?id=eq." + Supabase.q(save_slot_id),
 		HTTPClient.METHOD_DELETE)
 
 # ------------------------- Carregar progresso -------------------------
+## UMA requisição com tudo: aeroporto, níveis, tipos, aluguéis, minigames,
+## questões (sem a resposta correta) e ids das questões já concluídas.
+func carregar_jogo(aeroporto_id: String) -> Dictionary:
+	return await Supabase.call_rpc("carregar_jogo", {"p_aeroporto": aeroporto_id})
+
 func get_aeroporto(aeroporto_id: String) -> Dictionary:
 	return await Supabase.request(S + "aeroporto?select=*&id=eq." + Supabase.q(aeroporto_id))
 
@@ -57,18 +62,19 @@ func get_respostas(aeroporto_id: String) -> Dictionary:
 
 # ------------------------- Ações (RPC) -------------------------
 func alugar_espaco(aeroporto_id: String, tipo_aluguel_id: int, x: float, y: float) -> Dictionary:
-	return await Supabase.rpc("alugar_espaco", {
-		"p_aeroporto": aeroporto_id, "p_tipo": tipo_aluguel_id, "p_x": x, "p_y": y})
+	return await Supabase.call_rpc("alugar_espaco", {
+		"p_aeroporto": aeroporto_id, "p_tipo": int(tipo_aluguel_id), "p_x": x, "p_y": y})
 
-## `data` = true/false (acertou). O servidor valida e paga a recompensa.
+## Valida a resposta NO SERVIDOR.
+## `data` = { acertou: bool, recompensa: float, dinheiro: float, explicacao: String|null }
 func responder_questao(aeroporto_id: String, questao_id: int, alternativa_id: int) -> Dictionary:
-	return await Supabase.rpc("responder_questao", {
-		"p_aeroporto": aeroporto_id, "p_questao": questao_id, "p_alternativa": alternativa_id})
+	return await Supabase.call_rpc("responder_questao", {
+		"p_aeroporto": aeroporto_id, "p_questao": int(questao_id), "p_alternativa": int(alternativa_id)})
 
 func concluir_minigame(aeroporto_id: String, tipo_minigame_id: int, score: float) -> Dictionary:
-	return await Supabase.rpc("concluir_minigame", {
-		"p_aeroporto": aeroporto_id, "p_tipo": tipo_minigame_id, "p_score": score})
+	return await Supabase.call_rpc("concluir_minigame", {
+		"p_aeroporto": aeroporto_id, "p_tipo": int(tipo_minigame_id), "p_score": score})
 
 ## `data` = novo nível.
 func evoluir_aeroporto(aeroporto_id: String) -> Dictionary:
-	return await Supabase.rpc("evoluir_aeroporto", {"p_aeroporto": aeroporto_id})
+	return await Supabase.call_rpc("evoluir_aeroporto", {"p_aeroporto": aeroporto_id})

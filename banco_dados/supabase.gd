@@ -174,5 +174,6 @@ static func q(value: Variant) -> String:
 	return str(value).uri_encode()
 
 
-func rpc(fn: String, args: Dictionary = {}) -> Dictionary:
+## ATENÇÃO: não pode se chamar `rpc`, pois Node já tem um método `rpc()` (multiplayer).
+func call_rpc(fn: String, args: Dictionary = {}) -> Dictionary:
 	return await request("/rest/v1/rpc/" + fn, HTTPClient.METHOD_POST, args)
