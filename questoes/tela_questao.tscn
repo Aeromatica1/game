@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://brjx5cram3j7j"]
+[gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://cgtaq1jbvnodu" path="res://questoes/tela_questao.gd" id="1_tela"]
+[ext_resource type="Script" path="res://questoes/tela_questao.gd" id="1_tela"]
 
-[node name="TelaQuestao" type="CanvasLayer" unique_id=1943726828]
+[node name="TelaQuestao" type="CanvasLayer"]
 layer = 100
 script = ExtResource("1_tela")
