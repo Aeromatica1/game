@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://fpu5oujg4j2w"]
 
-[ext_resource type="Texture2D" uid="uid://40f8d7jv8n7u" path="res://assets/background/fundo.jpg" id="1_rili7"]
-[ext_resource type="PackedScene" uid="uid://b3js48mtek7tn" path="res://save_slot/save.tscn" id="2_flycw"]
-[ext_resource type="Texture2D" uid="uid://eos6qq3nhbwg" path="res://assets/background/titulo.jpg" id="3_rili7"]
+[ext_resource type="Texture2D" uid="uid://bay4e4stdwgqd" path="res://assets/background/saveSlot.png" id="1_qv2sx"]
+[ext_resource type="PackedScene" uid="uid://b3js48mtek7tn" path="res://save_slot/save_button.tscn" id="2_flycw"]
+[ext_resource type="Texture2D" uid="uid://dr1n6aq4i4ftf" path="res://assets/background/logo.jpeg" id="3_u7de6"]
 
 [node name="Control" type="Control" unique_id=571966553]
 layout_mode = 3
@@ -13,33 +13,36 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Fundo" type="TextureRect" parent="." unique_id=1314664284]
-layout_mode = 0
-offset_right = 1152.0
-offset_bottom = 648.0
-texture = ExtResource("1_rili7")
-expand_mode = 3
-stretch_mode = 6
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Fundo" unique_id=995043253]
 layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -414.0
-offset_right = 414.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 30
+texture = ExtResource("1_qv2sx")
+expand_mode = 1
 
-[node name="add1" parent="Fundo/HBoxContainer" unique_id=1165264795 instance=ExtResource("2_flycw")]
-layout_mode = 2
+[node name="AreaBotoes" type="HBoxContainer" parent="Fundo" unique_id=995043253]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+metadata/_edit_use_anchors_ = true
 
-[node name="add2" parent="Fundo/HBoxContainer" unique_id=1268993652 instance=ExtResource("2_flycw")]
+[node name="Slot1" parent="Fundo/AreaBotoes" unique_id=1268993652 instance=ExtResource("2_flycw")]
 layout_mode = 2
+size_flags_horizontal = 6
 
-[node name="add3" parent="Fundo/HBoxContainer" unique_id=1445781933 instance=ExtResource("2_flycw")]
+[node name="Slot2" parent="Fundo/AreaBotoes" unique_id=1445781933 instance=ExtResource("2_flycw")]
 layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="Slot3" parent="Fundo/AreaBotoes" unique_id=1633949426 instance=ExtResource("2_flycw")]
+layout_mode = 2
+size_flags_horizontal = 6
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1476254141]
 custom_minimum_size = Vector2(800, 80)
@@ -61,7 +64,11 @@ custom_minimum_size = Vector2(800, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("3_rili7")
+texture = ExtResource("3_u7de6")
 expand_mode = 3
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
+
+[editable path="Fundo/AreaBotoes/Slot1"]
+[editable path="Fundo/AreaBotoes/Slot2"]
+[editable path="Fundo/AreaBotoes/Slot3"]
