@@ -1,15 +1,25 @@
-extends Node
-## Tela de questão matemática, montada 100% por código (sem precisar de .tscn).
-## Estende Node de propósito: o script pode ser anexado a QUALQUER nó
-## (CanvasLayer, Control, Node...) ou instanciado por código dentro de um CanvasLayer.
-## Uso:  var quiz := preload("res://ui/quiz_screen.gd").new()
-##       add_child(quiz)            # exige GameState.carregar() já concluído
-##       quiz.fechada.connect(...)  # emitido ao tocar em "Fechar"
+extends CanvasLayer
+## Tela de questão de múltipla escolha (enunciado + 4 alternativas).
+## O jogo fica pausado enquanto ela está aberta.
+##
+## Uso:
+##   var tela = get_tree().get_first_node_in_group("tela_questao")
+##   tela.abrir(questao, "Atendente • Check-in")      # `questao` no formato de banco_questoes.gd
+##   tela.resposta_escolhida.connect(...)             # recebe a escolha do jogador
+##
+## Com `questao` vazio mostra só o espaço em branco (placeholders).
 
-signal fechada
+## Emitido quando o jogador escolhe uma alternativa.
+## `acertou` é true/false se a questão tem gabarito, ou null se `correta` = -1/ausente.
+signal resposta_escolhida(questao: Dictionary, indice: int, acertou: Variant)
+signal fechada(respondida: bool)
 
-const COR_ACERTO := Color(0.55, 1.0, 0.55)
-const COR_ERRO := Color(1.0, 0.55, 0.55)
+@export var fonte: Font = preload("res://assets/pixel_operator/PixelOperator.ttf")
+@export var cor_fundo: Color = Color(0.08, 0.11, 0.2)
+@export var cor_borda: Color = Color(0.35, 0.6, 1.0)
+
+const LETRAS := ["A", "B", "C", "D"]
+const PLACEHOLDER_ENUNCIADO := "Espaço reservado para a pergunta matemática."
 
 var _questao: Dictionary = {}
 var _ocupado := false
