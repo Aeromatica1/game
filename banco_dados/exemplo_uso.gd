@@ -1,34 +1,37 @@
-extends Node
-## Exemplo de fluxo completo. Anexe a qualquer Node para testar.
+extends Control
+## Cena de teste: anexe a um Control vazio e rode.
+## Pré-requisito: autoloads Supabase, GameApi e GameState registrados.
 
 func _ready() -> void:
-	# 1) Retoma sessão salva ou faz login
+	# 1) Sessão
 	if not await Supabase.restore_session():
 		var r := await Supabase.sign_in("jogador@email.com", "senha-forte-123")
 		if not r.ok:
 			push_warning("Login falhou: " + r.error)
 			return
 
-	# 2) Saves (cria o slot 1 se não existir)
+	# 2) Save: usa o primeiro ou cria o slot 1
 	var saves := await GameApi.listar_saves()
+	if not saves.ok:
+		push_warning(saves.error)
+		return
 	var aeroporto_id := ""
-	if saves.ok and saves.data.is_empty():
+	if saves.data.is_empty():
 		var c := await GameApi.criar_save(1)
-		aeroporto_id = c.data if c.ok else ""
-	elif saves.ok:
+		if not c.ok:
+			push_warning(c.error)
+			return
+		aeroporto_id = c.data
+	else:
 		aeroporto_id = saves.data[0].aeroporto.id
 
-	# 3) Questões do nível 1 (alternativas embaralhadas no cliente)
-	var qs := await GameApi.get_questoes(1)
-	if qs.ok and not qs.data.is_empty():
-		var q: Dictionary = qs.data[0]
-		var alts: Array = q.alternativa
-		alts.shuffle()
-		print(q.enunciado, " -> ", alts)
+	# 3) UMA requisição carrega o jogo todo para a memória
+	var carga := await GameState.carregar(aeroporto_id)
+	if not carga.ok:
+		push_warning("Falha ao carregar: " + carga.error)
+		return
 
-		# 4) Responder: o servidor diz se acertou
-		var resp := await GameApi.responder_questao(aeroporto_id, q.id, alts[0].id)
-		if resp.ok:
-			print("Acertou? ", resp.data)
-		else:
-			print("Erro: ", resp.error)   # ex.: "alternativa não pertence à questão"
+	# 4) Tela de questões (sorteio local; só a validação vai ao servidor)
+	var quiz := preload("res://questoes/tela_questao.gd").new()
+	quiz.fechada.connect(quiz.queue_free)
+	add_child(quiz)

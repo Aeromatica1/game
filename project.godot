@@ -16,7 +16,9 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 
 [autoload]
 
+GameState="*uid://ca03qahjqtnd3"
 Supabase="*uid://buruhkr3c5wpx"
+GameApi="*uid://dfr4kwfowfiu3"
 
 [display]
 
