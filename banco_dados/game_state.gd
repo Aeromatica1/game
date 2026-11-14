@@ -74,14 +74,14 @@ func dinheiro() -> float:
 	return float(aeroporto.get("dinheiro", 0.0))
 
 func questoes_do_nivel(nivel: int) -> Array:
-	return questoes.filter(func(q): return q.nivel == nivel)
+	return questoes.filter(func(item): return item.nivel == nivel)
 
 ## Vector2i(acertos, total) das questões do nível atual.
 func progresso_nivel() -> Vector2i:
 	var lista := questoes_do_nivel(nivel_atual())
 	var acertos := 0
-	for q in lista:
-		if concluidas.has(q.id):
+	for item in lista:
+		if concluidas.has(item.id):
 			acertos += 1
 	return Vector2i(acertos, lista.size())
 
@@ -91,11 +91,11 @@ func progresso_nivel() -> Vector2i:
 ## Evita repetir a anterior (quando houver outra opção) e embaralha as alternativas.
 ## Retorna {} quando o nível acabou.
 func sortear_questao() -> Dictionary:
-	var pool := questoes_do_nivel(nivel_atual()).filter(func(q): return not concluidas.has(q.id))
+	var pool := questoes_do_nivel(nivel_atual()).filter(func(item): return not concluidas.has(item.id))
 	if pool.is_empty():
 		return {}
 	if pool.size() > 1:
-		pool = pool.filter(func(q): return q.id != _ultima_sorteada)
+		pool = pool.filter(func(item): return item.id != _ultima_sorteada)
 	var q: Dictionary = pool.pick_random().duplicate(true)
 	var alts: Array = q.alternativas
 	alts.shuffle()

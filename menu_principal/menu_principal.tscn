@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dwkcqdr4joahc"]
 
 [ext_resource type="Texture2D" uid="uid://40f8d7jv8n7u" path="res://assets/background/fundo.jpg" id="1_ijq78"]
+[ext_resource type="Script" uid="uid://ptecys5wkndy" path="res://menu_principal/menu_principal.gd" id="1_ll0w1"]
 [ext_resource type="Texture2D" uid="uid://eos6qq3nhbwg" path="res://assets/background/titulo.jpg" id="2_75lm6"]
 [ext_resource type="FontFile" uid="uid://l0a4ugx7t1rc" path="res://assets/pixel_operator/PixelOperator.ttf" id="3_1s0v4"]
 
@@ -63,6 +64,7 @@ offset_right = 2.0
 offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ll0w1")
 
 [node name="Fundo" type="TextureRect" parent="." unique_id=1074476089]
 layout_mode = 0

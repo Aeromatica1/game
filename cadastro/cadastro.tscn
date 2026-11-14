@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://c3egba45ye35x"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_67wc3"]
+[ext_resource type="Script" uid="uid://b1bmq0v431l8x" path="res://cadastro/cadastro.gd" id="1_script"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_titulo"]
 font_size = 50
 
 [node name="Cadastro" type="Control" unique_id=787969888]
@@ -10,15 +12,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_script")
 
-[node name="Label" type="Label" parent="." unique_id=776004008]
+[node name="Titulo" type="Label" parent="." unique_id=776004008]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 117.0
+offset_bottom = 100.0
 grow_horizontal = 2
 text = "Cadastro"
-label_settings = SubResource("LabelSettings_67wc3")
+label_settings = SubResource("LabelSettings_titulo")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -30,120 +33,126 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -346.5
-offset_top = -207.5
+offset_top = -215
 offset_right = 346.5
-offset_bottom = 207.5
+offset_bottom = 265
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CadastroArea" unique_id=1030318979]
-custom_minimum_size = Vector2(0, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 110.0
-offset_top = 66.0
-offset_right = -84.0
-offset_bottom = -74.0
+offset_left = 70.0
+offset_top = 24.0
+offset_right = -70.0
+offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 8
 alignment = 1
 
 [node name="UsuarioArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=64894124]
 layout_mode = 2
 
-[node name="UsuarioTexto" type="RichTextLabel" parent="CadastroArea/VBoxContainer/UsuarioArea" unique_id=76278506]
-custom_minimum_size = Vector2(0, 60)
+[node name="UsuarioTexto" type="Label" parent="CadastroArea/VBoxContainer/UsuarioArea" unique_id=76278506]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Usuário"
 vertical_alignment = 1
 
-[node name="UsuarioCampo" type="TextEdit" parent="CadastroArea/VBoxContainer/UsuarioArea" unique_id=461608154]
-custom_minimum_size = Vector2(0, 60)
+[node name="UsuarioCampo" type="LineEdit" parent="CadastroArea/VBoxContainer/UsuarioArea" unique_id=461608154]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="Email" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1509627828]
-custom_minimum_size = Vector2(0, 60)
+size_flags_stretch_ratio = 1.6
+placeholder_text = "3 a 20: letras, números e _"
+[node name="EmailArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1509627828]
 layout_mode = 2
 
-[node name="EmailTexto" type="RichTextLabel" parent="CadastroArea/VBoxContainer/Email" unique_id=836715087]
-custom_minimum_size = Vector2(0, 60)
+[node name="EmailTexto" type="Label" parent="CadastroArea/VBoxContainer/EmailArea" unique_id=836715087]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Email"
+text = "E-mail"
 vertical_alignment = 1
 
-[node name="EmailCampo" type="TextEdit" parent="CadastroArea/VBoxContainer/Email" unique_id=1361678877]
-custom_minimum_size = Vector2(0, 60)
-custom_maximum_size = Vector2(-1, 50)
+[node name="EmailCampo" type="LineEdit" parent="CadastroArea/VBoxContainer/EmailArea" unique_id=1361678877]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="Senha" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1063486858]
-custom_minimum_size = Vector2(0, 60)
+size_flags_stretch_ratio = 1.6
+placeholder_text = "nome@dominio.com"
+[node name="SenhaArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1063486858]
 layout_mode = 2
 
-[node name="SenhaTexto" type="RichTextLabel" parent="CadastroArea/VBoxContainer/Senha" unique_id=828480184]
-custom_minimum_size = Vector2(0, 60)
+[node name="SenhaTexto" type="Label" parent="CadastroArea/VBoxContainer/SenhaArea" unique_id=828480184]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Senha"
 vertical_alignment = 1
 
-[node name="SenhaCampo" type="TextEdit" parent="CadastroArea/VBoxContainer/Senha" unique_id=782099563]
-custom_minimum_size = Vector2(0, 60)
-custom_maximum_size = Vector2(-1, 50)
+[node name="SenhaCampo" type="LineEdit" parent="CadastroArea/VBoxContainer/SenhaArea" unique_id=782099563]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="EnviarCadastro" type="Button" parent="CadastroArea/VBoxContainer" unique_id=1845640089]
+size_flags_stretch_ratio = 1.6
+placeholder_text = "mín. 8, com letras e números"
+secret = true
+[node name="ConfirmarArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1900000001]
 layout_mode = 2
-text = "Enviar"
-icon_alignment = 1
-vertical_icon_alignment = 2
 
-[node name="LogarArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=181972793]
-custom_minimum_size = Vector2(0, 60)
-layout_mode = 2
-size_flags_vertical = 3
-alignment = 1
-
-[node name="LogarTexto" type="RichTextLabel" parent="CadastroArea/VBoxContainer/LogarArea" unique_id=1943020879]
-custom_minimum_size = Vector2(0, 60)
+[node name="ConfirmarTexto" type="Label" parent="CadastroArea/VBoxContainer/ConfirmarArea" unique_id=1900000002]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
-bbcode_enabled = true
-text = "Já tem uma conta? [url=address]Logue[/url]"
-horizontal_alignment = 1
+text = "Confirmar senha"
 vertical_alignment = 1
 
-[node name="LogarBotao" type="Button" parent="CadastroArea/VBoxContainer/LogarArea/LogarTexto" unique_id=537692011]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.646
-anchor_top = 0.55
-anchor_right = 0.646
-anchor_bottom = 0.55
-offset_left = -25.854004
-offset_top = -12.0
-offset_right = 26.145996
-offset_bottom = 12.0
-icon_alignment = 1
-vertical_icon_alignment = 2
+[node name="ConfirmarCampo" type="LineEdit" parent="CadastroArea/VBoxContainer/ConfirmarArea" unique_id=1900000003]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.6
+placeholder_text = ""
+secret = true
+[node name="MostrarSenha" type="CheckBox" parent="CadastroArea/VBoxContainer" unique_id=1845640089]
+layout_mode = 2
+text = "Mostrar senha"
 
-[node name="ErroArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1283161714]
-custom_minimum_size = Vector2(0, 60)
+[node name="EnviarCadastro" type="Button" parent="CadastroArea/VBoxContainer" unique_id=1845640090]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Cadastrar"
+
+[node name="LogarArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1845640091]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+alignment = 1
+
+[node name="LogarTexto" type="Label" parent="CadastroArea/VBoxContainer/LogarArea" unique_id=1845640092]
+layout_mode = 2
+text = "Já tem uma conta?"
+vertical_alignment = 1
+
+[node name="LogarLink" type="LinkButton" parent="CadastroArea/VBoxContainer/LogarArea" unique_id=1845640093]
+layout_mode = 2
+text = "Entre"
+underline = 0
+
+[node name="ErroArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1845640094]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="ErroTexto" type="RichTextLabel" parent="CadastroArea/VBoxContainer/ErroArea" unique_id=1452257191]
-custom_minimum_size = Vector2(0, 60)
+[node name="ErroTexto" type="RichTextLabel" parent="CadastroArea/VBoxContainer/ErroArea" unique_id=1845640095]
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
+fit_content = true
+scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -77,7 +77,7 @@ func _interagir() -> void:
 		tela = TelaQuestao.instantiate()
 		get_tree().root.add_child(tela)
 	var titulo := nome_funcionario if cargo == "" else "%s  •  %s" % [nome_funcionario, cargo]
-	tela.abrir(BancoQuestoes.proxima_questao(contexto), titulo)
+	#tela.abrir(BancoQuestoes.proxima_questao(contexto), titulo)
 
 
 func _ao_entrar(corpo_entrou: Node2D) -> void:

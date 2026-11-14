@@ -10,8 +10,8 @@ extends Node
 signal session_changed(logged_in: bool)
 signal _refresh_done
 
-const SUPABASE_URL := "https://SEU_PROJETO.supabase.co"          # sempre https
-const SUPABASE_KEY := "sb_publishable_SUA_CHAVE"
+const SUPABASE_URL := "https://xovqiaqietshstdfjpoo.supabase.co"          # sempre https
+const SUPABASE_KEY := "sb_publishable_9Lx4OsCoCikkOZee7HTqtg_fTFwyALX"
 const TIMEOUT_SEC := 15.0
 const SESSION_FILE := "user://session.cfg"
 
@@ -28,7 +28,7 @@ func is_logged_in() -> bool:
 
 # ---------------------------------------------------------------------
 # Requisição genérica. Sempre retorna:
-#   { "ok": bool, "code": int, "data": Variant, "error": String }
+#   { "ok": bool, "code": int, "data": Variant, "error": String, "error_code": String }
 # Uso:  var r = await Supabase.request("/rest/v1/nivel_aeroporto?select=*")
 # (await por chamada evita o problema de um único sinal compartilhado,
 #  que misturaria respostas de requisições simultâneas)
@@ -55,7 +55,7 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, body: Variant = 
 	var err := http.request(SUPABASE_URL + path, headers, method, payload)
 	if err != OK:
 		http.queue_free()
-		return {"ok": false, "code": 0, "data": null, "error": "Falha ao iniciar requisição (%d)" % err}
+		return {"ok": false, "code": 0, "data": null, "error": "Falha ao iniciar requisição (%d)" % err, "error_code": "request_failed"}
 
 	var res: Array = await http.request_completed   # [result, code, headers, body]
 	http.queue_free()
@@ -66,15 +66,19 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, body: Variant = 
 	var ok: bool = res[0] == HTTPRequest.RESULT_SUCCESS and code >= 200 and code < 300
 
 	var error := ""
+	var error_code := ""
 	if not ok:
 		if res[0] != HTTPRequest.RESULT_SUCCESS:
 			error = "Sem conexão com o servidor"
 		elif data is Dictionary:
+			# GoTrue (auth): "error_code" ex. "invalid_credentials", "over_email_send_rate_limit"
+			# PostgREST: "code" ex. "P0001" (RAISE EXCEPTION), "message" com o texto
+			error_code = str(data.get("error_code", data.get("code", "")))
 			# PostgREST: "message"; GoTrue: "msg" / "error_description"
 			error = str(data.get("message", data.get("msg", data.get("error_description", "Erro %d" % code))))
 		else:
 			error = "Erro %d" % code
-	return {"ok": ok, "code": code, "data": data, "error": error}
+	return {"ok": ok, "code": code, "data": data, "error": error, "error_code": error_code}
 
 
 # ---------------------------------------------------------------------
@@ -170,7 +174,7 @@ func _file_key() -> String:
 # Helpers REST
 # ---------------------------------------------------------------------
 ## Codifica valores de filtro: "?nome=eq." + Supabase.q("a&b") -> seguro contra injeção de parâmetros.
-static func q(value: Variant) -> String:
+func q(value: Variant) -> String:
 	return str(value).uri_encode()
 
 

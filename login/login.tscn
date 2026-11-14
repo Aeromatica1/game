@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://bcgwlv0eu3ck7"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_ilb3f"]
+[ext_resource type="Script" uid="uid://c803nj450l7ew" path="res://login/login.gd" id="1_script"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_titulo"]
 font_size = 50
 
 [node name="Login" type="Control" unique_id=733296674]
@@ -10,15 +12,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_script")
 
-[node name="LoginLabel" type="Label" parent="." unique_id=63365049]
+[node name="Titulo" type="Label" parent="." unique_id=63365049]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 117.0
+offset_bottom = 100.0
 grow_horizontal = 2
 text = "Login"
-label_settings = SubResource("LabelSettings_ilb3f")
+label_settings = SubResource("LabelSettings_titulo")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -30,99 +33,93 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -346.5
-offset_top = -188.0
+offset_top = -190
 offset_right = 346.5
-offset_bottom = 188.0
+offset_bottom = 200
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LoginArea" unique_id=191503834]
-custom_minimum_size = Vector2(0, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 110.0
-offset_top = 60.0
-offset_right = -84.0
-offset_bottom = -80.0
+offset_left = 70.0
+offset_top = 24.0
+offset_right = -70.0
+offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 8
 alignment = 1
 
-[node name="UsuarioArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=1584024410]
+[node name="EmailArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=1584024410]
 layout_mode = 2
 
-[node name="UsuarioTexto" type="RichTextLabel" parent="LoginArea/VBoxContainer/UsuarioArea" unique_id=1701902035]
-custom_minimum_size = Vector2(0, 60)
+[node name="EmailTexto" type="Label" parent="LoginArea/VBoxContainer/EmailArea" unique_id=1701902035]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Usuário"
+text = "E-mail"
 vertical_alignment = 1
 
-[node name="UsuarioCampo" type="TextEdit" parent="LoginArea/VBoxContainer/UsuarioArea" unique_id=1310199169]
-custom_minimum_size = Vector2(0, 60)
+[node name="EmailCampo" type="LineEdit" parent="LoginArea/VBoxContainer/EmailArea" unique_id=1310199169]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
-
+size_flags_stretch_ratio = 1.6
+placeholder_text = "nome@dominio.com"
 [node name="SenhaArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=1531825776]
-custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 
-[node name="SenhaTexto" type="RichTextLabel" parent="LoginArea/VBoxContainer/SenhaArea" unique_id=1096305170]
-custom_minimum_size = Vector2(0, 60)
+[node name="SenhaTexto" type="Label" parent="LoginArea/VBoxContainer/SenhaArea" unique_id=1096305170]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Senha"
 vertical_alignment = 1
 
-[node name="SenhaCampo" type="TextEdit" parent="LoginArea/VBoxContainer/SenhaArea" unique_id=1650121714]
-custom_minimum_size = Vector2(0, 60)
-custom_maximum_size = Vector2(-1, 50)
+[node name="SenhaCampo" type="LineEdit" parent="LoginArea/VBoxContainer/SenhaArea" unique_id=1650121714]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="EnviarLogin" type="Button" parent="LoginArea/VBoxContainer" unique_id=1430755410]
+size_flags_stretch_ratio = 1.6
+placeholder_text = ""
+secret = true
+[node name="MostrarSenha" type="CheckBox" parent="LoginArea/VBoxContainer" unique_id=1430755410]
 layout_mode = 2
-text = "Enviar"
-icon_alignment = 1
-vertical_icon_alignment = 2
+text = "Mostrar senha"
 
-[node name="RegistrarArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=766677735]
-custom_minimum_size = Vector2(0, 60)
+[node name="EnviarLogin" type="Button" parent="LoginArea/VBoxContainer" unique_id=1430755411]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
+text = "Entrar"
 
-[node name="RegistrarTexto" type="RichTextLabel" parent="LoginArea/VBoxContainer/RegistrarArea" unique_id=1345353022]
-custom_minimum_size = Vector2(0, 60)
+[node name="RegistrarArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=1430755412]
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-size_flags_horizontal = 3
-bbcode_enabled = true
-text = "Não tem uma conta? [url=address]Registre-se[/url]"
-horizontal_alignment = 1
+alignment = 1
+
+[node name="RegistrarTexto" type="Label" parent="LoginArea/VBoxContainer/RegistrarArea" unique_id=1430755413]
+layout_mode = 2
+text = "Não tem uma conta?"
 vertical_alignment = 1
 
-[node name="RegistrarBotao" type="Button" parent="LoginArea/VBoxContainer/RegistrarArea/RegistrarTexto" unique_id=905076272]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.66400003
-anchor_top = 0.53300005
-anchor_right = 0.66400003
-anchor_bottom = 0.53300005
-offset_left = -44.83603
-offset_top = -11.980003
-offset_right = 45.16397
-offset_bottom = 12.019997
-icon_alignment = 1
-vertical_icon_alignment = 2
-
-[node name="ErroArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=697225407]
-custom_minimum_size = Vector2(0, 60)
+[node name="RegistrarLink" type="LinkButton" parent="LoginArea/VBoxContainer/RegistrarArea" unique_id=1430755414]
 layout_mode = 2
+text = "Registre-se"
+underline = 0
 
-[node name="ErroTexto" type="RichTextLabel" parent="LoginArea/VBoxContainer/ErroArea" unique_id=999210414]
-custom_minimum_size = Vector2(0, 60)
+[node name="ErroArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=1430755415]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="ErroTexto" type="RichTextLabel" parent="LoginArea/VBoxContainer/ErroArea" unique_id=1430755416]
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
+fit_content = true
+scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -1,5 +1,5 @@
-extends Control
-## Cena de teste: anexe a um Control vazio e rode.
+extends Node
+## Cena de teste: anexe a qualquer nó (inclusive CanvasLayer) e rode.
 ## Pré-requisito: autoloads Supabase, GameApi e GameState registrados.
 
 func _ready() -> void:

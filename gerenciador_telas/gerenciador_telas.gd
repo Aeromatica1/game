@@ -35,20 +35,12 @@ func _on_registrar_botao_pressed() -> void:
 	cadastro.visible = true
 	login.visible = false
 
-func _on_enviar_cadastro_pressed() -> void:
-	menu_principal.visible = true
-	cadastro.visible = false
-
 
 # ==================== Login ====================
 
 func _on_logar_botao_pressed() -> void:
 	login.visible = true
 	cadastro.visible = false
-
-func _on_enviar_login_pressed() -> void:
-	menu_principal.visible = true
-	login.visible = false
 
 
 # ==================== SaveSlot ====================
