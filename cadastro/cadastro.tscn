@@ -30,9 +30,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -346.5
-offset_top = -188.0
+offset_top = -207.5
 offset_right = 346.5
-offset_bottom = 188.0
+offset_bottom = 207.5
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -62,6 +62,23 @@ vertical_alignment = 1
 
 [node name="UsuarioCampo" type="TextEdit" parent="CadastroArea/VBoxContainer/UsuarioArea" unique_id=461608154]
 custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Email" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1509627828]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="EmailTexto" type="RichTextLabel" parent="CadastroArea/VBoxContainer/Email" unique_id=836715087]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Email"
+vertical_alignment = 1
+
+[node name="EmailCampo" type="TextEdit" parent="CadastroArea/VBoxContainer/Email" unique_id=1361678877]
+custom_minimum_size = Vector2(0, 60)
+custom_maximum_size = Vector2(-1, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -116,3 +133,17 @@ offset_right = 26.145996
 offset_bottom = 12.0
 icon_alignment = 1
 vertical_icon_alignment = 2
+
+[node name="ErroArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1283161714]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="ErroTexto" type="RichTextLabel" parent="CadastroArea/VBoxContainer/ErroArea" unique_id=1452257191]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1

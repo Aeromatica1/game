@@ -114,3 +114,15 @@ offset_right = 45.16397
 offset_bottom = 12.019997
 icon_alignment = 1
 vertical_icon_alignment = 2
+
+[node name="ErroArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=697225407]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="ErroTexto" type="RichTextLabel" parent="LoginArea/VBoxContainer/ErroArea" unique_id=999210414]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
