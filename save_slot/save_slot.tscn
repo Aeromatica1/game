@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://fpu5oujg4j2w"]
 
-[ext_resource type="Texture2D" uid="uid://cgmqpukisr10a" path="res://assets/background/fundo.png" id="1_qv2sx"]
+[ext_resource type="Texture2D" uid="uid://bay4e4stdwgqd" path="res://assets/background/saveSlot.png" id="1_qv2sx"]
 [ext_resource type="PackedScene" uid="uid://b3js48mtek7tn" path="res://save_slot/save_button.tscn" id="2_flycw"]
 [ext_resource type="Texture2D" uid="uid://dr1n6aq4i4ftf" path="res://assets/background/logo.jpeg" id="3_u7de6"]
 
@@ -13,33 +13,34 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Fundo" type="TextureRect" parent="." unique_id=1314664284]
-layout_mode = 0
-offset_right = 1152.0
-offset_bottom = 648.0
-texture = ExtResource("1_qv2sx")
-expand_mode = 3
-stretch_mode = 6
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Fundo" unique_id=995043253]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 130.0
-offset_bottom = -73.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_qv2sx")
+expand_mode = 1
+
+[node name="AreaBotoes" type="HBoxContainer" parent="Fundo" unique_id=995043253]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
+metadata/_edit_use_anchors_ = true
 
-[node name="add1" parent="Fundo/HBoxContainer" unique_id=1268993652 instance=ExtResource("2_flycw")]
+[node name="Slot1" parent="Fundo/AreaBotoes" unique_id=1268993652 instance=ExtResource("2_flycw")]
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="add2" parent="Fundo/HBoxContainer" unique_id=1445781933 instance=ExtResource("2_flycw")]
+[node name="Slot2" parent="Fundo/AreaBotoes" unique_id=1445781933 instance=ExtResource("2_flycw")]
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="add3" parent="Fundo/HBoxContainer" unique_id=1633949426 instance=ExtResource("2_flycw")]
+[node name="Slot3" parent="Fundo/AreaBotoes" unique_id=1633949426 instance=ExtResource("2_flycw")]
 layout_mode = 2
 size_flags_horizontal = 6
 
@@ -67,3 +68,7 @@ texture = ExtResource("3_u7de6")
 expand_mode = 3
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
+
+[editable path="Fundo/AreaBotoes/Slot1"]
+[editable path="Fundo/AreaBotoes/Slot2"]
+[editable path="Fundo/AreaBotoes/Slot3"]

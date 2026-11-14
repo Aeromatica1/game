@@ -45,18 +45,21 @@ func _on_logar_botao_pressed() -> void:
 
 # ==================== SaveSlot ====================
 
-func _on_add_1_pressed() -> void:
+func _on_slot_1_pressed() -> void:
 	block_blast.visible = true
 	save_slot.visible = false
 
-func _on_add_2_pressed() -> void:
+
+func _on_slot_2_pressed() -> void:
 	minesweeper.visible = true
 	save_slot.visible = false
+
+
+func _on_slot_3_pressed() -> void:
+	get_tree().change_scene_to_file("res://mapa/mapa.tscn")
+	save_slot.visible = false
+	
 
 func _on_minesweeper_voltar_pressed() -> void:
 	minesweeper.visible = false
 	save_slot.visible = true
-
-func _on_add_3_pressed() -> void:
-	get_tree().change_scene_to_file("res://mapa/mapa.tscn")
-	save_slot.visible = false
