@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://dvrqruqcjxvxp" path="res://assets/tilesets/5.png" id="9_m03sd"]
 [ext_resource type="PackedScene" uid="uid://32xpnvwoyo7l" path="res://mapa/objetos/ponte_embarque.tscn" id="9_pyrot"]
 [ext_resource type="PackedScene" uid="uid://cvqbae240sjti" path="res://minigames/block_blast/Main.tscn" id="11_idjp5"]
-[ext_resource type="Texture2D" uid="uid://byph84esfkpo3" path="res://assets/areas/novaloja.png" id="11_l567g"]
 [ext_resource type="PackedScene" uid="uid://6buicxxj4a1p" path="res://minigames/minesweeper/game.tscn" id="12_axask"]
 [ext_resource type="PackedScene" uid="uid://chh4c34073pbk" path="res://mapa/estabelecimentos/balcao3.tscn" id="12_dh2m7"]
 [ext_resource type="PackedScene" uid="uid://b8mir5lbjx7c6" path="res://mapa/estabelecimentos/balcao_checkin.tscn" id="13_x30ii"]
@@ -3531,72 +3530,84 @@ z_index = 2
 position = Vector2(3213, -234)
 scale = Vector2(0.7147777, 0.69686407)
 texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja2" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1187193576]
 z_index = 2
 position = Vector2(3792.9998, -234)
 scale = Vector2(0.7147777, 0.69686407)
 texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja3" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1722418918]
 z_index = 2
 position = Vector2(4297.001, -234)
 scale = Vector2(0.7147777, 0.69686407)
 texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja4" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1969216332]
 z_index = 2
 position = Vector2(5672.9995, -235)
 scale = Vector2(0.7147777, 0.69686407)
 texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja5" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=188344000]
 z_index = 2
 position = Vector2(6122.001, -235)
 scale = Vector2(0.7147777, 0.69686407)
 texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja6" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=589078271]
 z_index = 2
 position = Vector2(8558.001, -235)
 scale = Vector2(0.7147777, 0.69686407)
 texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja7" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1466044388]
 z_index = 2
 position = Vector2(8943.001, -236)
 scale = Vector2(0.7147777, 0.69686407)
 texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja8" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=516005786]
 z_index = 2
 position = Vector2(10836.001, -236)
 scale = Vector2(0.7147777, 0.69686407)
 texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja9" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=414636000]
 z_index = 2
 position = Vector2(11210.001, -235)
 scale = Vector2(0.7147777, 0.69686407)
 texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja10" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=646654571]
 z_index = 2
 position = Vector2(11596.001, -235)
 scale = Vector2(0.7147777, 0.69686407)
 texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja11" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1230878153]
 z_index = 2
 position = Vector2(13103.001, -236)
 scale = Vector2(0.7147777, 0.69686407)
 texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
 
 [node name="Novaloja12" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1906419935]
 z_index = 2
 position = Vector2(13515.002, -235)
 scale = Vector2(0.7147777, 0.69686407)
 texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
 
 [node name="balcaopesagem" parent="Camera2D/Mundo/estabelecimentos" unique_id=1337239408 instance=ExtResource("12_dh2m7")]
 position = Vector2(4816, -168)
