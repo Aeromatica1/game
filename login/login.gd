@@ -16,7 +16,7 @@ const BLOQUEIO_SEG := 30
 @onready var mostrar_senha: CheckBox = $LoginArea/VBoxContainer/MostrarSenha
 @onready var enviar_btn: Button = $LoginArea/VBoxContainer/EnviarLogin
 @onready var cadastro_link: LinkButton = $LoginArea/VBoxContainer/RegistrarArea/RegistrarLink
-@onready var erro_texto: RichTextLabel = $LoginArea/VBoxContainer/ErroArea/ErroTexto
+@onready var erro_texto: RichTextLabel = $LoginArea/ErroArea/ErroTexto
 
 var _ocupado := false
 var _falhas := 0

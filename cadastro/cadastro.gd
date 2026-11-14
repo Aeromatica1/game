@@ -17,7 +17,7 @@ const COOLDOWN_APOS_CADASTRO := 60   # evita reenviar e-mails de confirmação (
 @onready var mostrar_senha: CheckBox = $CadastroArea/VBoxContainer/MostrarSenha
 @onready var enviar_btn: Button = $CadastroArea/VBoxContainer/EnviarCadastro
 @onready var login_link: LinkButton = $CadastroArea/VBoxContainer/LogarArea/LogarLink
-@onready var erro_texto: RichTextLabel = $CadastroArea/VBoxContainer/ErroArea/ErroTexto
+@onready var erro_texto: RichTextLabel = $CadastroArea/ErroArea/ErroTexto
 
 var _ocupado := false
 
