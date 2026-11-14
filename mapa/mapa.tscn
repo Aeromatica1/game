@@ -32,6 +32,7 @@
 [ext_resource type="PackedScene" uid="uid://ug37puwf0nck" path="res://player/player.tscn" id="99_player"]
 [ext_resource type="Script" uid="uid://yqbkgsrbmxyk" path="res://npc/passageiros_manager.gd" id="100_passageiros"]
 [ext_resource type="PackedScene" path="res://npc/funcionario.tscn" id="101_funcionario"]
+[ext_resource type="Script" path="res://aluguel/espaco_aluguel.gd" id="102_aluguel"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6fw57"]
 resource_name = "objetos"
@@ -3509,6 +3510,7 @@ position = Vector2(3000, 419)
 position = Vector2(9857, -229)
 
 [node name="Novaloja" type="Sprite2D" parent="Camera2D/Mundo/estabelecimentos" unique_id=1058556688]
+script = ExtResource("102_aluguel")
 z_index = 2
 position = Vector2(3213, -234)
 scale = Vector2(0.7147777, 0.69686407)
