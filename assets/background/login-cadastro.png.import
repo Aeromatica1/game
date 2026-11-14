@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://putha6fcnbgb"
-path="res://.godot/imported/SaveSlot.png-275089e091162a50c379e0088bce365e.ctex"
+uid="uid://t5xp2tf47xnm"
+path="res://.godot/imported/login-cadastro.png-30f4c719c5058b2a3475a56160f6144a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/background/SaveSlot.png"
-dest_files=["res://.godot/imported/SaveSlot.png-275089e091162a50c379e0088bce365e.ctex"]
+source_file="res://assets/background/login-cadastro.png"
+dest_files=["res://.godot/imported/login-cadastro.png-30f4c719c5058b2a3475a56160f6144a.ctex"]
 
 [params]
 

@@ -17,9 +17,9 @@ texture_filter = 1
 position = Vector2(0, -24)
 scale = Vector2(2, 2)
 
-[node name="Cabeca" type="AnimatedSprite2D" parent="."]
-texture_filter = 1
+[node name="Cabeca" type="AnimatedSprite2D" parent="." unique_id=447202767]
 z_index = 1
+texture_filter = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1022298183]
 position = Vector2(0, -8)
