@@ -18,7 +18,7 @@ script = ExtResource("1_script")
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 100.0
+offset_bottom = 109.0
 grow_horizontal = 2
 text = "Cadastro"
 label_settings = SubResource("LabelSettings_titulo")
@@ -33,9 +33,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -346.5
-offset_top = -215
+offset_top = -215.0
 offset_right = 346.5
-offset_bottom = 265
+offset_bottom = 265.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -69,6 +69,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.6
 placeholder_text = "3 a 20: letras, números e _"
+
 [node name="EmailArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1509627828]
 layout_mode = 2
 
@@ -85,6 +86,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.6
 placeholder_text = "nome@dominio.com"
+
 [node name="SenhaArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1063486858]
 layout_mode = 2
 
@@ -102,6 +104,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.6
 placeholder_text = "mín. 8, com letras e números"
 secret = true
+
 [node name="ConfirmarArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1900000001]
 layout_mode = 2
 
@@ -117,10 +120,12 @@ custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.6
-placeholder_text = ""
 secret = true
+
 [node name="MostrarSenha" type="CheckBox" parent="CadastroArea/VBoxContainer" unique_id=1845640089]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 text = "Mostrar senha"
 
 [node name="EnviarCadastro" type="Button" parent="CadastroArea/VBoxContainer" unique_id=1845640090]
@@ -140,15 +145,19 @@ vertical_alignment = 1
 
 [node name="LogarLink" type="LinkButton" parent="CadastroArea/VBoxContainer/LogarArea" unique_id=1845640093]
 layout_mode = 2
+size_flags_vertical = 4
 text = "Entre"
-underline = 0
 
-[node name="ErroArea" type="HBoxContainer" parent="CadastroArea/VBoxContainer" unique_id=1845640094]
-layout_mode = 2
+[node name="ErroArea" type="HBoxContainer" parent="CadastroArea" unique_id=1845640094]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 407.0
+offset_right = 623.0
+offset_bottom = 456.0
 size_flags_vertical = 3
 alignment = 1
 
-[node name="ErroTexto" type="RichTextLabel" parent="CadastroArea/VBoxContainer/ErroArea" unique_id=1845640095]
+[node name="ErroTexto" type="RichTextLabel" parent="CadastroArea/ErroArea" unique_id=1845640095]
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true

@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://dwkcqdr4joahc"]
 
-[ext_resource type="Texture2D" uid="uid://40f8d7jv8n7u" path="res://assets/background/fundo.jpg" id="1_ijq78"]
 [ext_resource type="Script" uid="uid://ptecys5wkndy" path="res://menu_principal/menu_principal.gd" id="1_ll0w1"]
-[ext_resource type="Texture2D" uid="uid://eos6qq3nhbwg" path="res://assets/background/titulo.jpg" id="2_75lm6"]
+[ext_resource type="Texture2D" uid="uid://cgmqpukisr10a" path="res://assets/background/fundo.png" id="2_ll0w1"]
 [ext_resource type="FontFile" uid="uid://l0a4ugx7t1rc" path="res://assets/pixel_operator/PixelOperator.ttf" id="3_1s0v4"]
+[ext_resource type="Texture2D" uid="uid://dr1n6aq4i4ftf" path="res://assets/background/logo.jpeg" id="3_g85l6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mpxv"]
 bg_color = Color(0.09019608, 0.30980393, 0.50980395, 1)
@@ -72,7 +72,7 @@ offset_left = 2.0
 offset_top = 4.0
 offset_right = 1149.0
 offset_bottom = 653.0
-texture = ExtResource("1_ijq78")
+texture = ExtResource("2_ll0w1")
 expand_mode = 3
 stretch_mode = 6
 
@@ -86,7 +86,7 @@ offset_top = 81.0
 offset_right = 433.0
 offset_bottom = 167.0
 grow_horizontal = 2
-texture = ExtResource("2_75lm6")
+texture = ExtResource("3_g85l6")
 expand_mode = 2
 stretch_mode = 6
 

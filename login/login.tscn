@@ -18,7 +18,7 @@ script = ExtResource("1_script")
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 100.0
+offset_bottom = 134.0
 grow_horizontal = 2
 text = "Login"
 label_settings = SubResource("LabelSettings_titulo")
@@ -33,9 +33,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -346.5
-offset_top = -190
+offset_top = -190.0
 offset_right = 346.5
-offset_bottom = 200
+offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -69,6 +69,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.6
 placeholder_text = "nome@dominio.com"
+
 [node name="SenhaArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=1531825776]
 layout_mode = 2
 
@@ -84,10 +85,12 @@ custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.6
-placeholder_text = ""
 secret = true
+
 [node name="MostrarSenha" type="CheckBox" parent="LoginArea/VBoxContainer" unique_id=1430755410]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 text = "Mostrar senha"
 
 [node name="EnviarLogin" type="Button" parent="LoginArea/VBoxContainer" unique_id=1430755411]
@@ -107,15 +110,19 @@ vertical_alignment = 1
 
 [node name="RegistrarLink" type="LinkButton" parent="LoginArea/VBoxContainer/RegistrarArea" unique_id=1430755414]
 layout_mode = 2
+size_flags_vertical = 4
 text = "Registre-se"
-underline = 0
 
-[node name="ErroArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=1430755415]
-layout_mode = 2
+[node name="ErroArea" type="HBoxContainer" parent="LoginArea" unique_id=1430755415]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 310.0
+offset_right = 623.0
+offset_bottom = 366.0
 size_flags_vertical = 3
 alignment = 1
 
-[node name="ErroTexto" type="RichTextLabel" parent="LoginArea/VBoxContainer/ErroArea" unique_id=1430755416]
+[node name="ErroTexto" type="RichTextLabel" parent="LoginArea/ErroArea" unique_id=1430755416]
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
