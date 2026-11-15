@@ -27,6 +27,14 @@ const OPCOES := [
 		"tipo": "cafeteria", "nome": "Cafeteria",
 		"icone": "res://assets/areas/cafeteria.png", "regiao": Rect2(180, 90, 450, 560),
 	},
+	{
+		"tipo": "sushi", "nome": "Sushi",
+		"icone": "res://assets/areas/restaurante.png", "regiao": Rect2(180, 90, 450, 560),
+	},
+	{
+		"tipo": "restaurante", "nome": "Restaurante",
+		"icone": "res://assets/areas/sushi.png", "regiao": Rect2(180, 90, 450, 560),
+	},
 ]
 
 @export var fonte: Font

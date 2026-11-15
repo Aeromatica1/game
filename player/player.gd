@@ -33,6 +33,8 @@ func _ready() -> void:
 	_atualizar_animacao(false)
 
 
+@export var y_corte: float = -300
+
 func _physics_process(delta: float) -> void:
 	var entrada := Input.get_vector("mover_esquerda", "mover_direita", "mover_cima", "mover_baixo")
 	correndo = Input.is_action_pressed("correr") and entrada != Vector2.ZERO
@@ -46,7 +48,10 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	_atualizar_animacao(velocity.length() > 5.0)
-
+	
+	
+	var y_local := global_position.y
+	z_index = 200 if y_local > y_corte else 0
 
 func _atualizar_direcao(entrada: Vector2) -> void:
 	# Em diagonal, mantém a direção atual se ela ainda faz parte do movimento

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ejlp2jtib0cv"]
 
-[ext_resource type="Texture2D" uid="uid://l7ce45ncp4bv" path="res://assets/areas/sushis.png" id="1_eaeyj"]
+[ext_resource type="Texture2D" uid="uid://l7ce45ncp4bv" path="res://assets/areas/sushi.png" id="1_3wjmc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c0xmb"]
 size = Vector2(233, 194)
@@ -12,7 +12,7 @@ size = Vector2(233, 194)
 [node name="Sprite2D" type="Sprite2D" parent="StaticBody2D" unique_id=1185425139]
 position = Vector2(0, 1.0000019)
 scale = Vector2(0.425738, 0.36194035)
-texture = ExtResource("1_eaeyj")
+texture = ExtResource("1_3wjmc")
 region_enabled = true
 region_rect = Rect2(90, 82, 542, 536)
 
