@@ -3,10 +3,13 @@
 [ext_resource type="Texture2D" uid="uid://80gmki85fdku" path="res://assets/tilesets/4.png" id="1_wlu0o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l13vt"]
-size = Vector2(384, 50)
+size = Vector2(387, 99)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hk78p"]
 size = Vector2(136, 112)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vdiog"]
+size = Vector2(41, 11.5)
 
 [node name="balcao_checkin" type="Node2D" unique_id=277880894]
 
@@ -18,12 +21,24 @@ region_rect = Rect2(236.56238, 588.1002, 532.1752, 179.89978)
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=879782733]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=166665207]
-position = Vector2(72, 63)
+position = Vector2(73.5, 38.5)
 shape = SubResource("RectangleShape2D_l13vt")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=212024372]
 position = Vector2(-188, 32)
 shape = SubResource("RectangleShape2D_hk78p")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D" unique_id=143185687]
+position = Vector2(15.5, -17.25)
+shape = SubResource("RectangleShape2D_vdiog")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="StaticBody2D" unique_id=508886079]
+position = Vector2(132, -17)
+shape = SubResource("RectangleShape2D_vdiog")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="StaticBody2D" unique_id=813956472]
+position = Vector2(247, -17)
+shape = SubResource("RectangleShape2D_vdiog")
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=132212984]
 vertices = PackedVector2Array(-256, -24, -120, -24, -120, 40, 264, 40, 264, 88, -256, 88)

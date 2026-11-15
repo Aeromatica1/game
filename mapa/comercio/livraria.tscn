@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://c4obtvkpuhr5w"]
+
+[ext_resource type="Texture2D" uid="uid://bdr04281wpsyt" path="res://assets/areas/livraria.png" id="1_8cw5q"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l7tio"]
+size = Vector2(226.5, 187)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ilb3f"]
+size = Vector2(29, 44)
+
+[node name="Node2D" type="Node2D" unique_id=2018331188]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=278752728]
+position = Vector2(0, 4.7683716e-07)
+scale = Vector2(0.45161295, 0.43601894)
+texture = ExtResource("1_8cw5q")
+region_enabled = true
+region_rect = Rect2(146, 0, 558, 422)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1912260786]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2106550348]
+position = Vector2(15.25, -1)
+shape = SubResource("RectangleShape2D_l7tio")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=870176539]
+position = Vector2(-112.5, 70)
+shape = SubResource("RectangleShape2D_ilb3f")

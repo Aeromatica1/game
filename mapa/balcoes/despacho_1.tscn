@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://dfidtp2xfp0eg"]
+
+[ext_resource type="Texture2D" uid="uid://43y7tfsicaci" path="res://assets/tilesets/3.png" id="1_myrl0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5vyh2"]
+size = Vector2(54.000008, 397)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_324ey"]
+radius = 42.0
+height = 388.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l7tio"]
+size = Vector2(43, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ilb3f"]
+size = Vector2(32, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j7jb1"]
+size = Vector2(35, 12)
+
+[node name="despacho1" type="Node2D" unique_id=1865953869]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=413849271]
+texture = ExtResource("1_myrl0")
+region_enabled = true
+region_rect = Rect2(366.6405, 386.59848, 401.3595, 195.36197)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=658311251]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2145458467]
+position = Vector2(1.5, 64.99999)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_5vyh2")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=706951049]
+position = Vector2(10, -43)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_324ey")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D" unique_id=232720892]
+position = Vector2(-175.5, 24)
+shape = SubResource("RectangleShape2D_l7tio")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D" unique_id=1312010296]
+position = Vector2(-128, 32.5)
+shape = SubResource("RectangleShape2D_ilb3f")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="StaticBody2D" unique_id=193661778]
+position = Vector2(38.5, 32)
+shape = SubResource("RectangleShape2D_j7jb1")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=245300399]
+vertices = PackedVector2Array(-184, -80, 200, -80, 200, 0, -192, 0)
+
+[node name="NavigationObstacle2D2" type="NavigationObstacle2D" parent="." unique_id=1715615097]
+vertices = PackedVector2Array(-192, 8, -160, 8, -160, 40, 200, 40, 200, 88, -192, 88)

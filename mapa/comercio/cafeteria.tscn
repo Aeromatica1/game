@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://um543osotl5f" path="res://assets/areas/cafeteria.png" id="1_hmkj6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tj8nv"]
-size = Vector2(160, 184)
+size = Vector2(154, 184)
 
 [node name="cafeteria" type="Node2D" unique_id=1920750169]
 
@@ -18,6 +18,5 @@ region_enabled = true
 region_rect = Rect2(184, 90, 442, 552)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="cafeteria" unique_id=523393260]
-visible = false
-position = Vector2(56, -28)
+position = Vector2(53, -28)
 shape = SubResource("RectangleShape2D_tj8nv")

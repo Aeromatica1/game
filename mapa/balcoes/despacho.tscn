@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://illu5sgl426j"]
+
+[ext_resource type="Texture2D" uid="uid://43y7tfsicaci" path="res://assets/tilesets/3.png" id="1_3ccmb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nn2lj"]
+size = Vector2(400, 59)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l7tio"]
+size = Vector2(28.5, 27)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_18smp"]
+height = 34.92639
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_l7tio"]
+radius = 40.0
+height = 392.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ilb3f"]
+size = Vector2(26, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j7jb1"]
+size = Vector2(27, 13)
+
+[node name="Node2D" type="Node2D" unique_id=1669003903]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=218896872]
+texture = ExtResource("1_3ccmb")
+region_enabled = true
+region_rect = Rect2(368, 388, 400, 192)
+
+[node name="despacho" type="StaticBody2D" parent="." unique_id=1158266390]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="despacho" unique_id=381048334]
+position = Vector2(0, 66.5)
+shape = SubResource("RectangleShape2D_nn2lj")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="despacho" unique_id=1520610574]
+position = Vector2(-170.75, 23.5)
+shape = SubResource("RectangleShape2D_l7tio")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="despacho" unique_id=993574997]
+position = Vector2(-184, 32)
+rotation = 0.40142572
+shape = SubResource("CapsuleShape2D_18smp")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="despacho" unique_id=111716680]
+position = Vector2(9, -43)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_l7tio")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="despacho" unique_id=1962161826]
+position = Vector2(-120, 31.5)
+shape = SubResource("RectangleShape2D_ilb3f")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="despacho" unique_id=1111588523]
+position = Vector2(41.5, 30.5)
+shape = SubResource("RectangleShape2D_j7jb1")

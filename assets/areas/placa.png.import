@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://5c5ujlqfrbx5"
-path="res://.godot/imported/placa.png-9430e9a24915d4e4e73bec59e7892dab.ctex"
+path="res://.godot/imported/placa.png-30b107bb32b260fdd5d98185b09fa369.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mapa/portoes/balcoes/placa.png"
-dest_files=["res://.godot/imported/placa.png-9430e9a24915d4e4e73bec59e7892dab.ctex"]
+source_file="res://assets/areas/placa.png"
+dest_files=["res://.godot/imported/placa.png-30b107bb32b260fdd5d98185b09fa369.ctex"]
 
 [params]
 
