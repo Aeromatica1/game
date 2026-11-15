@@ -5,12 +5,17 @@ extends Node2D
 ## Ao conectar, a MALA percorre a rota montada pelo jogador.
 
 # ---------------------------------------------------------------- SPRITES ---
-# Coloque os PNGs na raiz do projeto (res://) ou ajuste os caminhos abaixo.
-const TEX_I: Texture2D = preload("res://assets/PecasEncanador/Esteira I.png") # 32x32 - reta (vertical)
-const TEX_L: Texture2D = preload("res://assets/PecasEncanador/Esteira L.png") # 64x64 - curva (liga DIREITA + BAIXO)
-# Segunda curva (espelhada, liga ESQUERDA + BAIXO). O arquivo enviado se chama "Esteira__I.png",
-# mas o desenho é uma curva. Se renomear o arquivo, mude o caminho aqui.
-const TEX_L2: Texture2D = preload("res://assets/PecasEncanador/Esteira__I.png") # 64x64
+# Tiras de animação: UM PNG por peça, com os quadros empilhados na vertical (32 px de largura).
+# Coloque na raiz do projeto (res://) com estes nomes, ou ajuste os caminhos.
+# Reta : quadros de 32x32, esteira na vertical (liga CIMA + BAIXO), 10 quadros.
+const TEX_I: Texture2D = preload("res://assets/PecasEncanador/Esteira_I_anim.png")
+# Curva: quadros de 32x32, braço horizontal em cima e vertical à esquerda (liga DIREITA + BAIXO), 10 quadros.
+const TEX_L: Texture2D = preload("res://assets/PecasEncanador/Esteira_L_anim.png")
+const FRAME := 32          # tamanho de cada quadro das tiras (pixels de arte)
+const BELT_ART := 16       # largura da esteira na arte (a da curva); a reta é recortada para isso
+const CURVE_CROP := 24     # parte do quadro da curva usada (do canto até a borda da célula)
+const PIXEL_SCALE := 2     # cada pixel de arte vira 2x2 na tela: quadro de 32 = célula de 64
+const ANIM_FPS := 10.0     # quadros por segundo da animação das esteiras
 
 # Arte opcional do grid em pixel art (cada uma 64x64). Se o arquivo não existir,
 # o jogo usa quadrados de cor no lugar.
@@ -27,12 +32,11 @@ const DELIVERY_SPEED := 280.0    # velocidade da mala em pixels por segundo
 const MIN_SIZE := 4       # tamanho da grade no nível 1 (4x4)
 const MAX_SIZE := 9       # tamanho máximo (9x9) - cresce 1 por nível
 const HUD_W := 512        # largura fixa do HUD (barra de tempo, textos)
-const BOARD_TOP := 100    # onde começa a área do tabuleiro (abaixo do HUD)
-const BOARD_BOTTOM_MARGIN := 10
+const BOARD_TOP := 66     # onde começa a área do tabuleiro (abaixo do HUD)
+const BOARD_BOTTOM_MARGIN := 6   # com 648 px de altura, o 9x9 (576 px) cabe sem reduzir
 const CELL := 64          # tamanho de cada célula em pixels
 const BELT_W := 32        # largura da esteira (= tamanho do sprite reto)
 const MARGIN := 16        # (CELL - BELT_W) / 2  -> esteira centralizada na célula
-const L_CROP := 48        # parte do sprite L usada (CELL - MARGIN)
 const PORT_W := 40        # largura dos marcadores de início/fim
 
 # Dificuldade: chance de uma célula FORA do caminho ficar vazia (sem peça).
@@ -54,7 +58,7 @@ const VEC := {
 	LEFT: Vector2i(-1, 0),
 }
 
-enum Kind { I, L, L2 }
+enum Kind { I, L }
 enum State { PLAYING, DELIVERING, WON, LOST }
 
 # Cores
@@ -76,7 +80,15 @@ class Tile:
 	var kind: int = 0
 	var steps: int = 0        # quartos de volta acumulados (pode ser negativo)
 	var tween: Tween
+	var sprite: Sprite2D
+	var on := false           # ligada ao início? (só aí a esteira anda)
+	var dir := 1              # 1 = quadros para frente, -1 = para trás (sentido do fluxo)
 
+
+var straight_frames: Array[AtlasTexture] = []
+var curve_frames: Array[AtlasTexture] = []
+var anim_time := 0.0
+var anim_step := 0
 
 var level := 1
 var score := 0
@@ -120,6 +132,7 @@ func _ready() -> void:
 	board.add_child(board_bg)
 
 	_build_hud(vp)
+	_build_frames()
 	_new_level()
 
 
@@ -128,16 +141,16 @@ func _build_hud(vp: Vector2) -> void:
 	add_child(hud)
 	var bx := (vp.x - HUD_W) / 2.0
 
-	moves_label = _make_label(hud, Vector2(bx, 12), 24)
-	score_label = _make_label(hud, Vector2(bx + 220, 12), 24)
-	level_label = _make_label(hud, Vector2(bx + 400, 12), 24)
+	moves_label = _make_label(hud, Vector2(bx, 2), 24)
+	score_label = _make_label(hud, Vector2(bx + 220, 2), 24)
+	level_label = _make_label(hud, Vector2(bx + 400, 2), 24)
 
-	var time_text := _make_label(hud, Vector2(bx, 56), 22)
+	var time_text := _make_label(hud, Vector2(bx, 34), 20)
 	time_text.text = "TEMPO"
 
 	time_bar = ProgressBar.new()
-	time_bar.position = Vector2(bx + 90, 58)
-	time_bar.size = Vector2(HUD_W - 90, 26)
+	time_bar.position = Vector2(bx + 90, 36)
+	time_bar.size = Vector2(HUD_W - 90, 22)
 	time_bar.show_percentage = false
 	time_bar.step = 0.01
 	time_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -197,7 +210,7 @@ func _layout_board() -> void:
 	board.position = Vector2(
 		(vp.x - px * s) / 2.0,
 		BOARD_TOP + (avail - px * s) / 2.0
-	)
+	).round()   # posição em pixels inteiros
 	board_bg.size = Vector2(px, px)
 
 
@@ -206,7 +219,7 @@ func _empty_chance() -> float:
 
 
 func _random_curve() -> int:
-	return Kind.L if randf() < 0.5 else Kind.L2
+	return Kind.L   # só existe um sprite de curva; as 4 orientações vêm da rotação
 
 
 func _new_level() -> void:
@@ -427,42 +440,83 @@ func _make_tile(kind: int, x: int, y: int) -> Tile:
 	t.visual = Node2D.new()   # este nó é o que gira (em torno do centro da célula)
 	t.node.add_child(t.visual)
 
+	var sp := Sprite2D.new()
+	sp.scale = Vector2(PIXEL_SCALE, PIXEL_SCALE)
+	t.sprite = sp
+	t.visual.add_child(sp)
 	if kind == Kind.I:
-		# sprite 32x32 empilhado 2x para cobrir os 64 px de altura da célula
-		for oy in [-BELT_W / 2, BELT_W / 2]:
-			var s := Sprite2D.new()
-			s.texture = TEX_I
-			s.position = Vector2(0, oy)
-			t.visual.add_child(s)
-	elif kind == Kind.L:
-		# curva L 64x64: usamos só os 48x48 do canto, deslocado para centralizar a esteira
-		var s := Sprite2D.new()
-		s.texture = TEX_L
-		s.centered = false
-		s.region_enabled = true
-		s.region_rect = Rect2(0, 0, L_CROP, L_CROP)
-		s.position = Vector2(-MARGIN, -MARGIN)
-		t.visual.add_child(s)
+		# Reta: usamos só os 16 px centrais do quadro (a esteira da curva tem 16 px de largura).
+		# O quadro de 32x32 de arte vira 64x64 na tela, exatamente uma célula.
+		sp.texture = straight_frames[0]
+		# contorno preto nas laterais (o recorte tirou o contorno do sprite)
+		_add_line(t.visual, Vector2(-BELT_W / 2, -CELL / 2.0), Vector2(PIXEL_SCALE, CELL))
+		_add_line(t.visual, Vector2(BELT_W / 2 - PIXEL_SCALE, -CELL / 2.0), Vector2(PIXEL_SCALE, CELL))
 	else:
-		# curva L2 (espelhada): braços na esquerda e embaixo -> usa x 16..64, y 0..48
-		var s := Sprite2D.new()
-		s.texture = TEX_L2
-		s.centered = false
-		s.region_enabled = true
-		s.region_rect = Rect2(MARGIN, 0, L_CROP, L_CROP)
-		s.position = Vector2(2 * MARGIN - CELL, -MARGIN)   # = (-32, -16)
-		t.visual.add_child(s)
+		# Curva: usamos só 24x24 do quadro (canto + parte dos braços), deslocados para
+		# centralizar a esteira na célula.
+		sp.texture = curve_frames[0]
+		sp.centered = false
+		sp.position = Vector2(-MARGIN, -MARGIN)
+		# linha preta no fim de cada braço (o braço é cortado no meio de uma faixa)
+		_add_line(t.visual, Vector2(CELL / 2.0 - PIXEL_SCALE, -BELT_W / 2), Vector2(PIXEL_SCALE, BELT_W))
+		_add_line(t.visual, Vector2(-BELT_W / 2, CELL / 2.0 - PIXEL_SCALE), Vector2(BELT_W, PIXEL_SCALE))
 	return t
 
 
+## Corta os quadros das tiras: reta -> 16 px centrais; curva -> 24x24 do canto.
+func _build_frames() -> void:
+	straight_frames.clear()
+	curve_frames.clear()
+	for i in int(TEX_I.get_height() / FRAME):
+		var a := AtlasTexture.new()
+		a.atlas = TEX_I
+		a.region = Rect2((FRAME - BELT_ART) / 2, i * FRAME, BELT_ART, FRAME)
+		straight_frames.append(a)
+	for i in int(TEX_L.get_height() / FRAME):
+		var b := AtlasTexture.new()
+		b.atlas = TEX_L
+		b.region = Rect2(0, i * FRAME, CURVE_CROP, CURVE_CROP)
+		curve_frames.append(b)
+
+
+## Escolhe o quadro de cada peça: parada no quadro 0, ou animada se estiver ligada ao início.
+func _update_tile_frames() -> void:
+	if grid.is_empty():
+		return
+	for y in rows:
+		for x in cols:
+			var t: Tile = grid[y][x]
+			if t == null:
+				continue
+			var frames: Array[AtlasTexture] = straight_frames if t.kind == Kind.I else curve_frames
+			var n := frames.size()
+			var idx := 0
+			if t.on:
+				var st := anim_step % n
+				idx = st if t.dir > 0 else (n - st) % n
+			t.sprite.texture = frames[idx]
+
+
+## Gira uma direção (bit) n quartos de volta no sentido horário.
+func _rot_dir(d: int, n: int) -> int:
+	for i in posmod(n, 4):
+		d = ((d << 1) | (d >> 3)) & 15
+	return d
+
+
+func _add_line(parent: Node2D, pos: Vector2, size: Vector2) -> void:
+	var r := ColorRect.new()
+	r.color = Color.BLACK
+	r.position = pos
+	r.size = size
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(r)
+
+
 ## Conexões da peça (bits) já considerando a rotação atual.
-## Reta = CIMA|BAIXO.  Curva L = DIREITA|BAIXO.  Curva L2 (espelhada) = ESQUERDA|BAIXO.
+## Reta = CIMA|BAIXO.  Curva = DIREITA|BAIXO (como no sprite).
 func _tile_mask(t: Tile) -> int:
-	var m: int
-	match t.kind:
-		Kind.I: m = UP | DOWN
-		Kind.L: m = RIGHT | DOWN
-		_: m = LEFT | DOWN
+	var m: int = (UP | DOWN) if t.kind == Kind.I else (RIGHT | DOWN)
 	for i in posmod(t.steps, 4):
 		m = ((m << 1) | (m >> 3)) & 15   # gira 90° horário
 	return m
@@ -494,7 +548,7 @@ func _compute_flow() -> Dictionary:
 		return {"powered": powered, "solved": false}
 
 	var queue: Array[Vector2i] = [start]
-	powered[start] = true
+	powered[start] = LEFT   # o fluxo entra pelo lado esquerdo (marcador de início)
 	while not queue.is_empty():
 		var c: Vector2i = queue.pop_front()
 		var m := _mask_at(c)
@@ -507,7 +561,7 @@ func _compute_flow() -> Dictionary:
 			if not _in_bounds(n) or powered.has(n):
 				continue
 			if (_mask_at(n) & _opposite(d)) != 0:
-				powered[n] = true
+				powered[n] = _opposite(d)   # lado por onde o fluxo entra na peça n
 				queue.append(n)
 	return {"powered": powered, "solved": solved}
 
@@ -550,7 +604,18 @@ func _refresh_flow() -> void:
 			var t: Tile = grid[y][x]
 			if t == null:
 				continue
-			t.visual.modulate = COLOR_POWERED if powered.has(Vector2i(x, y)) else Color.WHITE
+			var c := Vector2i(x, y)
+			if powered.has(c):
+				# lado de entrada no referencial da peça (desfaz a rotação dela)
+				var local_entry := _rot_dir(powered[c], -t.steps)
+				t.on = true
+				# nas tiras, o fluxo "para frente" entra por BAIXO (a reta sobe, a curva vai BAIXO -> DIREITA)
+				t.dir = 1 if local_entry == DOWN else -1
+				t.visual.modulate = COLOR_POWERED
+			else:
+				t.on = false
+				t.visual.modulate = Color.WHITE
+	_update_tile_frames()
 	out_port.color = COLOR_OUT_ON if res["solved"] else COLOR_OUT_OFF
 	if res["solved"] and state == State.PLAYING:
 		_start_delivery()
@@ -620,6 +685,12 @@ func _finish_win() -> void:
 
 # ---------------------------------------------------------------- JOGO ------
 func _process(delta: float) -> void:
+	# animação das esteiras (continua rodando também na entrega da mala e nas mensagens)
+	anim_time += delta
+	var step := int(anim_time * ANIM_FPS)
+	if step != anim_step:
+		anim_step = step
+		_update_tile_frames()
 	if state != State.PLAYING:
 		return
 	time_left -= delta

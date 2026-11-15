@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cx8wj43xndg0u"
-path="res://.godot/imported/Esteira L.png-7582add475823ea46f870a5315c8d24d.ctex"
+uid="uid://du2exffwyc5bo"
+path="res://.godot/imported/Esteira_I_anim.png-16cd707d542106af2cac5a847b6a09a4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/PecasEncanador/Esteira L.png"
-dest_files=["res://.godot/imported/Esteira L.png-7582add475823ea46f870a5315c8d24d.ctex"]
+source_file="res://assets/PecasEncanador/Esteira_I_anim.png"
+dest_files=["res://.godot/imported/Esteira_I_anim.png-16cd707d542106af2cac5a847b6a09a4.ctex"]
 
 [params]
 
