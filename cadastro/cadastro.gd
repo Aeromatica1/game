@@ -16,7 +16,6 @@ const COOLDOWN_APOS_CADASTRO := 60   # evita reenviar e-mails de confirmação (
 @onready var confirmar_campo: LineEdit = $CadastroArea/VBoxContainer/ConfirmarArea/ConfirmarCampo
 @onready var mostrar_senha: CheckBox = $CadastroArea/VBoxContainer/MostrarSenha
 @onready var enviar_btn: Button = $CadastroArea/VBoxContainer/EnviarCadastro
-@onready var login_link: LinkButton = $CadastroArea/VBoxContainer/LogarArea/LogarLink
 @onready var erro_texto: RichTextLabel = $CadastroArea/ErroArea/ErroTexto
 
 var _ocupado := false
@@ -39,7 +38,6 @@ func _ready() -> void:
 	senha_campo.text_submitted.connect(func(_t): confirmar_campo.grab_focus())
 	confirmar_campo.text_submitted.connect(func(_t): _enviar())
 	enviar_btn.pressed.connect(_enviar)
-	login_link.pressed.connect(_ir_login)
 	for campo in [usuario_campo, email_campo, senha_campo, confirmar_campo]:
 		campo.text_changed.connect(func(_t): _limpar_erro())
 

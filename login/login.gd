@@ -7,15 +7,10 @@ const Validacao = preload("res://login/validacao.gd")
 const MAX_FALHAS := 5          # falhas seguidas até bloquear o botão por um tempo (só conforto; o limite real é do Supabase)
 const BLOQUEIO_SEG := 30
 
-## Cena aberta após o login (ex.: menu principal). Vazio = só emite o sinal.
-@export_file("*.tscn") var cena_apos_login := ""
-@export_file("*.tscn") var cena_cadastro := "res://cadastro/cadastro.tscn"
-
 @onready var email_campo: LineEdit = $LoginArea/VBoxContainer/EmailArea/EmailCampo
 @onready var senha_campo: LineEdit = $LoginArea/VBoxContainer/SenhaArea/SenhaCampo
 @onready var mostrar_senha: CheckBox = $LoginArea/VBoxContainer/MostrarSenha
 @onready var enviar_btn: Button = $LoginArea/VBoxContainer/EnviarLogin
-@onready var cadastro_link: LinkButton = $LoginArea/VBoxContainer/RegistrarArea/RegistrarLink
 @onready var erro_texto: RichTextLabel = $LoginArea/ErroArea/ErroTexto
 
 var _ocupado := false
@@ -31,7 +26,6 @@ func _ready() -> void:
 	email_campo.text_submitted.connect(func(_t): senha_campo.grab_focus())
 	senha_campo.text_submitted.connect(func(_t): _enviar())
 	enviar_btn.pressed.connect(_enviar)
-	cadastro_link.pressed.connect(_ir_cadastro)
 	# digitar de novo limpa o aviso de erro
 	email_campo.text_changed.connect(func(_t): _limpar_erro())
 	senha_campo.text_changed.connect(func(_t): _limpar_erro())
@@ -95,15 +89,8 @@ func _enviar() -> void:
 
 func _sucesso() -> void:
 	login_sucesso.emit()
-	if cena_apos_login != "":
-		get_tree().change_scene_to_file(cena_apos_login)
-	else:
-		erro_texto.text = "[color=#6bff8a]Login realizado![/color]"
-
-
-func _ir_cadastro() -> void:
-	if cena_cadastro != "":
-		get_tree().change_scene_to_file(cena_cadastro)
+	erro_texto.text = "[color=#6bff8a]Login realizado![/color]"
+	
 
 
 # ------------------------- UI -------------------------

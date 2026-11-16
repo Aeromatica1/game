@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://7rog0cnh50w0"]
+
+[node name="BarraUsuario" type="CanvasLayer" unique_id=285376065]
+
+[node name="Voltar" type="Button" parent="." unique_id=852011971]
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 108.0
+offset_bottom = 63.0
+text = "Voltar"
+
+[node name="Conta" type="Button" parent="." unique_id=1946992126]
+offset_left = 1000.0
+offset_top = 18.0
+offset_right = 1084.0
+offset_bottom = 63.0
+text = "User"

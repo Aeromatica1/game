@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://l8cvyxby3mcb"]
 
+[ext_resource type="PackedScene" uid="uid://dyv5cogt1hexu" path="res://hud/barra_aeroporto.tscn" id="1_h5ydh"]
 [ext_resource type="Texture2D" uid="uid://tjrrrefn0n3d" path="res://assets/tilesets/7.png" id="1_pyrot"]
 [ext_resource type="Texture2D" uid="uid://r0enhll6k13d" path="res://assets/tilesets/1.png" id="2_g1sof"]
 [ext_resource type="Texture2D" uid="uid://gw5nbsv81xq" path="res://assets/tilesets/2.png" id="3_0k8i5"]
@@ -3293,8 +3294,7 @@ layout_mode = 3
 anchors_preset = 0
 metadata/_edit_horizontal_guides_ = [-472.0]
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=609019291]
-position = Vector2(352, 72)
+[node name="BarraAeroporto" parent="." unique_id=765660825 instance=ExtResource("1_h5ydh")]
 
 [node name="Chão" type="TileMapLayer" parent="." unique_id=358416622]
 position = Vector2(-32, -123)
@@ -3505,12 +3505,15 @@ tile_set = SubResource("TileSet_a04ho")
 metadata/_edit_lock_ = true
 
 [node name="ponte_embarque" parent="AreaExterna/TileMapLayer" unique_id=525699968 instance=ExtResource("9_pyrot")]
+z_index = 500
 position = Vector2(399, 424)
 
 [node name="ponte_embarque2" parent="AreaExterna/TileMapLayer" unique_id=1519572406 instance=ExtResource("9_pyrot")]
+z_index = 500
 position = Vector2(1689, 418)
 
 [node name="ponte_embarque3" parent="AreaExterna/TileMapLayer" unique_id=1611301305 instance=ExtResource("9_pyrot")]
+z_index = 500
 position = Vector2(3000, 419)
 
 [node name="AreasAluguel" type="Node2D" parent="." unique_id=308210321]
@@ -3825,21 +3828,22 @@ region_rect = Rect2(578.21643, 190.40533, 189.78357, 70.006836)
 [node name="Janelas" type="Node2D" parent="." unique_id=598212140]
 
 [node name="Janelas1" parent="Janelas" unique_id=947571968 instance=ExtResource("21_2nuym")]
-z_index = 7
+z_index = 400
 position = Vector2(-448, 281)
 metadata/_edit_lock_ = true
 
 [node name="Janelas2" parent="Janelas" unique_id=483643635 instance=ExtResource("21_2nuym")]
-z_index = 5
+z_index = 400
 position = Vector2(3392, 280)
 metadata/_edit_lock_ = true
 
 [node name="Janelas3" parent="Janelas" unique_id=1627218070 instance=ExtResource("21_2nuym")]
-z_index = 5
+z_index = 400
 position = Vector2(7231, 280)
 metadata/_edit_lock_ = true
 
 [node name="Janelas4" parent="Janelas" unique_id=48405273 instance=ExtResource("32_utegi")]
+z_index = 400
 position = Vector2(11068, 280)
 metadata/_edit_lock_ = true
 
@@ -3856,6 +3860,7 @@ position = Vector2(10603, -384)
 [node name="Borda" type="Node2D" parent="." unique_id=1620915091]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Borda" unique_id=876690877]
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Borda/StaticBody2D" unique_id=1046047366]
 position = Vector2(-900.5, 117)
