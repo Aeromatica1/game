@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dyv5cogt1hexu"]
 
-[node name="BarraAeroporto" type="Node2D" unique_id=765660825]
+[node name="BarraAeroporto" type="CanvasLayer" unique_id=379957839]
 
 [node name="Voltar" type="Button" parent="." unique_id=1824410048]
 offset_left = 24.0

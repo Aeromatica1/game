@@ -11,7 +11,6 @@
 script = ExtResource("1_jr6vj")
 
 [node name="MenuPrincipal" parent="." unique_id=85327965 instance=ExtResource("4_bi4f8")]
-script = null
 metadata/_edit_use_anchors_ = true
 
 [node name="BarraUsuario" parent="." unique_id=1804983182 instance=ExtResource("3_u051b")]

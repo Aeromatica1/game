@@ -4,36 +4,37 @@
 [ext_resource type="Texture2D" uid="uid://43y7tfsicaci" path="res://assets/tilesets/3.png" id="3_ij656"]
 [ext_resource type="PackedScene" uid="uid://2n3sc5kr1wju" path="res://mapa/poltronas/poltrona_nivel1.tscn" id="4_on4t0"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ltv3l"]
-size = Vector2(992, 255)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l7tio"]
+size = Vector2(66, 35)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ilb3f"]
+size = Vector2(66.5, 34.5)
 
 [node name="PortaoN1" type="Node2D" unique_id=1593316182]
 
-[node name="Area2D" type="Area2D" parent="." unique_id=1416711295]
+[node name="Balcão" type="Node2D" parent="." unique_id=1089016117]
+z_index = 300
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1429104194]
-position = Vector2(272, 216)
-shape = SubResource("RectangleShape2D_ltv3l")
-
-[node name="PlacaPortao" type="Sprite2D" parent="." unique_id=1456025321]
-z_index = 5
-
-[node name="Label" type="Label" parent="PlacaPortao" unique_id=1653296085]
-offset_right = 66.0
-offset_bottom = 23.0
-
-[node name="Componentes" type="Node2D" parent="." unique_id=1365393004]
-
-[node name="Balcão" type="Node2D" parent="Componentes" unique_id=1089016117]
-
-[node name="Sprite2D" type="Sprite2D" parent="Componentes/Balcão" unique_id=571283815]
+[node name="Sprite2D" type="Sprite2D" parent="Balcão" unique_id=571283815]
 z_index = 3
 position = Vector2(280, 264)
 texture = ExtResource("2_il7od")
 
-[node name="Carpete" type="Node2D" parent="Componentes" unique_id=729790447]
+[node name="Area2D" type="StaticBody2D" parent="Balcão" unique_id=1997986779]
 
-[node name="Sprite2D" type="Sprite2D" parent="Componentes/Carpete" unique_id=485682055]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Balcão/Area2D" unique_id=67589552]
+z_index = 3
+position = Vector2(237, 322.5)
+shape = SubResource("RectangleShape2D_l7tio")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Balcão/Area2D" unique_id=1302879810]
+z_index = 3
+position = Vector2(321.75, 323.25)
+shape = SubResource("RectangleShape2D_ilb3f")
+
+[node name="Carpete" type="Node2D" parent="." unique_id=729790447]
+
+[node name="Sprite2D" type="Sprite2D" parent="Carpete" unique_id=485682055]
 z_index = 1
 position = Vector2(280, 216.00002)
 rotation = 1.5707964
@@ -42,13 +43,13 @@ texture = ExtResource("3_ij656")
 region_enabled = true
 region_rect = Rect2(403.18765, 692.74744, 269.73453, 71.84235)
 
-[node name="Poltrona" type="Node2D" parent="Componentes" unique_id=704042857]
+[node name="Poltronas" type="Node2D" parent="." unique_id=704042857]
 
-[node name="PoltronaNivel1" parent="Componentes/Poltrona" unique_id=1573440342 instance=ExtResource("4_on4t0")]
-position = Vector2(-112, 112)
+[node name="PoltronaNivel1" parent="Poltronas" unique_id=1573440342 instance=ExtResource("4_on4t0")]
+position = Vector2(-129, 112)
 
-[node name="PoltronaNivel1_SegundaFileira" parent="Componentes/Poltrona" unique_id=689432093 instance=ExtResource("4_on4t0")]
-position = Vector2(432, 112)
+[node name="PoltronaNivel1_SegundaFileira" parent="Poltronas" unique_id=689432093 instance=ExtResource("4_on4t0")]
+position = Vector2(461, 112)
 
 [node name="Fila" type="Node2D" parent="." unique_id=1210311241]
 
