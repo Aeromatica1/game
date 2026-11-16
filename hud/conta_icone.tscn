@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cowe1bie7efas"]
+
+[node name="ContaIcone" type="CanvasLayer" unique_id=1900305709]
+
+[node name="Conta" type="Button" parent="." unique_id=1779933141]
+offset_left = 1000.0
+offset_top = 18.0
+offset_right = 1084.0
+offset_bottom = 63.0
+text = "User"

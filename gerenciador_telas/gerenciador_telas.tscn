@@ -3,20 +3,26 @@
 [ext_resource type="Script" uid="uid://wxosr5xpbm4w" path="res://gerenciador_telas/gerenciador_telas.gd" id="1_jr6vj"]
 [ext_resource type="PackedScene" uid="uid://c3egba45ye35x" path="res://cadastro/cadastro.tscn" id="2_deupt"]
 [ext_resource type="PackedScene" uid="uid://bcgwlv0eu3ck7" path="res://login/login.tscn" id="3_6napt"]
+[ext_resource type="PackedScene" uid="uid://7rog0cnh50w0" path="res://hud/barra_usuario.tscn" id="3_u051b"]
 [ext_resource type="PackedScene" uid="uid://dwkcqdr4joahc" path="res://menu_principal/menu_principal.tscn" id="4_bi4f8"]
 [ext_resource type="PackedScene" uid="uid://fpu5oujg4j2w" path="res://save_slot/save_slot.tscn" id="5_5hkwe"]
-[ext_resource type="PackedScene" uid="uid://cvqbae240sjti" path="res://minigames/block_blast/Main.tscn" id="7_oswh0"]
-[ext_resource type="PackedScene" uid="uid://6buicxxj4a1p" path="res://minigames/minesweeper/game.tscn" id="7_u051b"]
-
-[sub_resource type="ButtonGroup" id="ButtonGroup_oswh0"]
 
 [node name="GerenciadorTelas" type="Node" unique_id=1570137647]
 script = ExtResource("1_jr6vj")
 
+[node name="MenuPrincipal" parent="." unique_id=85327965 instance=ExtResource("4_bi4f8")]
+script = null
+metadata/_edit_use_anchors_ = true
+
+[node name="BarraUsuario" parent="." unique_id=1804983182 instance=ExtResource("3_u051b")]
+layer = 2
+
 [node name="Cadastro" parent="." unique_id=787969888 instance=ExtResource("2_deupt")]
+visible = false
 metadata/_edit_use_anchors_ = true
 
 [node name="Login" parent="." unique_id=733296674 instance=ExtResource("3_6napt")]
+visible = false
 metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" parent="Login/LoginArea" parent_id_path=PackedInt32Array(733296674, 798163012) index="0" unique_id=191503834]
@@ -25,47 +31,26 @@ offset_top = 61.0
 offset_right = -84.5
 offset_bottom = -69.0
 
-[node name="MenuPrincipal" parent="." unique_id=85327965 instance=ExtResource("4_bi4f8")]
-metadata/_edit_use_anchors_ = true
-
 [node name="SaveSlot" parent="." unique_id=571966553 instance=ExtResource("5_5hkwe")]
+visible = false
 
-[node name="Minesweeper" parent="." unique_id=433698761 instance=ExtResource("7_u051b")]
-
-[node name="BtnBeginner" parent="Minesweeper/Margin/VBox/TopBar" parent_id_path=PackedInt32Array(433698761, 1972278319) index="2" unique_id=2049577679]
-button_group = SubResource("ButtonGroup_oswh0")
-
-[node name="BtnIntermediate" parent="Minesweeper/Margin/VBox/TopBar" parent_id_path=PackedInt32Array(433698761, 1972278319) index="3" unique_id=1196948107]
-button_group = SubResource("ButtonGroup_oswh0")
-
-[node name="BtnExpert" parent="Minesweeper/Margin/VBox/TopBar" parent_id_path=PackedInt32Array(433698761, 1972278319) index="4" unique_id=1417515820]
-button_group = SubResource("ButtonGroup_oswh0")
-
-[node name="BtnCustom" parent="Minesweeper/Margin/VBox/TopBar" parent_id_path=PackedInt32Array(433698761, 1972278319) index="5" unique_id=1281061965]
-button_group = SubResource("ButtonGroup_oswh0")
-
-[node name="BlockBlast" type="Control" parent="." unique_id=1947145170]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Main" parent="BlockBlast" unique_id=803543180 instance=ExtResource("7_oswh0")]
-
-[connection signal="pressed" from="Cadastro/CadastroArea/VBoxContainer/EnviarCadastro" to="." method="_on_enviar_cadastro_pressed"]
-[connection signal="pressed" from="Login/LoginArea/VBoxContainer/EnviarLogin" to="." method="_on_enviar_login_pressed"]
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoJogar" to="." method="_on_botao_jogar_pressed"]
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoOpcoes" to="." method="_on_botao_opcoes_pressed"]
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoSair" to="." method="_on_botao_sair_pressed"]
+[connection signal="pressed" from="BarraUsuario/Voltar" to="." method="_on_voltar_pressed"]
+[connection signal="pressed" from="Cadastro/CadastroArea/VBoxContainer/EnviarCadastro" to="." method="_on_enviar_cadastro_pressed"]
+[connection signal="pressed" from="Cadastro/CadastroArea/VBoxContainer/LogarArea/LogarLink" to="." method="_on_logar_link_pressed"]
+[connection signal="pressed" from="Login/LoginArea/VBoxContainer/EnviarLogin" to="." method="_on_enviar_login_pressed"]
+[connection signal="pressed" from="Login/LoginArea/VBoxContainer/RegistrarArea/RegistrarLink" to="." method="_on_registrar_link_pressed"]
 [connection signal="pressed" from="SaveSlot/Fundo/AreaBotoes/Slot1" to="." method="_on_slot_1_pressed"]
 [connection signal="pressed" from="SaveSlot/Fundo/AreaBotoes/Slot2" to="." method="_on_slot_2_pressed"]
 [connection signal="pressed" from="SaveSlot/Fundo/AreaBotoes/Slot3" to="." method="_on_slot_3_pressed"]
 
+[editable path="MenuPrincipal"]
+[editable path="BarraUsuario"]
 [editable path="Cadastro"]
 [editable path="Login"]
-[editable path="MenuPrincipal"]
 [editable path="SaveSlot"]
 [editable path="SaveSlot/Fundo/AreaBotoes/Slot1"]
 [editable path="SaveSlot/Fundo/AreaBotoes/Slot2"]
 [editable path="SaveSlot/Fundo/AreaBotoes/Slot3"]
-[editable path="Minesweeper"]
