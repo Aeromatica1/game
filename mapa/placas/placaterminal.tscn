@@ -3,9 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://dvrqruqcjxvxp" path="res://assets/tilesets/5.png" id="1_lrqh3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c0xmb"]
-size = Vector2(52, 45)
+size = Vector2(11, 6.5)
 
-[node name="placaterminal" type="StaticBody2D" unique_id=540938001]
+[node name="Node2D" type="Node2D" unique_id=1991834648]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1270233570]
 position = Vector2(1.9073486e-06, 0)
@@ -14,6 +14,12 @@ texture = ExtResource("1_lrqh3")
 region_enabled = true
 region_rect = Rect2(674, 630, 44, 36)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=332404289]
-position = Vector2(0, 0.5)
+[node name="placaterminal" type="StaticBody2D" parent="." unique_id=540938001]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="placaterminal" unique_id=332404289]
+position = Vector2(-26.5, 29.25)
+shape = SubResource("RectangleShape2D_c0xmb")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="placaterminal" unique_id=1455940094]
+position = Vector2(29, 29)
 shape = SubResource("RectangleShape2D_c0xmb")

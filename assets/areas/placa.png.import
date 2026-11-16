@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://l7ce45ncp4bv"
-path="res://.godot/imported/sushis.png-174994f10802e37d3c56bf5f8261917c.ctex"
+uid="uid://5c5ujlqfrbx5"
+path="res://.godot/imported/placa.png-30b107bb32b260fdd5d98185b09fa369.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/areas/sushis.png"
-dest_files=["res://.godot/imported/sushis.png-174994f10802e37d3c56bf5f8261917c.ctex"]
+source_file="res://assets/areas/placa.png"
+dest_files=["res://.godot/imported/placa.png-30b107bb32b260fdd5d98185b09fa369.ctex"]
 
 [params]
 

@@ -75,6 +75,7 @@ func _exit_tree() -> void:
 	if is_instance_valid(m):
 		m.liberar_npc(self)
 
+@export var y_corte = -300
 
 func _process(delta: float) -> void:
 	match estado:
@@ -92,6 +93,9 @@ func _process(delta: float) -> void:
 			_timer -= delta
 			if _timer <= 0.0 or m.deve_levantar(delta):
 				_levantar()
+				
+	var y_local := global_position.y
+	z_index = 200 if y_local > y_corte else 0
 
 
 # ------------------------------------------------------------------ decisões

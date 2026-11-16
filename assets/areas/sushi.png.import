@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://5c5ujlqfrbx5"
-path="res://.godot/imported/placa.png-9430e9a24915d4e4e73bec59e7892dab.ctex"
+uid="uid://l7ce45ncp4bv"
+path="res://.godot/imported/sushi.png-b8d289b19d89e5bb78dac90740a7ad5b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mapa/portoes/balcoes/placa.png"
-dest_files=["res://.godot/imported/placa.png-9430e9a24915d4e4e73bec59e7892dab.ctex"]
+source_file="res://assets/areas/sushi.png"
+dest_files=["res://.godot/imported/sushi.png-b8d289b19d89e5bb78dac90740a7ad5b.ctex"]
 
 [params]
 

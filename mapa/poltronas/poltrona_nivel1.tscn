@@ -3,19 +3,19 @@
 [ext_resource type="Texture2D" uid="uid://gw5nbsv81xq" path="res://assets/tilesets/2.png" id="1_r44na"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o60xc"]
-size = Vector2(192, 48)
+size = Vector2(192, 46)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gjbeo"]
 size = Vector2(192, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3lcau"]
-size = Vector2(192, 48)
+size = Vector2(192, 46)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nbnpn"]
 size = Vector2(192, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lmtmf"]
-size = Vector2(192, 48)
+size = Vector2(192, 45)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xrin6"]
 size = Vector2(192, 48)
@@ -32,6 +32,7 @@ region_rect = Rect2(0, 0, 194.14851, 49.47689)
 [node name="StaticBody2D" type="StaticBody2D" parent="Fileira1" unique_id=234314429]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Fileira1/StaticBody2D" unique_id=1168734736]
+position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_o60xc")
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="Fileira1" unique_id=2030673772]
@@ -67,7 +68,7 @@ region_rect = Rect2(0, 0, 194.14851, 49.47689)
 [node name="StaticBody2D" type="StaticBody2D" parent="Fileira3" unique_id=398702092]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Fileira3/StaticBody2D" unique_id=1792151164]
-position = Vector2(0, 56)
+position = Vector2(0, 57)
 shape = SubResource("RectangleShape2D_3lcau")
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="Fileira3" unique_id=898887879]
@@ -101,7 +102,7 @@ region_rect = Rect2(0, 0, 194.14851, 49.47689)
 [node name="StaticBody2D" type="StaticBody2D" parent="Fileira5" unique_id=387960610]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Fileira5/StaticBody2D" unique_id=598916296]
-position = Vector2(0, 112)
+position = Vector2(0, 112.5)
 shape = SubResource("RectangleShape2D_lmtmf")
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="Fileira5" unique_id=978425293]

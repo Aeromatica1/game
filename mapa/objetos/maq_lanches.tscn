@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c0xmb"]
 size = Vector2(165, 102)
 
-[node name="maq_lanches" type="StaticBody2D" unique_id=416190523]
+[node name="Node2D" type="Node2D" unique_id=385482150]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1523089157]
 position = Vector2(4.5, -3)
@@ -14,6 +14,8 @@ texture = ExtResource("1_mvqaw")
 region_enabled = true
 region_rect = Rect2(288, 0, 162, 100)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2120191756]
+[node name="maq_lanches" type="StaticBody2D" parent="." unique_id=416190523]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="maq_lanches" unique_id=2120191756]
 position = Vector2(3.5, -4)
 shape = SubResource("RectangleShape2D_c0xmb")

@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bbck8rxcx3d40"]
+
+[ext_resource type="Texture2D" uid="uid://43y7tfsicaci" path="res://assets/tilesets/3.png" id="1_lj2a1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l7tio"]
+size = Vector2(16, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ilb3f"]
+size = Vector2(13, 20.5)
+
+[node name="PlacaCheckin" type="Node2D" unique_id=587951476]
+
+[node name="PlacaCheckIn1" type="Sprite2D" parent="." unique_id=2117693613]
+position = Vector2(3.0517578e-05, -3.0517578e-05)
+scale = Vector2(1.1597939, 1.2578948)
+texture = ExtResource("1_lj2a1")
+region_enabled = true
+region_rect = Rect2(670.3374, 105.202225, 97.6626, 95.7673)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1491263025]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1019184087]
+position = Vector2(-44, 40)
+shape = SubResource("RectangleShape2D_l7tio")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=1576689771]
+position = Vector2(47.5, 39.75)
+shape = SubResource("RectangleShape2D_ilb3f")

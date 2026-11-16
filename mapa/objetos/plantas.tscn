@@ -3,15 +3,24 @@
 [ext_resource type="Texture2D" uid="uid://gw5nbsv81xq" path="res://assets/tilesets/2.png" id="1_0lky3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c0xmb"]
-size = Vector2(135, 72)
+size = Vector2(88, 72)
 
-[node name="planta1" type="StaticBody2D" unique_id=273131410]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ywhkb"]
+size = Vector2(35.875, 41.5)
+
+[node name="Node2D" type="Node2D" unique_id=1017710856]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=178201507]
 texture = ExtResource("1_0lky3")
 region_enabled = true
 region_rect = Rect2(6, 698, 136, 70)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=290968544]
-position = Vector2(-0.5, 0)
+[node name="planta1" type="StaticBody2D" parent="." unique_id=273131410]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="planta1" unique_id=290968544]
+position = Vector2(23, 0)
 shape = SubResource("RectangleShape2D_c0xmb")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="planta1" unique_id=903866471]
+position = Vector2(-48.9375, 13.75)
+shape = SubResource("RectangleShape2D_ywhkb")

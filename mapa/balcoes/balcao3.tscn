@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://chh4c34073pbk"]
+
+[ext_resource type="Texture2D" uid="uid://43y7tfsicaci" path="res://assets/tilesets/3.png" id="1_mfoei"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wxtkj"]
+size = Vector2(359, 72)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ilb3f"]
+size = Vector2(33, 39)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l7tio"]
+size = Vector2(41.25, 17)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_l7tio"]
+height = 43.07338
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j7jb1"]
+size = Vector2(45, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5vyh2"]
+size = Vector2(111, 56)
+
+[node name="Node2D" type="Node2D" unique_id=1337239408]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=887670684]
+position = Vector2(-12, -27.999998)
+scale = Vector2(1.1829575, 1.3465347)
+texture = ExtResource("1_mfoei")
+region_enabled = true
+region_rect = Rect2(368.28003, 480.66742, 399.08356, 101.77411)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=124601913]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1579257285]
+position = Vector2(-68.5, -4)
+shape = SubResource("RectangleShape2D_wxtkj")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D" unique_id=1761751153]
+position = Vector2(-214.5, -59.5)
+shape = SubResource("RectangleShape2D_ilb3f")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D" unique_id=238723424]
+position = Vector2(32.375, -48)
+shape = SubResource("RectangleShape2D_l7tio")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="StaticBody2D" unique_id=656235270]
+position = Vector2(-231.99998, -48.000004)
+rotation = 0.36128315
+shape = SubResource("CapsuleShape2D_l7tio")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=279930443]
+position = Vector2(-160.5, -50)
+shape = SubResource("RectangleShape2D_j7jb1")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="StaticBody2D" unique_id=1565767015]
+position = Vector2(168.5, 1)
+shape = SubResource("RectangleShape2D_5vyh2")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1509850820]
+position = Vector2(-48, -24)
+vertices = PackedVector2Array(-200, -8, 200, -8, 200, 48, -200, 48)
