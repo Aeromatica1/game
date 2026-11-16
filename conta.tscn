@@ -1,0 +1,167 @@
+[gd_scene format=3 uid="uid://bbwh8ow58otjv"]
+
+[ext_resource type="Texture2D" uid="uid://bmsaen6ctcl75" path="res://menu_principal/fundo_aeromatica (1).png" id="1_v087e"]
+[ext_resource type="FontFile" uid="uid://6v12gewyr54t" path="res://assets/fonts/Silkscreen-Regular.ttf" id="2_7txxv"]
+[ext_resource type="Texture2D" uid="uid://diheuf0rqjaam" path="res://assets/fonts/pencil.png" id="3_on4rb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_msah1"]
+font_size = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fvqx8"]
+bg_color = Color(0.03529412, 0.17254902, 0.29803923, 0.9764706)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[node name="Conta" type="Control" unique_id=12880873]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Fundo" type="TextureRect" parent="." unique_id=1625864394]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_v087e")
+expand_mode = 1
+
+[node name="Titulo" type="Label" parent="." unique_id=1098411197]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 109.0
+theme_override_font_sizes/font_size = 16
+text = "Conta"
+label_settings = SubResource("LabelSettings_msah1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContaArea" type="Panel" parent="." unique_id=891431871]
+layout_mode = 0
+offset_left = 229.5
+offset_top = 109.0
+offset_right = 922.5
+offset_bottom = 589.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fvqx8")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ContaArea" unique_id=1335721386]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 68.5
+offset_top = 63.0
+offset_right = -62.5
+offset_bottom = -61.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 35
+
+[node name="UsuarioArea" type="HBoxContainer" parent="ContaArea/VBoxContainer" unique_id=1915543812]
+layout_mode = 2
+
+[node name="UsuarioTexto" type="Label" parent="ContaArea/VBoxContainer/UsuarioArea" unique_id=1151862132]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_7txxv")
+text = "Usuário"
+vertical_alignment = 1
+
+[node name="UsuarioCampo" type="LineEdit" parent="ContaArea/VBoxContainer/UsuarioArea" unique_id=546825741]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.6
+theme_override_fonts/font = ExtResource("2_7txxv")
+placeholder_text = "Username"
+
+[node name="EditBotao" type="TextureButton" parent="ContaArea/VBoxContainer/UsuarioArea" unique_id=146317561]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture_normal = ExtResource("3_on4rb")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="EmailArea" type="HBoxContainer" parent="ContaArea/VBoxContainer" unique_id=382072483]
+layout_mode = 2
+
+[node name="EmailTexto" type="Label" parent="ContaArea/VBoxContainer/EmailArea" unique_id=1538112434]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_7txxv")
+text = "E-mail"
+vertical_alignment = 1
+
+[node name="EmailCampo" type="LineEdit" parent="ContaArea/VBoxContainer/EmailArea" unique_id=224323085]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.6
+theme_override_fonts/font = ExtResource("2_7txxv")
+placeholder_text = "E-mail"
+
+[node name="EditBotao2" type="TextureButton" parent="ContaArea/VBoxContainer/EmailArea" unique_id=663328564]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture_normal = ExtResource("3_on4rb")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="SenhaArea" type="HBoxContainer" parent="ContaArea/VBoxContainer" unique_id=821413498]
+layout_mode = 2
+
+[node name="SenhaTexto" type="Label" parent="ContaArea/VBoxContainer/SenhaArea" unique_id=1070763600]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_7txxv")
+text = "Senha"
+vertical_alignment = 1
+
+[node name="SenhaCampo" type="LineEdit" parent="ContaArea/VBoxContainer/SenhaArea" unique_id=570855607]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.6
+theme_override_fonts/font = ExtResource("2_7txxv")
+placeholder_text = "Senha"
+secret = true
+
+[node name="EditBotao2" type="TextureButton" parent="ContaArea/VBoxContainer/SenhaArea" unique_id=1663964165]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture_normal = ExtResource("3_on4rb")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="ApagarArea" type="HBoxContainer" parent="ContaArea/VBoxContainer" unique_id=1226238007]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+alignment = 1
+
+[node name="ApagarLink" type="LinkButton" parent="ContaArea/VBoxContainer/ApagarArea" unique_id=326607058]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Deletar Conta"
+
+[node name="LogoutArea" type="HBoxContainer" parent="ContaArea/VBoxContainer" unique_id=116687067]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+alignment = 1
+
+[node name="SairLink" type="LinkButton" parent="ContaArea/VBoxContainer/LogoutArea" unique_id=315840502]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Sair"
