@@ -17,23 +17,39 @@ const CURVE_CROP := 24     # parte do quadro da curva usada (do canto até a bor
 const PIXEL_SCALE := 2     # cada pixel de arte vira 2x2 na tela: quadro de 32 = célula de 64
 const ANIM_FPS := 10.0     # quadros por segundo da animação das esteiras
 
-# Arte opcional do grid em pixel art (cada uma 64x64). Se o arquivo não existir,
-# o jogo usa quadrados de cor no lugar.
-const GRID_CELL_PATH := "res://Grid_Celula.png"   # célula normal
-const GRID_EMPTY_PATH := "res://Grid_Vazio.png"   # célula sem peça
-
-# Sprite da mala: quando você criar o PNG, salve com este nome/caminho.
-# Enquanto o arquivo não existir, um retângulo marrom é usado no lugar.
+# Sprite da mala: salve como Mala.png na raiz do projeto (res://). Enquanto o arquivo não
+# existir, um retângulo marrom é usado no lugar.
 const MALA_PATH := "res://Mala.png"
 const MALA_MAX_SIZE := 40.0      # a mala é reduzida automaticamente se passar disso (px)
 const DELIVERY_SPEED := 280.0    # velocidade da mala em pixels por segundo
+
+# Grade em pixel art: o PNG 4x4 que você desenhou é a ÚNICA fonte. O jogo recorta a moldura e a
+# célula dele e monta a grade do tamanho de cada nível (4x4 até 9x9), sem precisar de outros PNGs.
+const TEX_GRID: Texture2D = preload("res://assets/PecasEncanador/GridEncanador.png")
+# Medidas do PNG 300x300 (em pixels): o desenho começa em (8, 8), há margem transparente em volta.
+const G_X0 := 8            # x/y do canto superior esquerdo do desenho
+const G_Y0 := 8
+const G_TILE_X := 87       # célula-modelo (linha de divisão + 63 de preenchimento = 64x64)
+const G_TILE_Y := 88
+const G_RIGHT_X := 279     # onde começa a moldura da direita (inclui a linha de fechamento)
+const G_BOTTOM_Y := 280    # onde começa a moldura de baixo (inclui a linha de fechamento)
+const G_FRAME_L := 16      # espessura da moldura: esquerda, direita, cima e baixo
+const G_FRAME_R := 17
+const G_FRAME_T := 17
+const G_FRAME_B := 18
+
+# Ícone das células vazias. Opcional: salve o seu desenho como Icone_Vazio.png em res://
+# (ele é ampliado por PIXEL_SCALE, como as esteiras). Sem o arquivo, o jogo desenha um "X".
+const EMPTY_ICON_PATH := "res://Icone_Vazio.png"
+const COLOR_ICON := Color("#52628a")
+const COLOR_ICON_SHADE := Color("#1a2236")
 
 # ---------------------------------------------------------------- GRADE -----
 const MIN_SIZE := 4       # tamanho da grade no nível 1 (4x4)
 const MAX_SIZE := 9       # tamanho máximo (9x9) - cresce 1 por nível
 const HUD_W := 512        # largura fixa do HUD (barra de tempo, textos)
 const BOARD_TOP := 66     # onde começa a área do tabuleiro (abaixo do HUD)
-const BOARD_BOTTOM_MARGIN := 6   # com 648 px de altura, o 9x9 (576 px) cabe sem reduzir
+const BOARD_BOTTOM_MARGIN := 6   # o 9x9 com moldura tem 611 px de altura: use janela de 1280x720
 const CELL := 64          # tamanho de cada célula em pixels
 const BELT_W := 32        # largura da esteira (= tamanho do sprite reto)
 const MARGIN := 16        # (CELL - BELT_W) / 2  -> esteira centralizada na célula
@@ -63,11 +79,6 @@ enum State { PLAYING, DELIVERING, WON, LOST }
 
 # Cores
 const COLOR_BG := Color("#2b2f3a")
-const COLOR_BOARD := Color("#c9ccd2")
-const COLOR_CELL_A := Color("#c9ccd2")
-const COLOR_CELL_B := Color("#bfc3ca")
-const COLOR_EMPTY := Color("#9da1ab")
-const COLOR_EMPTY_INNER := Color("#8a8e99")
 const COLOR_POWERED := Color(1.5, 2.5, 4.0)  # tinge de azul as esteiras conectadas
 const COLOR_IN := Color("#2f7dff")
 const COLOR_OUT_OFF := Color("#2e8b57")
@@ -100,7 +111,6 @@ var lock_until := 0
 
 var cols := MIN_SIZE
 var rows := MIN_SIZE
-var board_bg: ColorRect
 var start_row := 0
 var end_row := 0
 var grid: Array = []
@@ -125,11 +135,6 @@ func _ready() -> void:
 	var vp := get_viewport_rect().size
 	board = Node2D.new()
 	add_child(board)
-
-	board_bg = ColorRect.new()
-	board_bg.color = COLOR_BOARD
-	board_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	board.add_child(board_bg)
 
 	_build_hud(vp)
 	_build_frames()
@@ -203,15 +208,17 @@ func _level_time() -> float:
 ## Ajusta tamanho, escala e posição do tabuleiro para a grade atual.
 func _layout_board() -> void:
 	var vp := get_viewport_rect().size
-	var px := float(cols * CELL)
+	# tamanho da imagem do tabuleiro: moldura + células
+	var img_size := Vector2(G_FRAME_L + cols * CELL + G_FRAME_R, G_FRAME_T + rows * CELL + G_FRAME_B)
 	var avail := vp.y - BOARD_TOP - BOARD_BOTTOM_MARGIN
-	var s := minf(1.0, avail / px)   # só reduz se não couber (ex.: 9x9)
+	var s := minf(1.0, avail / img_size.y)   # só reduz se não couber
 	board.scale = Vector2(s, s)
-	board.position = Vector2(
-		(vp.x - px * s) / 2.0,
-		BOARD_TOP + (avail - px * s) / 2.0
-	).round()   # posição em pixels inteiros
-	board_bg.size = Vector2(px, px)
+	var top_left := Vector2(
+		(vp.x - img_size.x * s) / 2.0,
+		BOARD_TOP + (avail - img_size.y * s) / 2.0
+	)
+	# a origem do "board" é o canto da primeira célula (logo depois da moldura)
+	board.position = (top_left + Vector2(G_FRAME_L, G_FRAME_T) * s).round()   # pixels inteiros
 
 
 func _empty_chance() -> float:
@@ -266,7 +273,8 @@ func _new_level() -> void:
 				kinds[c] = Kind.I if randf() < 0.45 else _random_curve()
 
 	# 3) fundo do grid (atrás de tudo) e marcadores de início/fim
-	_make_cell_backgrounds(kinds)
+	_make_board_frame()
+	_make_empty_icons(kinds)
 	_make_markers()
 
 	# 4) cria as peças e embaralha
@@ -295,43 +303,74 @@ func _new_level() -> void:
 	_update_hud()
 
 
-func _load_optional(path: String) -> Texture2D:
-	if ResourceLoader.exists(path):
-		return load(path) as Texture2D
-	return null
+## Moldura + células da grade, montadas a partir do desenho 4x4.
+func _make_board_frame() -> void:
+	var sp := Sprite2D.new()
+	sp.texture = ImageTexture.create_from_image(_build_board_image(cols))
+	sp.centered = false
+	sp.position = Vector2(-G_FRAME_L, -G_FRAME_T)
+	level_root.add_child(sp)
 
 
-## Fundo de cada célula: usa os PNGs 64x64 se existirem, senão quadrados de cor.
-func _make_cell_backgrounds(kinds: Dictionary) -> void:
-	var tex_cell := _load_optional(GRID_CELL_PATH)
-	var tex_empty := _load_optional(GRID_EMPTY_PATH)
+## Coloca o ícone em cada célula que ficou sem peça.
+func _make_empty_icons(kinds: Dictionary) -> void:
+	var tex := _empty_icon_texture()
 	for y in rows:
 		for x in cols:
-			var c := Vector2i(x, y)
-			var is_empty := not kinds.has(c)
-			var tex := tex_empty if is_empty else tex_cell
-			if tex:
-				var sp := Sprite2D.new()
-				sp.texture = tex
-				sp.centered = false
-				sp.position = Vector2(c) * CELL
-				level_root.add_child(sp)
-			else:
-				var r := ColorRect.new()
-				r.size = Vector2(CELL, CELL)
-				r.position = Vector2(c) * CELL
-				r.mouse_filter = Control.MOUSE_FILTER_IGNORE
-				if is_empty:
-					r.color = COLOR_EMPTY
-					var inner := ColorRect.new()   # "buraco" afundado
-					inner.color = COLOR_EMPTY_INNER
-					inner.size = Vector2(CELL - 16, CELL - 16)
-					inner.position = Vector2(8, 8)
-					inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
-					r.add_child(inner)
-				else:
-					r.color = COLOR_CELL_A if (x + y) % 2 == 0 else COLOR_CELL_B
-				level_root.add_child(r)
+			if kinds.has(Vector2i(x, y)):
+				continue
+			var sp := Sprite2D.new()
+			sp.texture = tex
+			sp.scale = Vector2(PIXEL_SCALE, PIXEL_SCALE)
+			sp.position = Vector2(x, y) * CELL + Vector2(CELL, CELL) / 2.0
+			level_root.add_child(sp)
+
+
+## Ícone da célula vazia: o seu PNG, se existir; senão um "X" de 11x11 pixels com sombra.
+func _empty_icon_texture() -> Texture2D:
+	if ResourceLoader.exists(EMPTY_ICON_PATH):
+		return load(EMPTY_ICON_PATH) as Texture2D
+	var n := 11
+	var img := Image.create(n, n, false, Image.FORMAT_RGBA8)
+	var pts: Array[Vector2i] = []
+	for i in 9:
+		pts.append(Vector2i(i, i))
+		pts.append(Vector2i(i + 1, i))
+		pts.append(Vector2i(8 - i, i))
+		pts.append(Vector2i(9 - i, i))
+	for p in pts:
+		img.set_pixelv(p + Vector2i(1, 1), COLOR_ICON_SHADE)   # sombra
+	for p in pts:
+		img.set_pixelv(p, COLOR_ICON)
+	return ImageTexture.create_from_image(img)
+
+
+## Monta a imagem n x n: 4 cantos + bordas repetidas + células repetidas.
+func _build_board_image(n: int) -> Image:
+	var src := TEX_GRID.get_image()
+	if src.is_compressed():
+		src.decompress()
+	src.convert(Image.FORMAT_RGBA8)
+	var L := G_FRAME_L
+	var R := G_FRAME_R
+	var T := G_FRAME_T
+	var B := G_FRAME_B
+	var img := Image.create(L + n * CELL + R, T + n * CELL + B, false, Image.FORMAT_RGBA8)
+	# cantos
+	img.blit_rect(src, Rect2i(G_X0, G_Y0, L, T), Vector2i(0, 0))
+	img.blit_rect(src, Rect2i(G_RIGHT_X, G_Y0, R, T), Vector2i(L + n * CELL, 0))
+	img.blit_rect(src, Rect2i(G_X0, G_BOTTOM_Y, L, B), Vector2i(0, T + n * CELL))
+	img.blit_rect(src, Rect2i(G_RIGHT_X, G_BOTTOM_Y, R, B), Vector2i(L + n * CELL, T + n * CELL))
+	for i in n:
+		# bordas (a moldura é igual ao longo de todo o lado)
+		img.blit_rect(src, Rect2i(G_TILE_X, G_Y0, CELL, T), Vector2i(L + i * CELL, 0))
+		img.blit_rect(src, Rect2i(G_TILE_X, G_BOTTOM_Y, CELL, B), Vector2i(L + i * CELL, T + n * CELL))
+		img.blit_rect(src, Rect2i(G_X0, G_TILE_Y, L, CELL), Vector2i(0, T + i * CELL))
+		img.blit_rect(src, Rect2i(G_RIGHT_X, G_TILE_Y, R, CELL), Vector2i(L + n * CELL, T + i * CELL))
+		# células
+		for j in n:
+			img.blit_rect(src, Rect2i(G_TILE_X, G_TILE_Y, CELL, CELL), Vector2i(L + i * CELL, T + j * CELL))
+	return img
 
 
 # ------------------------------------------------- INÍCIO / FIM (marcadores) --
@@ -347,8 +386,8 @@ func _make_markers() -> void:
 func _make_cell_highlight(c: Vector2i, color: Color) -> void:
 	var r := ColorRect.new()
 	r.color = color
-	r.size = Vector2(CELL, CELL)
-	r.position = Vector2(c) * CELL
+	r.size = Vector2(CELL - 1, CELL - 1)            # deixa a linha de divisão da grade visível
+	r.position = Vector2(c) * CELL + Vector2(1, 1)
 	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	level_root.add_child(r)
 
