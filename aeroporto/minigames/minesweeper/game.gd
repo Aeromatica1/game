@@ -20,22 +20,24 @@ enum State { READY, PLAYING, WON, LOST }
 
 const Scores = preload("res://aeroporto/minigames/minesweeper/minesweeper_scores.gd")
 
-const TEX_HIDDEN: Texture2D = preload("res://assets/minesweeper_minigame/hidden.png")
-const TEX_SAFE: Texture2D = preload("res://assets/minesweeper_minigame/safe.png")
-const TEX_FLAG: Texture2D = preload("res://assets/minesweeper_minigame/flag.png")
-const TEX_MINE: Texture2D = preload("res://assets/minesweeper_minigame/mine.png")
-const TEX_MINE_HIT: Texture2D = preload("res://assets/minesweeper_minigame/mine_selected.png")
+const PREFIX = "res://assets/minigames/minesweeper/"
+
+const TEX_HIDDEN: Texture2D = preload(PREFIX + "hidden.png")
+const TEX_SAFE: Texture2D = preload(PREFIX + "safe.png")
+const TEX_FLAG: Texture2D = preload(PREFIX + "flag.png")
+const TEX_MINE: Texture2D = preload(PREFIX + "mine.png")
+const TEX_MINE_HIT: Texture2D = preload(PREFIX + "mine_selected.png")
 ## índice = quantidade de minas vizinhas (0 usa TEX_SAFE)
 const NUMBER_TEXTURES = [
 	null,
-	preload("res://assets/minesweeper_minigame/1.png"),
-	preload("res://assets/minesweeper_minigame/2.png"),
-	preload("res://assets/minesweeper_minigame/3.png"),
-	preload("res://assets/minesweeper_minigame/4.png"),
-	preload("res://assets/minesweeper_minigame/5.png"),
-	preload("res://assets/minesweeper_minigame/6.png"),
-	preload("res://assets/minesweeper_minigame/7.png"),
-	preload("res://assets/minesweeper_minigame/8.png"),
+	preload(PREFIX + "1.png"),
+	preload(PREFIX + "2.png"),
+	preload(PREFIX + "3.png"),
+	preload(PREFIX + "4.png"),
+	preload(PREFIX + "5.png"),
+	preload(PREFIX + "6.png"),
+	preload(PREFIX + "7.png"),
+	preload(PREFIX + "8.png"),
 ]
 const MARK_FONT: Font = preload("res://assets/pixel_operator/PixelOperatorMono-Bold.ttf")
 

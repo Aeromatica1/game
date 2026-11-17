@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://xc1mgos0s6c6" path="res://ui/barra_aeroporto/barra_aeroporto.gd" id="1_gu55u"]
 [ext_resource type="Texture2D" uid="uid://cqhq4ijul4q3e" path="res://assets/icons/dollaricon.png" id="1_y6bl5"]
 [ext_resource type="Texture2D" uid="uid://cr0ffugxviieq" path="res://assets/icons/tasksicon.png" id="2_8hvx6"]
+[ext_resource type="Texture2D" uid="uid://bn31lp8frhhas" path="res://assets/fonts/return.png" id="2_cen7h"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_l7tio"]
 font_size = 20
@@ -16,7 +17,7 @@ offset_top = 18.0
 offset_right = 108.0
 offset_bottom = 63.0
 accessibility_name = "Voltar"
-icon = ExtResource("1_y6bl5")
+icon = ExtResource("2_cen7h")
 icon_alignment = 1
 expand_icon = true
 
@@ -27,8 +28,7 @@ offset_right = 1084.0
 offset_bottom = 63.0
 text = "User"
 
-
-[node name="Conta" type="Button" parent="." unique_id=2094206470]
+[node name="Conta2" type="Button" parent="." unique_id=1808844606]
 offset_left = 1000.0
 offset_top = 18.0
 offset_right = 1084.0

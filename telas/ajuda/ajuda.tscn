@@ -1,0 +1,203 @@
+[gd_scene format=3 uid="uid://cc3ba4ijqen0l"]
+
+[ext_resource type="FontFile" uid="uid://6v12gewyr54t" path="res://assets/fonts/Silkscreen-Regular.ttf" id="2_titulo"]
+[ext_resource type="FontFile" uid="uid://l0a4ugx7t1rc" path="res://assets/pixel_operator/PixelOperator.ttf" id="3_normal"]
+[ext_resource type="FontFile" uid="uid://cd3wmtftebbky" path="res://assets/pixel_operator/PixelOperator-Bold.ttf" id="4_bold"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_acqxo"]
+font_size = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bec0o"]
+bg_color = Color(0.03529412, 0.17254902, 0.29803923, 0.9764706)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_painel_abas"]
+content_margin_left = 20.0
+content_margin_top = 14.0
+content_margin_right = 14.0
+content_margin_bottom = 14.0
+bg_color = Color(0.1, 0.37, 0.64, 1)
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab_un"]
+content_margin_left = 18.0
+content_margin_top = 6.0
+content_margin_right = 18.0
+content_margin_bottom = 6.0
+bg_color = Color(0.06, 0.24, 0.42, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab_hov"]
+content_margin_left = 18.0
+content_margin_top = 6.0
+content_margin_right = 18.0
+content_margin_bottom = 6.0
+bg_color = Color(0.14, 0.45, 0.74, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab_sel"]
+content_margin_left = 18.0
+content_margin_top = 6.0
+content_margin_right = 18.0
+content_margin_bottom = 6.0
+bg_color = Color(0.1, 0.37, 0.64, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+
+[node name="Ajuda" type="Control" unique_id=448748243]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Titulo" type="Label" parent="." unique_id=1271722441]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 109.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_titulo")
+text = "Ajuda"
+label_settings = SubResource("LabelSettings_acqxo")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AjudaArea" type="Panel" parent="." unique_id=1882609662]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -520.0
+offset_top = -214.0
+offset_right = 520.0
+offset_bottom = 286.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bec0o")
+
+[node name="Abas" type="TabContainer" parent="AjudaArea" unique_id=738272997]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 16.0
+offset_right = -20.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_selected_color = Color(1, 0.85, 0.35, 1)
+theme_override_colors/font_hovered_color = Color(1, 1, 1, 1)
+theme_override_colors/font_unselected_color = Color(0.88, 0.95, 1, 1)
+theme_override_constants/side_margin = 0
+theme_override_fonts/font = ExtResource("4_bold")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/panel = SubResource("StyleBoxFlat_painel_abas")
+theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_tab_un")
+theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_tab_hov")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_tab_sel")
+current_tab = 0
+
+[node name="O Jogo" type="RichTextLabel" parent="AjudaArea/Abas" unique_id=101000001]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.88, 0.95, 1, 1)
+theme_override_constants/line_separation = 6
+theme_override_fonts/normal_font = ExtResource("3_normal")
+theme_override_fonts/bold_font = ExtResource("4_bold")
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+bbcode_enabled = true
+text = "[font_size=32][color=#ffd95a]Bem-vindo ao Aeromática![/color][/font_size]
+Você administra um aeroporto inteiro: portões, guichês, comércio e rotas. Para isso, a [b]matemática[/b] é a sua maior aliada.
+
+[font_size=32][color=#ffd95a]Por que a matemática importa?[/color][/font_size]
+Os funcionários do aeroporto propõem [b]questões matemáticas[/b]. Acertar rende [b]experiência, dinheiro e outros benefícios[/b]. É com esses ganhos que você paga upgrades e expansões e faz o aeroporto subir de nível.
+
+[font_size=32][color=#ffd95a]Evolução em 4 níveis[/color][/font_size]
+[color=#ffd95a][b]Nível 1[/b][/color]  Aritmética básica, função afim e geometria plana.
+[color=#ffd95a][b]Nível 2[/b][/color]  Álgebra e sistemas de equações. Libera o comércio (aluguel de espaços).
+[color=#ffd95a][b]Nível 3[/b][/color]  Função quadrática, PA e PG. Libera viagens internacionais.
+[color=#ffd95a][b]Nível 4[/b][/color]  Raciocínio lógico, combinatória e probabilidade.
+
+Quanto mais o aeroporto cresce, mais difíceis ficam as questões."
+metadata/_tab_index = 0
+
+[node name="Minigames" type="RichTextLabel" parent="AjudaArea/Abas" unique_id=101000002]
+visible = false
+layout_mode = 2
+theme_override_colors/default_color = Color(0.88, 0.95, 1, 1)
+theme_override_constants/line_separation = 6
+theme_override_fonts/normal_font = ExtResource("3_normal")
+theme_override_fonts/bold_font = ExtResource("4_bold")
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+bbcode_enabled = true
+text = "[font_size=32][color=#ffd95a]Minigames[/color][/font_size]
+Aqui a matemática aparece como [b]lógica, grades e padrões[/b]. Para jogar, chegue perto de um funcionário que mostre [bgcolor=#06223c][color=#ffffff] E - Jogar [/color][/bgcolor] e aperte [bgcolor=#06223c][color=#ffffff] E [/color][/bgcolor]. Para sair, aperte [bgcolor=#06223c][color=#ffffff] Esc [/color][/bgcolor].
+
+[font_size=32][color=#ffd95a]Organização de malas[/color][/font_size]
+[b]Estilo Tetris.[/b] Com o [b]mouse[/b], arraste as peças da bandeja até o tabuleiro. Linhas ou colunas completas desaparecem e dão pontos; várias de uma vez valem mais. O jogo acaba quando nenhuma peça cabe.
+
+[font_size=32][color=#ffd95a]Campo Minado[/color][/font_size]
+[b]Mapeie os pontos de inspeção[/b] sem pisar em nenhuma mina. Cada número indica quantas minas existem nas casas vizinhas. O primeiro clique é sempre seguro.
+[bgcolor=#06223c][color=#ffffff] Botão esquerdo [/color][/bgcolor] revela a casa    [bgcolor=#06223c][color=#ffffff] Botão direito [/color][/bgcolor] marca com bandeira
+[bgcolor=#06223c][color=#ffffff] F2 [/color][/bgcolor] ou clique no rostinho reinicia a partida.
+
+[font_size=32][color=#ffd95a]Encanador (em breve)[/color][/font_size]
+[b]Monte as rotas das esteiras[/b] ligando as peças até as malas chegarem ao avião certo, pelo caminho mais curto."
+metadata/_tab_index = 1
+
+[node name="Controles" type="RichTextLabel" parent="AjudaArea/Abas" unique_id=101000003]
+visible = false
+layout_mode = 2
+theme_override_colors/default_color = Color(0.88, 0.95, 1, 1)
+theme_override_constants/line_separation = 6
+theme_override_fonts/normal_font = ExtResource("3_normal")
+theme_override_fonts/bold_font = ExtResource("4_bold")
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+bbcode_enabled = true
+text = "[font_size=32][color=#ffd95a]Movimento[/color][/font_size]
+[bgcolor=#06223c][color=#ffffff] W [/color][/bgcolor] [bgcolor=#06223c][color=#ffffff] A [/color][/bgcolor] [bgcolor=#06223c][color=#ffffff] S [/color][/bgcolor] [bgcolor=#06223c][color=#ffffff] D [/color][/bgcolor] ou as [bgcolor=#06223c][color=#ffffff] Setas [/color][/bgcolor]   andar pelo aeroporto
+Segure [bgcolor=#06223c][color=#ffffff] Shift [/color][/bgcolor] enquanto anda   correr
+
+[font_size=32][color=#ffd95a]Interação[/color][/font_size]
+[bgcolor=#06223c][color=#ffffff] E [/color][/bgcolor] ou [bgcolor=#06223c][color=#ffffff] Enter [/color][/bgcolor]   falar com um funcionário ou jogar um minigame (a dica aparece perto dele)
+[bgcolor=#06223c][color=#ffffff] T [/color][/bgcolor] ou clique   alugar um espaço vazio (o símbolo [bgcolor=#06223c][color=#ffffff] + [/color][/bgcolor] no chão)
+
+[font_size=32][color=#ffd95a]Telas e menus[/color][/font_size]
+[bgcolor=#06223c][color=#ffffff] Esc [/color][/bgcolor]   fecha a questão ou o minigame e volta ao mapa
+[bgcolor=#06223c][color=#ffffff] Mouse [/color][/bgcolor]   clique nos botões e alternativas
+O mapa fica pausado enquanto uma questão ou minigame está aberto."
+metadata/_tab_index = 2
+
+[node name="Questões" type="RichTextLabel" parent="AjudaArea/Abas" unique_id=101000004]
+visible = false
+layout_mode = 2
+theme_override_colors/default_color = Color(0.88, 0.95, 1, 1)
+theme_override_constants/line_separation = 6
+theme_override_fonts/normal_font = ExtResource("3_normal")
+theme_override_fonts/bold_font = ExtResource("4_bold")
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+bbcode_enabled = true
+text = "[font_size=32][color=#ffd95a]Como responder uma questão[/color][/font_size]
+[color=#ffd95a][b]1.[/b][/color]  Chegue perto de um atendente e aperte [bgcolor=#06223c][color=#ffffff] E [/color][/bgcolor] ([bgcolor=#06223c][color=#ffffff] Enter [/color][/bgcolor] também vale). Ao alugar um espaço, a questão aparece depois que você escolhe o tipo de comércio.
+[color=#ffd95a][b]2.[/b][/color]  O jogo pausa e a questão abre: o enunciado fica no quadro e há [b]4 alternativas[/b] (A, B, C e D).
+[color=#ffd95a][b]3.[/b][/color]  Responda [b]clicando[/b] na alternativa ou apertando [bgcolor=#06223c][color=#ffffff] 1 [/color][/bgcolor] [bgcolor=#06223c][color=#ffffff] 2 [/color][/bgcolor] [bgcolor=#06223c][color=#ffffff] 3 [/color][/bgcolor] [bgcolor=#06223c][color=#ffffff] 4 [/color][/bgcolor] (ou [bgcolor=#06223c][color=#ffffff] A [/color][/bgcolor] [bgcolor=#06223c][color=#ffffff] B [/color][/bgcolor] [bgcolor=#06223c][color=#ffffff] C [/color][/bgcolor] [bgcolor=#06223c][color=#ffffff] D [/color][/bgcolor]).
+[color=#ffd95a][b]4.[/b][/color]  O resultado aparece na hora: [color=#7dff95]verde[/color] é a resposta certa e [color=#ff8a8a]vermelho[/color] é a sua, se estiver errada. [b]Só dá para responder uma vez[/b], então pense com calma.
+[color=#ffd95a][b]5.[/b][/color]  Aperte [bgcolor=#06223c][color=#ffffff] Esc [/color][/bgcolor] ou o botão [b]Continuar[/b] para voltar ao jogo.
+
+[color=#ffd95a]Dica:[/color] use papel e lápis à vontade. As contas são o caminho para evoluir o aeroporto!"
+metadata/_tab_index = 3

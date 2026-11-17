@@ -1,0 +1,166 @@
+[gd_scene format=3 uid="uid://qmp7poka7rhr"]
+
+[ext_resource type="Script" uid="uid://c18ufqfo78q2w" path="res://telas/opcoes/opcoes.gd" id="1_58dca"]
+[ext_resource type="FontFile" uid="uid://6v12gewyr54t" path="res://assets/fonts/Silkscreen-Regular.ttf" id="2_rti7y"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_p423y"]
+font_size = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8w7rj"]
+bg_color = Color(0.03529412, 0.17254902, 0.29803923, 0.9764706)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trilho"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.02, 0.09, 0.16, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.45, 0.65, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_preenchido"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.35, 0.75, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.45, 0.65, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_preenchido_hover"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.6, 0.88, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.45, 0.65, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="Audio" type="Control" unique_id=1532181423]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_58dca")
+
+[node name="Titulo" type="Label" parent="." unique_id=1429229957]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 109.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_rti7y")
+text = "Opções"
+label_settings = SubResource("LabelSettings_p423y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OpcoesArea" type="Panel" parent="." unique_id=552854369]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -346.5
+offset_top = -100.0
+offset_right = 346.5
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8w7rj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OpcoesArea" unique_id=1947604172]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 40.0
+offset_right = -50.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="MusicaArea" type="HBoxContainer" parent="OpcoesArea/VBoxContainer" unique_id=768797719]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="MusicaTexto" type="Label" parent="OpcoesArea/VBoxContainer/MusicaArea" unique_id=293485965]
+custom_minimum_size = Vector2(190, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rti7y")
+text = "Volume da Música"
+vertical_alignment = 1
+
+[node name="MusicaSlider" type="HSlider" parent="OpcoesArea/VBoxContainer/MusicaArea" unique_id=2036284846]
+texture_filter = 1
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("StyleBoxFlat_trilho")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_preenchido")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_preenchido_hover")
+value = 70.0
+
+[node name="MusicaValor" type="Label" parent="OpcoesArea/VBoxContainer/MusicaArea" unique_id=1109230001]
+custom_minimum_size = Vector2(64, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rti7y")
+text = "70%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SomArea" type="HBoxContainer" parent="OpcoesArea/VBoxContainer" unique_id=1837683260]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SomTexto" type="Label" parent="OpcoesArea/VBoxContainer/SomArea" unique_id=150048950]
+custom_minimum_size = Vector2(190, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rti7y")
+text = "Volume do Som"
+vertical_alignment = 1
+
+[node name="SomSlider" type="HSlider" parent="OpcoesArea/VBoxContainer/SomArea" unique_id=668566098]
+texture_filter = 1
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("StyleBoxFlat_trilho")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_preenchido")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_preenchido_hover")
+value = 70.0
+
+[node name="SomValor" type="Label" parent="OpcoesArea/VBoxContainer/SomArea" unique_id=1109230002]
+custom_minimum_size = Vector2(64, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rti7y")
+text = "70%"
+horizontal_alignment = 2
+vertical_alignment = 1

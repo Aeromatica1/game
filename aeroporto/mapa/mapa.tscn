@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://b8mir5lbjx7c6" path="res://aeroporto/mapa/balcoes/balcao_checkin.tscn" id="13_x30ii"]
 [ext_resource type="PackedScene" uid="uid://cuf0p62et7mrw" path="res://aeroporto/mapa/balcoes/balcaoinfo_2.tscn" id="14_qdpnv"]
 [ext_resource type="PackedScene" uid="uid://5ejfarxlbioj" path="res://aeroporto/mapa/objetos/esteira.tscn" id="14_xpjw3"]
+[ext_resource type="PackedScene" uid="uid://dcaqh56uhq7mg" path="res://aeroporto/minigames/encanador/main.tscn" id="15_v2x1l"]
 [ext_resource type="Texture2D" uid="uid://bvfaaomu7wwb" path="res://assets/tilesets/novaloja.png" id="16_ktkrk"]
 [ext_resource type="PackedScene" uid="uid://mlyh8fdrodqk" path="res://aeroporto/mapa/objetos/telefones.tscn" id="16_u1hem"]
 [ext_resource type="Texture2D" uid="uid://76vmgeh4e2d3" path="res://assets/tilesets/novoportao.png" id="17_3davs"]
@@ -3353,6 +3354,7 @@ cargo = "Pesagem de bagagem"
 contexto = "pesagem"
 matiz = 0.2
 acao = 1
+minigame = ExtResource("12_axask")
 texto_dica = "E - Jogar"
 
 [node name="Func_Inspecao" parent="Funcionarios" unique_id=1035112327 instance=ExtResource("101_funcionario")]
@@ -3363,7 +3365,7 @@ cargo = "Pesagem de bagagem"
 contexto = "pesagem"
 matiz = 0.2
 acao = 1
-minigame = ExtResource("12_axask")
+minigame = ExtResource("15_v2x1l")
 texto_dica = "E - Jogar"
 
 [node name="Bancos" type="Node2D" parent="." unique_id=1805895097]

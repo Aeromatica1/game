@@ -5,7 +5,7 @@ extends Node2D
 ## Emitido no game over quando o jogo está embutido no mapa (em vez de recarregar a cena).
 signal fechar_pedido
 
-const PECA_DIR := "res://assets/pecas/"
+const PECA_DIR := "res://assets/minigames/block_blast/"
 
 # Formatos conferidos com a transparência das suas imagens (cada célula = 16 px).
 const DEFS := {
