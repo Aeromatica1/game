@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://bcgwlv0eu3ck7"]
 
 [ext_resource type="Script" uid="uid://c803nj450l7ew" path="res://login/login.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://t5xp2tf47xnm" path="res://assets/background/login-cadastro.png" id="2_by2ci"]
+[ext_resource type="Texture2D" uid="uid://bmsaen6ctcl75" path="res://menu_principal/fundo_aeromatica (1).png" id="2_5otam"]
+[ext_resource type="FontFile" uid="uid://6v12gewyr54t" path="res://assets/fonts/Silkscreen-Regular.ttf" id="3_2ykpf"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_titulo"]
 font_size = 50
@@ -29,7 +30,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_by2ci")
+texture = ExtResource("2_5otam")
 expand_mode = 1
 
 [node name="Titulo" type="Label" parent="." unique_id=63365049]
@@ -38,6 +39,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 134.0
 grow_horizontal = 2
+theme_override_fonts/font = ExtResource("3_2ykpf")
 text = "Faça Login"
 label_settings = SubResource("LabelSettings_titulo")
 horizontal_alignment = 1
@@ -79,6 +81,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_2ykpf")
 text = "E-mail"
 vertical_alignment = 1
 
@@ -87,6 +90,7 @@ custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.6
+theme_override_fonts/font = ExtResource("3_2ykpf")
 placeholder_text = "nome@dominio.com"
 
 [node name="SenhaArea" type="HBoxContainer" parent="LoginArea/VBoxContainer" unique_id=1531825776]
@@ -96,6 +100,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_2ykpf")
 text = "Senha"
 vertical_alignment = 1
 
@@ -104,6 +109,7 @@ custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.6
+theme_override_fonts/font = ExtResource("3_2ykpf")
 secret = true
 
 [node name="MostrarSenha" type="CheckBox" parent="LoginArea/VBoxContainer" unique_id=1430755410]
@@ -124,12 +130,14 @@ alignment = 1
 
 [node name="RegistrarTexto" type="Label" parent="LoginArea/VBoxContainer/RegistrarArea" unique_id=1430755413]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_2ykpf")
 text = "Não tem uma conta?"
 vertical_alignment = 1
 
 [node name="RegistrarLink" type="LinkButton" parent="LoginArea/VBoxContainer/RegistrarArea" unique_id=1430755414]
 layout_mode = 2
 size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("3_2ykpf")
 text = "Registre-se"
 
 [node name="ErroArea" type="HBoxContainer" parent="LoginArea" unique_id=1430755415]
@@ -144,6 +152,7 @@ alignment = 1
 [node name="ErroTexto" type="RichTextLabel" parent="LoginArea/ErroArea" unique_id=1430755416]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/normal_font = ExtResource("3_2ykpf")
 bbcode_enabled = true
 fit_content = true
 scroll_active = false
