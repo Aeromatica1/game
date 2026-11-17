@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bay4e4stdwgqd" path="res://assets/background/saveSlot.png" id="1_qv2sx"]
 [ext_resource type="PackedScene" uid="uid://b3js48mtek7tn" path="res://save_slot/save_button.tscn" id="2_flycw"]
 [ext_resource type="Texture2D" uid="uid://dr1n6aq4i4ftf" path="res://assets/background/logo.jpeg" id="3_u7de6"]
+[ext_resource type="Script" uid="uid://bj3mj1vwrg4b" path="res://save_slot/save_slot.gd" id="4_slotgd"]
 
 [node name="Control" type="Control" unique_id=571966553]
 layout_mode = 3
@@ -11,6 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("4_slotgd")
 
 [node name="Fundo" type="TextureRect" parent="." unique_id=1314664284]
 layout_mode = 1
@@ -21,28 +23,6 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_qv2sx")
 expand_mode = 1
-
-[node name="AreaBotoes" type="HBoxContainer" parent="Fundo" unique_id=995043253]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="Slot1" parent="Fundo/AreaBotoes" unique_id=1268993652 instance=ExtResource("2_flycw")]
-layout_mode = 2
-size_flags_horizontal = 6
-
-[node name="Slot2" parent="Fundo/AreaBotoes" unique_id=1445781933 instance=ExtResource("2_flycw")]
-layout_mode = 2
-size_flags_horizontal = 6
-
-[node name="Slot3" parent="Fundo/AreaBotoes" unique_id=1633949426 instance=ExtResource("2_flycw")]
-layout_mode = 2
-size_flags_horizontal = 6
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1476254141]
 custom_minimum_size = Vector2(800, 80)
@@ -69,6 +49,32 @@ expand_mode = 3
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[editable path="Fundo/AreaBotoes/Slot1"]
-[editable path="Fundo/AreaBotoes/Slot2"]
-[editable path="Fundo/AreaBotoes/Slot3"]
+[node name="AreaSlots" type="HBoxContainer" parent="." unique_id=995043253]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Slot1" parent="AreaSlots" unique_id=1268993652 instance=ExtResource("2_flycw")]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="Slot2" parent="AreaSlots" unique_id=1445781933 instance=ExtResource("2_flycw")]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="Slot3" parent="AreaSlots" unique_id=1633949426 instance=ExtResource("2_flycw")]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[connection signal="pressed" from="AreaSlots/Slot1" to="." method="_on_livre_1_pressed"]
+[connection signal="pressed" from="AreaSlots/Slot2" to="." method="_on_livre_2_pressed"]
+[connection signal="pressed" from="AreaSlots/Slot3" to="." method="_on_livre_3_pressed"]
+
+[editable path="AreaSlots/Slot1"]
+[editable path="AreaSlots/Slot2"]
+[editable path="AreaSlots/Slot3"]

@@ -35,6 +35,7 @@
 [ext_resource type="Script" uid="uid://yqbkgsrbmxyk" path="res://npc/passageiros_manager.gd" id="100_passageiros"]
 [ext_resource type="PackedScene" path="res://npc/funcionario.tscn" id="101_funcionario"]
 [ext_resource type="Script" uid="uid://m3dgn21eigvf" path="res://aluguel/espaco_aluguel.gd" id="102_aluguel"]
+[ext_resource type="Script" path="res://mapa/mapa.gd" id="103_mapagd"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6fw57"]
 resource_name = "objetos"
@@ -3292,6 +3293,7 @@ size = Vector2(15111, 332.625)
 [node name="Node2D" type="Control" unique_id=1796865373]
 layout_mode = 3
 anchors_preset = 0
+script = ExtResource("103_mapagd")
 metadata/_edit_horizontal_guides_ = [-472.0]
 
 [node name="BarraAeroporto" parent="." unique_id=765660825 instance=ExtResource("1_h5ydh")]

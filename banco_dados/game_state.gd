@@ -66,6 +66,20 @@ func carregar(p_aeroporto_id: String) -> Dictionary:
 	return r
 
 
+## Esquece o save carregado (logout ou save apagado).
+func limpar() -> void:
+	aeroporto_id = ""
+	aeroporto = {}
+	niveis.clear()
+	questoes.clear()
+	concluidas.clear()
+	alugueis = []
+	minigames.clear()
+	tipos_aluguel = []
+	tipos_minigame = []
+	_ultima_sorteada = -1
+
+
 # ------------------------- Leitura do estado -------------------------
 func nivel_atual() -> int:
 	return _i(aeroporto.get("nivel_aeroporto_id", 1))

@@ -34,9 +34,30 @@ func listar_saves() -> Dictionary:
 func criar_save(numero_slot: int) -> Dictionary:
 	return await Supabase.call_rpc("criar_save_slot", {"p_numero": numero_slot})
 
+## Apaga o save. Com `return=representation`, `data` traz as linhas removidas:
+## lista vazia = nada foi apagado (id inexistente ou RLS bloqueou).
 func apagar_save(save_slot_id: String) -> Dictionary:
 	return await Supabase.request(S + "save_slot?id=eq." + Supabase.q(save_slot_id),
-		HTTPClient.METHOD_DELETE)
+		HTTPClient.METHOD_DELETE, null, PackedStringArray(["Prefer: return=representation"]))
+
+# Versões "em lote" (vários aeroportos numa requisição) para o resumo da tela de saves.
+func _in_ids(ids: Array) -> String:
+	var partes: PackedStringArray = []
+	for i in ids:
+		partes.append(Supabase.q(i))
+	return "in.(" + ",".join(partes) + ")"
+
+func get_respostas_de(aeroporto_ids: Array) -> Dictionary:
+	return await Supabase.request(
+		S + "aeroporto_resposta?select=aeroporto_id,questao_id,acertou&aeroporto_id=" + _in_ids(aeroporto_ids))
+
+func get_alugueis_de(aeroporto_ids: Array) -> Dictionary:
+	return await Supabase.request(
+		S + "aluguel_localizacao?select=aeroporto_id&aeroporto_id=" + _in_ids(aeroporto_ids))
+
+func get_minigames_de(aeroporto_ids: Array) -> Dictionary:
+	return await Supabase.request(
+		S + "minigame_aeroporto?select=aeroporto_id,tipo_minigame_id,high_score&aeroporto_id=" + _in_ids(aeroporto_ids))
 
 # ------------------------- Carregar progresso -------------------------
 ## UMA requisição com tudo: aeroporto, níveis, tipos, aluguéis, minigames,
