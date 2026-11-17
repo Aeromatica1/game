@@ -39,13 +39,13 @@ var ocupado := false          # evita cliques simultâneos (criar/apagar/carrega
 
 var _niveis_nome := {}        # nivel(int) -> descricao (catálogo, buscado uma vez)
 
-var slot_carregado_normal = preload("res://assets/background/saveSlot.png")
-var slot_carregado_hover = preload("res://assets/background/saveSlot.png")
-var slot_carregado_pressed = preload("res://assets/background/saveSlot.png")
+var slot_ocupado_normal = preload("res://assets/saveslot/ocupado_normal.png")
+var slot_ocupado_hover = preload("res://assets/saveslot/ocupado_hover.png")
+var slot_ocupado_pressed = preload("res://assets/saveslot/ocupado_pressed.png")
 
-var slot_livre_normal = preload("res://assets/saveslot/normal.png")
-var slot_livre_hover = preload("res://assets/saveslot/hover.png")
-var slot_livre_pressed = preload("res://assets/saveslot/pressed.png")
+var slot_livre_normal = preload("res://assets/saveslot/livre_normal.png")
+var slot_livre_hover = preload("res://assets/saveslot/livre_hover.png")
+var slot_livre_pressed = preload("res://assets/saveslot/livre_pressed.png")
 
 @onready var buttons: Array[TextureButton] = [
 	$AreaSlots/Slot1,
@@ -65,13 +65,15 @@ func _ready() -> void:
 func _atualizar_botoes(lista: Array) -> void:
 	for i in range(mini(buttons.size(), lista.size())):
 		if lista[i].vazio:
+			buttons[i].get_node("Informacoes").visible = false
 			buttons[i].texture_normal = slot_livre_normal
 			buttons[i].texture_hover = slot_livre_hover
 			buttons[i].texture_pressed = slot_livre_pressed
 		else:
-			buttons[i].texture_normal = slot_carregado_normal
-			buttons[i].texture_hover = slot_carregado_hover
-			buttons[i].texture_pressed = slot_carregado_pressed
+			buttons[i].get_node("Informacoes").visible = true
+			buttons[i].texture_normal = slot_ocupado_normal
+			buttons[i].texture_hover = slot_ocupado_hover
+			buttons[i].texture_pressed = slot_ocupado_pressed
 
 
 # ==================== API pública ====================

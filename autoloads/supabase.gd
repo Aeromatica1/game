@@ -39,12 +39,25 @@ func is_logged_in() -> bool:
 # (await por chamada evita o problema de um único sinal compartilhado,
 #  que misturaria respostas de requisições simultâneas)
 # ---------------------------------------------------------------------
+
+const USAR_PROXY_IFSP := true
+const PROXY_HOST := "proxy.spo.ifsp.edu.br"
+const PROXY_PORT := 3128
+
 func request(path: String, method: int = HTTPClient.METHOD_GET, body: Variant = null,
 		extra_headers: PackedStringArray = PackedStringArray()) -> Dictionary:
 	if not path.begins_with("/auth/v1/"):
 		await _ensure_fresh_token()
 
 	var http := HTTPRequest.new()
+	
+	# Proxy da rede do IFSP
+	
+	if USAR_PROXY_IFSP:
+		http.set_https_proxy("proxy.spo.ifsp.edu.br", 3128)
+	
+	http.timeout = 30.0
+
 	http.timeout = TIMEOUT_SEC
 	add_child(http)
 

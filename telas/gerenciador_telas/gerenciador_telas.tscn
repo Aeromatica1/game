@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dykofvlkpbe8d"]
 
-[ext_resource type="Script" uid="uid://wxosr5xpbm4w" path="res://telas/gerenciador_telas/gerenciador_telas.gd" id="1_jr6vj"]
+[ext_resource type="Script" uid="uid://dj1ku58du03k3" path="res://telas/gerenciador_telas/gerenciador_telas.gd" id="1_jr6vj"]
 [ext_resource type="PackedScene" uid="uid://c3egba45ye35x" path="res://telas/cadastro/cadastro.tscn" id="2_deupt"]
 [ext_resource type="Texture2D" uid="uid://cgmqpukisr10a" path="res://assets/background/fundo.png" id="2_u051b"]
 [ext_resource type="PackedScene" uid="uid://bcgwlv0eu3ck7" path="res://telas/login/login.tscn" id="3_6napt"]
