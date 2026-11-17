@@ -46,9 +46,9 @@ var slot_livre_hover = preload("res://assets/saveslot/livre_hover.png")
 var slot_livre_pressed = preload("res://assets/saveslot/livre_pressed.png")
 
 @onready var buttons: Array[TextureButton] = [
-	$AreaSlots/Slot1,
-	$AreaSlots/Slot2,
-	$AreaSlots/Slot3
+	$AreaSlots/Control/Slot1,
+	$AreaSlots/Control/Slot2,
+	$AreaSlots/Control/Slot3
 ]
 
 func _ready() -> void:
@@ -71,10 +71,46 @@ func _atualizar_botoes(lista: Array) -> void:
 			buttons[i].texture_hover = slot_livre_hover
 			buttons[i].texture_pressed = slot_livre_pressed
 		else:
-			buttons[i].get_node("Informacoes").visible = true
+			var info: Label = buttons[i].get_node("Informacoes")
+			info.text = _texto_info(lista[i])
+			info.visible = true
 			buttons[i].texture_normal = slot_ocupado_normal
 			buttons[i].texture_hover = slot_ocupado_hover
 			buttons[i].texture_pressed = slot_ocupado_pressed
+
+
+## Texto do cartão do slot (o Label "Informacoes" do save_button.tscn).
+func _texto_info(s: Dictionary) -> String:
+	var nivel = "%d" % s.nivel + (" - " + s.nivel_nome if s.nivel_nome != "" else "")
+	return "
+		USUÁRIO: %s\n\n
+		NÍVEL: %s\n\n
+		DINHEIRO: %s\n\n
+		TAREFAS: %d acertos\n\n
+		ÚLTIMO ACESSO: %s
+	" % [
+	GameState.username(), nivel, _dinheiro(s.dinheiro), s.questoes_acertadas, _data_local(s.data_modificado)]
+
+
+## 1234.5 -> "1.234,50"
+func _dinheiro(v: float) -> String:
+	var partes := String.num(absf(v), 2).split(".")
+	var inteiro := partes[0]
+	var out := ""
+	while inteiro.length() > 3:
+		out = "." + inteiro.substr(inteiro.length() - 3) + out
+		inteiro = inteiro.substr(0, inteiro.length() - 3)
+	return ("-" if v < 0.0 else "") + inteiro + out + "," + partes[1]
+
+
+## "2026-11-17T15:04:05.123+00:00" (UTC) -> "17/11/2026 12:04" no fuso do jogador.
+func _data_local(iso: String) -> String:
+	if iso.length() < 19:
+		return "-"
+	var unix = Time.get_unix_time_from_datetime_string(iso.substr(0, 19)) \
+		+ Time.get_time_zone_from_system().bias * 60
+	var d := Time.get_datetime_dict_from_unix_time(int(unix))
+	return "%02d/%02d/%04d %02d:%02d" % [d.day, d.month, d.year, d.hour, d.minute]
 
 
 # ==================== API pública ====================
@@ -96,6 +132,8 @@ func carregar_saves(forcar := false) -> bool:
 		return false
 	var ok := await _atualizar_slots(forcar)
 	_set_ocupado(false)
+	if ok:
+		Navegacao.pre_carregar_mapa()
 	return ok
 
 

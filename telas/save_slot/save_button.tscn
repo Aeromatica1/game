@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://vqaohp5hwtbj" path="res://assets/saveslot/livre_hover.png" id="3_cri5s"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_x2j0j"]
+font_size = 12
 
 [node name="SlotButton" type="TextureButton" unique_id=1165264795]
 custom_minimum_size = Vector2(300, 300)
@@ -28,20 +29,24 @@ stretch_mode = 4
 metadata/_edit_use_anchors_ = true
 
 [node name="Informacoes" type="Label" parent="." unique_id=478065417]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 17.0
-offset_top = 14.0
-offset_right = -16.0
-offset_bottom = -8.0
+offset_left = 16.0
+offset_top = 8.0
+offset_right = -13.0
+offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "USUÁRIO:
-NIVEL: X
-DINHEIRO:
-TAREFAS:
-ÚLTIMO ACESSO:"
+text = "USUÁRIO: PAULIN BACANA
+
+NIVEL 1 - AEROPORTO INTERNACIONAL
+
+DINHEIRO: $ 5.000.000
+
+TAREFAS: 2/5
+
+ÚLTIMO ACESSO: 25/10/2026"
 label_settings = SubResource("LabelSettings_x2j0j")
+vertical_alignment = 1

@@ -13,7 +13,8 @@ var historico_cenas: Array[Control] = []
 
 
 func _ready() -> void:
-	Supabase.restore_session()
+	if not Supabase.is_logged_in():
+		Supabase.restore_session()
 
 	# Estado inicial
 	for cena in [cadastro, login, menu_principal, save_slot]:

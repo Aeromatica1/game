@@ -22,47 +22,40 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="Conta" type="Button" parent="." unique_id=2094206470]
-offset_left = 1000.0
+offset_left = 1030.0
 offset_top = 18.0
-offset_right = 1084.0
-offset_bottom = 63.0
-text = "User"
-
-[node name="Conta2" type="Button" parent="." unique_id=1808844606]
-offset_left = 1000.0
-offset_top = 18.0
-offset_right = 1084.0
+offset_right = 1114.0
 offset_bottom = 63.0
 text = "User"
 
 [node name="NivelLabel" type="Label" parent="." unique_id=1210786944]
-offset_left = 149.0
-offset_top = 23.0
-offset_right = 415.0
-offset_bottom = 51.0
+offset_left = 150.0
+offset_top = 27.0
+offset_right = 524.0
+offset_bottom = 55.0
 text = "Nível 1 - Aeroporto regional"
 label_settings = SubResource("LabelSettings_l7tio")
 
 [node name="DinheiroLabel" type="Label" parent="." unique_id=1969318647]
-offset_left = 795.0
-offset_top = 21.0
-offset_right = 896.0
-offset_bottom = 50.0
+offset_left = 839.0
+offset_top = 25.0
+offset_right = 957.0
+offset_bottom = 54.0
 text = "1.000.000"
 label_settings = SubResource("LabelSettings_l7tio")
 
 [node name="TarefasLabel" type="Label" parent="." unique_id=160314504]
-offset_left = 543.0
-offset_top = 23.0
-offset_right = 644.0
-offset_bottom = 52.0
+offset_left = 651.0
+offset_top = 28.0
+offset_right = 752.0
+offset_bottom = 57.0
 text = "0/5"
 label_settings = SubResource("LabelSettings_l7tio")
 
 [node name="DolarIcon" type="Sprite2D" parent="." unique_id=1426827893]
-position = Vector2(758, 34)
+position = Vector2(802, 38)
 texture = ExtResource("1_y6bl5")
 
 [node name="TarefaIcon" type="Sprite2D" parent="." unique_id=1583788685]
-position = Vector2(503, 34)
+position = Vector2(611, 39)
 texture = ExtResource("2_8hvx6")

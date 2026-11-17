@@ -23,7 +23,7 @@ var email := ""
 var username := ""         # vem do user_metadata gravado no cadastro
 var _refreshing := false
 
-const USAR_PROXY_IFSP := true
+const USAR_PROXY_IFSP := false
 const PROXY_HOST := "proxy.spo.ifsp.edu.br"
 const PROXY_PORT := 3128
 
@@ -127,6 +127,10 @@ func sign_out() -> void:
 
 ## Tenta retomar a sessão salva (chame no _ready da tela inicial).
 func restore_session() -> bool:
+	# Já logado com token válido (ex.: voltando do mapa): não gasta uma requisição de refresh
+	# (que ainda trocaria o refresh token à toa).
+	if is_logged_in() and Time.get_unix_time_from_system() < expires_at - 60.0:
+		return true
 	var cfg := ConfigFile.new()
 	if cfg.load_encrypted_pass(SESSION_FILE, _file_key()) != OK:
 		return false

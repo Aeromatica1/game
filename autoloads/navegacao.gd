@@ -13,14 +13,38 @@ const CENA_TELAS := "res://telas/gerenciador_telas/gerenciador_telas.tscn"
 const CENA_MAPA := "res://aeroporto/mapa/mapa.tscn"
 
 var _historico: Array[String] = []
+var _mapa_pedido := false
 var _pendente := false
+
+
+## Começa a carregar o mapa em segundo plano (disco + parse do .tscn grande). Chame quando
+## o jogador chegar na tela de saves: ao escolher o slot a cena já estará pronta.
+func pre_carregar_mapa() -> void:
+	if _mapa_pedido:
+		return
+	_mapa_pedido = ResourceLoader.load_threaded_request(CENA_MAPA) == OK
 
 
 ## Guarda o histórico atual das telas e abre o mapa.
 func ir_para_mapa(historico_telas: Array[String]) -> void:
 	_historico = historico_telas.duplicate()
 	_pendente = true
-	get_tree().change_scene_to_file(CENA_MAPA)
+	pre_carregar_mapa()
+	var cena: PackedScene = null
+	if _mapa_pedido:
+		cena = ResourceLoader.load_threaded_get(CENA_MAPA) as PackedScene
+		_mapa_pedido = false          # o pedido foi consumido; o próximo precisa de novo request
+	if cena != null:
+		get_tree().change_scene_to_packed(cena)
+	else:
+		get_tree().change_scene_to_file(CENA_MAPA)
+
+
+## Volta ao menu principal (sem restaurar o histórico de telas).
+func voltar_ao_menu() -> void:
+	_historico = []
+	_pendente = false
+	get_tree().change_scene_to_file(CENA_TELAS)
 
 
 ## Volta do mapa para a tela anterior do histórico (a última, normalmente SaveSlot).

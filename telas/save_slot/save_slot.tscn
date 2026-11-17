@@ -14,30 +14,63 @@ script = ExtResource("4_slotgd")
 
 [node name="AreaSlots" type="HBoxContainer" parent="." unique_id=995043253]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = -1
+anchor_left = 0.052083332
+anchor_right = 0.9479167
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Slot1" parent="AreaSlots" unique_id=1268993652 instance=ExtResource("2_flycw")]
+[node name="Control" type="Control" parent="AreaSlots" unique_id=1933100003]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Slot3" parent="AreaSlots/Control" unique_id=1633949426 instance=ExtResource("2_flycw")]
+layout_mode = 1
+anchors_preset = 4
+anchor_left = 0.0
+anchor_top = 0.5
+anchor_right = 0.0
+anchor_bottom = 0.5
+offset_top = -150.0
+offset_right = 300.0
+offset_bottom = 150.0
+grow_horizontal = 1
 size_flags_horizontal = 6
 
-[node name="Slot2" parent="AreaSlots" unique_id=1445781933 instance=ExtResource("2_flycw")]
-layout_mode = 2
+[node name="Slot2" parent="AreaSlots/Control" unique_id=1445781933 instance=ExtResource("2_flycw")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -150.0
+offset_right = 150.0
+offset_bottom = 150.0
 size_flags_horizontal = 6
 
-[node name="Slot3" parent="AreaSlots" unique_id=1633949426 instance=ExtResource("2_flycw")]
-layout_mode = 2
-size_flags_horizontal = 6
+[node name="Slot1" parent="AreaSlots/Control" unique_id=1268993652 instance=ExtResource("2_flycw")]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -150.0
+offset_bottom = 150.0
+grow_horizontal = 0
+size_flags_horizontal = 2
 
-[connection signal="pressed" from="AreaSlots/Slot1" to="." method="_on_livre_1_pressed"]
-[connection signal="pressed" from="AreaSlots/Slot2" to="." method="_on_livre_2_pressed"]
-[connection signal="pressed" from="AreaSlots/Slot3" to="." method="_on_livre_3_pressed"]
+[connection signal="pressed" from="AreaSlots/Control/Slot3" to="." method="_on_livre_3_pressed"]
+[connection signal="pressed" from="AreaSlots/Control/Slot2" to="." method="_on_livre_2_pressed"]
+[connection signal="pressed" from="AreaSlots/Control/Slot1" to="." method="_on_livre_1_pressed"]
 
-[editable path="AreaSlots/Slot1"]
-[editable path="AreaSlots/Slot2"]
-[editable path="AreaSlots/Slot3"]
+[editable path="AreaSlots/Control/Slot3"]
+[editable path="AreaSlots/Control/Slot2"]
+[editable path="AreaSlots/Control/Slot1"]

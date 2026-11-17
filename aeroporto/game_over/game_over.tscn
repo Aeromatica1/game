@@ -1,0 +1,135 @@
+[gd_scene format=3 uid="uid://byltpqcqrmm4x"]
+
+[ext_resource type="FontFile" uid="uid://l0a4ugx7t1rc" path="res://assets/pixel_operator/PixelOperator.ttf" id="1_011am"]
+[ext_resource type="Script" path="res://aeroporto/game_over/game_over.gd" id="2_goscr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uw4xa"]
+bg_color = Color(0.024493992, 0.039375562, 0.100007415, 0.9764706)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s1h6b"]
+bg_color = Color(0.0133384, 0.09605123, 0.17886354, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jdaln"]
+bg_color = Color(0.03137255, 0.13725491, 0.23137255, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jr1gi"]
+bg_color = Color(0.011764706, 0.09411765, 0.18039216, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nx8k6"]
+bg_color = Color(0.029537432, 0.13585113, 0.22958204, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vt4t7"]
+font_size = 50
+
+[node name="GameOver" type="CanvasLayer" unique_id=573077311]
+process_mode = 3
+layer = 110
+script = ExtResource("2_goscr")
+
+[node name="Fundo" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="GameOverArea" type="Panel" parent="." unique_id=1230118151]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -465.0
+offset_top = -272.5
+offset_right = 465.0
+offset_bottom = 272.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uw4xa")
+
+[node name="Botoes" type="VBoxContainer" parent="GameOverArea" unique_id=1847381413]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -100.0
+offset_right = 160.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="BotaoReiniciar" type="Button" parent="GameOverArea/Botoes" unique_id=1096374279]
+custom_minimum_size = Vector2(320, 70)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_011am")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_s1h6b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jdaln")
+text = "Reiniciar"
+
+[node name="BotaoMenu" type="Button" parent="GameOverArea/Botoes" unique_id=1904269774]
+custom_minimum_size = Vector2(320, 70)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_011am")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_jr1gi")
+theme_override_styles/hover = SubResource("StyleBoxFlat_nx8k6")
+text = "Menu principal"
+
+[node name="AreaMensagem" type="HBoxContainer" parent="GameOverArea" unique_id=1435490438]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -212.5
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="Mensagem" type="Label" parent="GameOverArea/AreaMensagem" unique_id=679171394]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Você ficou sem dinheiro, malandro"
+
+[node name="Titulo" type="Label" parent="GameOverArea" unique_id=317652810]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 172.5
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 16
+text = "game over"
+label_settings = SubResource("LabelSettings_vt4t7")
+horizontal_alignment = 1
+vertical_alignment = 1
