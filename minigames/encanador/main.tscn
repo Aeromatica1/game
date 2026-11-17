@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dcaqh56uhq7mg"]
+
+[ext_resource type="Script" uid="uid://d267kqwf422b5" path="res://minigames/encanador/Main.gd" id="1_jhknp"]
+
+[node name="Main" type="Node2D" unique_id=1036451909]
+script = ExtResource("1_jhknp")
