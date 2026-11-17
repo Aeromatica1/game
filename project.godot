@@ -26,6 +26,10 @@ Navegacao="*res://autoloads/navegacao.gd"
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 
+[gui]
+
+theme/custom_font="uid://6v12gewyr54t"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
