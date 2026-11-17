@@ -36,8 +36,8 @@ func voltar() -> void:
 
 ## Resumo do aeroporto carregado, pronto para exibir.
 func dados_aeroporto() -> Dictionary:
-	var nivel := GameState.nivel_atual()
-	var prog := GameState.progresso_nivel()           # Vector2i(acertos, total) do nível atual
+	var nivel = GameState.nivel_atual()
+	var prog = GameState.progresso_nivel()           # Vector2i(acertos, total) do nível atual
 	var info_nivel: Dictionary = GameState.niveis.get(nivel, {})
 	var prox: Dictionary = GameState.niveis.get(nivel + 1, {})
 	return {

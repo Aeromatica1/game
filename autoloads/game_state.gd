@@ -31,7 +31,7 @@ static func _i(v: Variant) -> int:
 
 
 func carregar(p_aeroporto_id: String) -> Dictionary:
-	var r := await GameApi.carregar_jogo(p_aeroporto_id)
+	var r = await GameApi.carregar_jogo(p_aeroporto_id)
 	if not r.ok:
 		return r
 	var d: Dictionary = r.data
@@ -121,7 +121,7 @@ func sortear_questao() -> Dictionary:
 # ------------------------- Ações (validadas no servidor) -------------------------
 ## Envia a resposta; o servidor decide se acertou. Atualiza o cache com o resultado.
 func responder(questao_id: int, alternativa_id: int) -> Dictionary:
-	var r := await GameApi.responder_questao(aeroporto_id, questao_id, alternativa_id)
+	var r = await GameApi.responder_questao(aeroporto_id, questao_id, alternativa_id)
 	if not r.ok:
 		return r
 	var d: Dictionary = r.data
@@ -140,11 +140,11 @@ func pode_evoluir() -> bool:
 
 
 func evoluir() -> Dictionary:
-	var r := await GameApi.evoluir_aeroporto(aeroporto_id)
+	var r = await GameApi.evoluir_aeroporto(aeroporto_id)
 	if r.ok:
 		aeroporto["nivel_aeroporto_id"] = _i(r.data)
 		# O servidor descontou o custo; recarregamos só o dinheiro para não divergir.
-		var novo := await GameApi.get_aeroporto(aeroporto_id)
+		var novo = await GameApi.get_aeroporto(aeroporto_id)
 		if novo.ok and not novo.data.is_empty():
 			_set_dinheiro(float(novo.data[0].dinheiro))
 		nivel_mudou.emit(nivel_atual())

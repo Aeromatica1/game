@@ -22,6 +22,12 @@ var user_id := ""
 var _refreshing := false
 
 
+func _ready() -> void:
+	# As telas de questão/minigame pausam a árvore; sem isto os HTTPRequest (filhos deste nó)
+	# param de ser processados e a validação da resposta ficaria travada até despausar.
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+
 func is_logged_in() -> bool:
 	return access_token != ""
 

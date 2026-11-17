@@ -8,6 +8,10 @@ extends CanvasLayer
 ##   tela.resposta_escolhida.connect(...)             # recebe a escolha do jogador
 ##
 ## Com `questao` vazio mostra só o espaço em branco (placeholders).
+## Questões do GameState (alternativas = [{id, enunciado}]) são validadas no SERVIDOR:
+## a tela mostra "Validando...", chama GameState.responder() e só então revela o resultado
+## (o GameState atualiza dinheiro/acertos e a barra do aeroporto se atualiza sozinha).
+## Se a rede falhar, o jogador pode tentar a mesma alternativa de novo.
 
 ## Emitido quando o jogador escolhe uma alternativa.
 ## `acertou` é true/false se a questão tem gabarito, ou null se `correta` = -1/ausente.
@@ -24,6 +28,7 @@ const PLACEHOLDER_ENUNCIADO := "Espaço reservado para a pergunta matemática."
 var _questao: Dictionary = {}
 var _respondida := false
 var _aberta := false
+var _validando := false
 
 var _titulo: Label
 var _id_label: Label
@@ -49,24 +54,31 @@ func abrir(questao: Dictionary = {}, titulo: String = "") -> void:
 
 	var enunciado := String(questao.get("enunciado", ""))
 	_enunciado.text = enunciado if enunciado != "" else "[color=#8a97b5][i]%s[/i][/color]" % PLACEHOLDER_ENUNCIADO
+	var sem_questoes := bool(questao.get("sem_questoes", false))
 	var alts: Array = questao.get("alternativas", [])
 	for i in 4:
 		var b := _botoes[i]
-		var texto := String(alts[i]) if i < alts.size() else "Alternativa %s" % LETRAS[i]
+		var texto := _texto_alternativa(alts[i]) if i < alts.size() else "Alternativa %s" % LETRAS[i]
 		b.text = "%s)  %s" % [LETRAS[i], texto]
-		b.disabled = false
+		b.disabled = sem_questoes
 		_pintar(b, Color(0.14, 0.19, 0.33), cor_borda.darkened(0.4))
 	_feedback.text = ""
+	_feedback.remove_theme_color_override("font_color")
 	_fechar.text = "Fechar  (Esc)"
+	_fechar.disabled = false
+	_validando = false
 
 	_aberta = true
 	visible = true
 	get_tree().paused = true
-	_botoes[0].grab_focus()
+	if sem_questoes:
+		_fechar.grab_focus()
+	else:
+		_botoes[0].grab_focus()
 
 
 func fechar() -> void:
-	if not _aberta:
+	if not _aberta or _validando:
 		return
 	_aberta = false
 	visible = false
@@ -88,7 +100,7 @@ func _input(event: InputEvent) -> void:
 			fechar()
 			get_viewport().set_input_as_handled()
 			return
-	if escolha >= 0 and not _respondida:
+	if escolha >= 0 and not _respondida and not bool(_questao.get("sem_questoes", false)):
 		_escolher(escolha)
 		get_viewport().set_input_as_handled()
 
@@ -97,10 +109,64 @@ func _escolher(indice: int) -> void:
 	if _respondida:
 		return
 	_respondida = true
-	var correta := int(_questao.get("correta", -1))
-	var tem_gabarito := correta >= 0 and correta < 4
 	for i in 4:
 		_botoes[i].disabled = true
+	if _validavel_no_servidor():
+		await _validar_no_servidor(indice)
+	else:
+		_validar_local(indice)
+
+
+## Questão do GameState: cada alternativa é {id, enunciado} e a questão tem id.
+func _validavel_no_servidor() -> bool:
+	var alts: Array = _questao.get("alternativas", [])
+	return _questao.has("id") and alts.size() == 4 and alts[0] is Dictionary and GameState.aeroporto_id != ""
+
+
+func _validar_no_servidor(indice: int) -> void:
+	_validando = true
+	_fechar.disabled = true
+	_pintar(_botoes[indice], Color(0.2, 0.3, 0.6), cor_borda)
+	_feedback.text = "Validando resposta..."
+	_feedback.add_theme_color_override("font_color", Color(0.85, 0.9, 1))
+
+	var alt: Dictionary = _questao.alternativas[indice]
+	var r: Dictionary = await GameState.responder(int(_questao.id), int(alt.id))
+
+	_validando = false
+	_fechar.disabled = false
+	if not r.ok:
+		# Falhou (rede/servidor): nada foi contabilizado, então deixa tentar de novo.
+		_respondida = false
+		for i in 4:
+			_botoes[i].disabled = false
+			_pintar(_botoes[i], Color(0.14, 0.19, 0.33), cor_borda.darkened(0.4))
+		_feedback.text = "Não foi possível validar: %s" % r.error
+		_feedback.add_theme_color_override("font_color", Color(1, 0.75, 0.4))
+		_botoes[indice].grab_focus()
+		return
+
+	var d: Dictionary = r.data if r.data is Dictionary else {}
+	var acertou := bool(d.get("acertou", false))
+	if acertou:
+		_pintar(_botoes[indice], Color(0.12, 0.45, 0.22), Color(0.4, 0.9, 0.5))
+		_feedback.text = "Correto!  +%s" % _dinheiro(float(d.get("recompensa", 0.0)))
+	else:
+		_pintar(_botoes[indice], Color(0.55, 0.15, 0.18), Color(1.0, 0.45, 0.45))
+		_feedback.text = "Resposta incorreta. Você pode tentar de novo depois."
+	var explicacao = d.get("explicacao")
+	if explicacao != null and String(explicacao) != "":
+		_feedback.text += "\n" + String(explicacao)
+	_feedback.add_theme_color_override("font_color", Color(0.5, 1, 0.6) if acertou else Color(1, 0.55, 0.55))
+	resposta_escolhida.emit(_questao, indice, acertou)
+	_fechar.text = "Continuar  (Esc)"
+	_fechar.grab_focus()
+
+
+## Caminho antigo (questão com gabarito local `correta` ou placeholder, sem servidor).
+func _validar_local(indice: int) -> void:
+	var correta := int(_questao.get("correta", -1))
+	var tem_gabarito := correta >= 0 and correta < 4
 	if tem_gabarito:
 		var acertou := indice == correta
 		_pintar(_botoes[correta], Color(0.12, 0.45, 0.22), Color(0.4, 0.9, 0.5))
@@ -116,6 +182,21 @@ func _escolher(indice: int) -> void:
 		resposta_escolhida.emit(_questao, indice, null)
 	_fechar.text = "Continuar  (Esc)"
 	_fechar.grab_focus()
+
+
+func _texto_alternativa(alt: Variant) -> String:
+	return String(alt.get("enunciado", "")) if alt is Dictionary else String(alt)
+
+
+## 1234.5 -> "1.234,50" (mesmo formato da barra do aeroporto).
+func _dinheiro(v: float) -> String:
+	var partes := String.num(absf(v), 2).split(".")
+	var inteiro := partes[0]
+	var out := ""
+	while inteiro.length() > 3:
+		out = "." + inteiro.substr(inteiro.length() - 3) + out
+		inteiro = inteiro.substr(0, inteiro.length() - 3)
+	return inteiro + out + "," + partes[1]
 
 
 # ------------------------------------------------------------------ construção da UI
@@ -209,6 +290,7 @@ func _construir() -> void:
 	v.add_child(rodape)
 	_feedback = Label.new()
 	_feedback.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	rodape.add_child(_feedback)
 	_fechar = Button.new()
 	_fechar.custom_minimum_size = Vector2(190, 44)
