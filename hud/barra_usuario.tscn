@@ -1,13 +1,20 @@
 [gd_scene format=3 uid="uid://7rog0cnh50w0"]
 
+[ext_resource type="Texture2D" uid="uid://bn31lp8frhhas" path="res://assets/fonts/return.png" id="1_flgqf"]
+
 [node name="BarraUsuario" type="CanvasLayer" unique_id=285376065]
 
 [node name="Voltar" type="Button" parent="." unique_id=852011971]
+custom_minimum_size = Vector2(48, 48)
 offset_left = 24.0
 offset_top = 18.0
 offset_right = 108.0
 offset_bottom = 63.0
-text = "Voltar"
+accessibility_name = "Voltar"
+accessibility_description = "Volta para a tela anterior"
+icon = ExtResource("1_flgqf")
+icon_alignment = 1
+expand_icon = true
 
 [node name="Conta" type="Button" parent="." unique_id=1946992126]
 offset_left = 1000.0
