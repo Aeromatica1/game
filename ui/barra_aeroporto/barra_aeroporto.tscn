@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://dyv5cogt1hexu"]
+
+[ext_resource type="Script" uid="uid://xc1mgos0s6c6" path="res://ui/barra_aeroporto/barra_aeroporto.gd" id="1_gu55u"]
+[ext_resource type="Texture2D" uid="uid://cqhq4ijul4q3e" path="res://assets/icons/dollaricon.png" id="1_y6bl5"]
+[ext_resource type="Texture2D" uid="uid://cr0ffugxviieq" path="res://assets/icons/tasksicon.png" id="2_8hvx6"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_l7tio"]
+font_size = 20
+
+[node name="BarraAeroporto" type="CanvasLayer" unique_id=379957839]
+script = ExtResource("1_gu55u")
+
+[node name="Voltar" type="Button" parent="." unique_id=1824410048]
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 108.0
+offset_bottom = 63.0
+text = "Voltar"
+
+[node name="Conta" type="Button" parent="." unique_id=2094206470]
+offset_left = 1000.0
+offset_top = 18.0
+offset_right = 1084.0
+offset_bottom = 63.0
+text = "User"
+
+[node name="NivelLabel" type="Label" parent="." unique_id=1210786944]
+offset_left = 149.0
+offset_top = 23.0
+offset_right = 415.0
+offset_bottom = 51.0
+text = "Nível 1 - Aeroporto regional"
+label_settings = SubResource("LabelSettings_l7tio")
+
+[node name="DinheiroLabel" type="Label" parent="." unique_id=1969318647]
+offset_left = 795.0
+offset_top = 21.0
+offset_right = 896.0
+offset_bottom = 50.0
+text = "1.000.000"
+label_settings = SubResource("LabelSettings_l7tio")
+
+[node name="TarefasLabel" type="Label" parent="." unique_id=160314504]
+offset_left = 543.0
+offset_top = 23.0
+offset_right = 644.0
+offset_bottom = 52.0
+text = "0/5"
+label_settings = SubResource("LabelSettings_l7tio")
+
+[node name="DolarIcon" type="Sprite2D" parent="." unique_id=1426827893]
+position = Vector2(758, 34)
+texture = ExtResource("1_y6bl5")
+
+[node name="TarefaIcon" type="Sprite2D" parent="." unique_id=1583788685]
+position = Vector2(503, 34)
+texture = ExtResource("2_8hvx6")
