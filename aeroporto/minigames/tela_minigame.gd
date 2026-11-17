@@ -2,7 +2,7 @@ extends CanvasLayer
 ## Abre qualquer minigame por cima do mapa (jogo pausado) e devolve o controle ao fechar.
 ## Fecha com Esc, com o botão "Fechar", ou quando o minigame emite `voltar_pressed` / `fechar_pedido`.
 ##
-## Uso:  host.abrir(preload("res://minigames/minesweeper/game.tscn"), "Atendente")
+## Uso:  host.abrir(preload("res://aeroporto/minigames/minesweeper/game.tscn"), "Atendente")
 ## Sinal `fechado` avisa quando o jogador saiu (dá para ligar recompensa/progresso aqui depois).
 
 signal fechado

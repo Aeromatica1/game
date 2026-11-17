@@ -102,18 +102,18 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, body: Variant = 
 # ---------------------------------------------------------------------
 # Autenticação
 # ---------------------------------------------------------------------
-func sign_up(email: String, password: String, username: String) -> Dictionary:
+func sign_up(user_email: String, password: String, new_username: String) -> Dictionary:
 	var r := await request("/auth/v1/signup", HTTPClient.METHOD_POST,
-		{"email": email, "password": password, "data": {"username": username}})
+		{"email": user_email, "password": password, "data": {"username": new_username}})
 	# Com confirmação de e-mail ligada, não vem sessão: o jogador precisa confirmar e logar.
 	if r.ok and r.data is Dictionary and r.data.has("access_token"):
 		_set_session(r.data)
 	return r
 
 
-func sign_in(email: String, password: String) -> Dictionary:
+func sign_in(user_email: String, password: String) -> Dictionary:
 	var r := await request("/auth/v1/token?grant_type=password", HTTPClient.METHOD_POST,
-		{"email": email, "password": password})
+		{"email": user_email, "password": password})
 	if r.ok:
 		_set_session(r.data)
 	return r

@@ -30,14 +30,12 @@ signal jogo_carregado(aeroporto_id: String)
 signal erro(mensagem: String)
 ## Não há sessão (nem salva) -> a UI/gerenciador pode mandar para o login.
 signal login_necessario
-signal _lote_pronto
 
 const MAX_SLOTS := 3
 
 var slots: Array[Dictionary] = []
 var ocupado := false          # evita cliques simultâneos (criar/apagar/carregar)
 
-var _niveis_nome := {}        # nivel(int) -> descricao (catálogo, buscado uma vez)
 
 var slot_ocupado_normal = preload("res://assets/saveslot/ocupado_normal.png")
 var slot_ocupado_hover = preload("res://assets/saveslot/ocupado_hover.png")
@@ -120,7 +118,7 @@ func apagar_save(numero: int) -> bool:
 		_falhar("Esse slot já está vazio.")
 		return false
 	_set_ocupado(true)
-	var r := await GameApi.apagar_save(s.save_id)
+	var r = await GameApi.apagar_save(s.save_id)
 	var ok: bool = r.ok and not (r.data is Array and (r.data as Array).is_empty())
 	if not r.ok:
 		_falhar(r.error)
@@ -183,13 +181,13 @@ func _criar(numero: int) -> String:
 	if not s.is_empty() and not s.vazio:
 		_falhar("Esse slot já tem um save.")
 		return ""
-	var r := await GameApi.criar_save(numero)
+	var r = await GameApi.criar_save(numero)
 	if not r.ok:
 		_falhar(r.error)
 		return ""
 	var aeroporto_id := str(r.data)
 	# Só o save novo é baixado; os outros já estão em cache.
-	var rr := await GameState.recarregar_saves()
+	var rr = await GameState.recarregar_saves()
 	if not rr.ok:
 		_falhar(rr.error)
 		return ""
@@ -204,7 +202,7 @@ func _selecionar(numero: int) -> bool:
 	if s.is_empty() or s.vazio:
 		_falhar("Esse slot está vazio.")
 		return false
-	var r := await GameState.carregar(s.aeroporto_id)
+	var r = await GameState.carregar(s.aeroporto_id)
 	if not r.ok:
 		_falhar("Falha ao carregar o save: " + r.error)
 		return false
@@ -215,7 +213,7 @@ func _selecionar(numero: int) -> bool:
 ## Garante a conta no GameState (pré-carregada no login; sem rede se já estiver pronta)
 ## e desenha os slots a partir do cache.
 func _atualizar_slots(forcar := false) -> bool:
-	var r := await GameState.carregar_conta(forcar)
+	var r = await GameState.carregar_conta(forcar)
 	if not r.ok:
 		_falhar(r.error)
 		return false

@@ -1,6 +1,6 @@
 extends RefCounted
 ## Validações e mensagens de erro compartilhadas por login e cadastro.
-## Uso:  const Validacao = preload("res://login/validacao.gd")
+## Uso:  const Validacao = preload("res://telas/login/validacao.gd")
 ##
 ## IMPORTANTE: validar no cliente é só conforto (feedback rápido). A garantia real
 ## está no servidor (Supabase Auth + constraints do banco); nunca confie só aqui.
