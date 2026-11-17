@@ -54,12 +54,17 @@ var slot_livre_pressed = preload("res://assets/saveslot/pressed.png")
 ]
 
 func _ready() -> void:
-	_limpar_slots()
+	# Os botões são redesenhados SEMPRE que `slots` muda (os dados chegam depois,
+	# de forma assíncrona; antes eram desenhados uma única vez, ainda vazios).
+	slots_atualizados.connect(_atualizar_botoes)
 	Supabase.session_changed.connect(_on_session_changed)
+	_limpar_slots()            # emite -> botões começam como "livres"
 	carregar_saves()
-	print(slots)
-	for i in range(3):
-		if slots[i].vazio:
+
+
+func _atualizar_botoes(lista: Array) -> void:
+	for i in range(mini(buttons.size(), lista.size())):
+		if lista[i].vazio:
 			buttons[i].texture_normal = slot_livre_normal
 			buttons[i].texture_hover = slot_livre_hover
 			buttons[i].texture_pressed = slot_livre_pressed
@@ -351,6 +356,7 @@ func _set_ocupado(v: bool) -> void:
 
 func _falhar(mensagem: String) -> void:
 	push_warning("[SaveSlot] " + mensagem)
+	print("[SaveSlot] ", mensagem)      # também no painel Output
 	erro.emit(mensagem)
 
 

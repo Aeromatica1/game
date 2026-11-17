@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://wxosr5xpbm4w" path="res://gerenciador_telas/gerenciador_telas.gd" id="1_jr6vj"]
 [ext_resource type="PackedScene" uid="uid://c3egba45ye35x" path="res://cadastro/cadastro.tscn" id="2_deupt"]
+[ext_resource type="Texture2D" uid="uid://cgmqpukisr10a" path="res://assets/background/fundo.png" id="2_u051b"]
 [ext_resource type="PackedScene" uid="uid://bcgwlv0eu3ck7" path="res://login/login.tscn" id="3_6napt"]
 [ext_resource type="PackedScene" uid="uid://7rog0cnh50w0" path="res://hud/barra_usuario.tscn" id="3_u051b"]
 [ext_resource type="PackedScene" uid="uid://dwkcqdr4joahc" path="res://menu_principal/menu_principal.tscn" id="4_bi4f8"]
@@ -9,6 +10,15 @@
 
 [node name="GerenciadorTelas" type="Node" unique_id=1570137647]
 script = ExtResource("1_jr6vj")
+
+[node name="Fundo" type="TextureRect" parent="." unique_id=1930371765]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_u051b")
+expand_mode = 1
 
 [node name="MenuPrincipal" parent="." unique_id=85327965 instance=ExtResource("4_bi4f8")]
 metadata/_edit_use_anchors_ = true

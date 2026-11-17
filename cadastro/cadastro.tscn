@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://c3egba45ye35x"]
 
 [ext_resource type="Script" uid="uid://b1bmq0v431l8x" path="res://cadastro/cadastro.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://t5xp2tf47xnm" path="res://assets/background/login-cadastro.png" id="2_05n8e"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_titulo"]
 font_size = 50
@@ -21,16 +20,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
-
-[node name="Fundo" type="TextureRect" parent="." unique_id=535779365]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_05n8e")
-expand_mode = 1
 
 [node name="Titulo" type="Label" parent="." unique_id=776004008]
 layout_mode = 1

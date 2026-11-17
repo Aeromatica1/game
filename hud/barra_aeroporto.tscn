@@ -25,11 +25,11 @@ offset_bottom = 63.0
 text = "User"
 
 [node name="NivelLabel" type="Label" parent="." unique_id=1210786944]
-offset_left = 278.0
+offset_left = 149.0
 offset_top = 23.0
-offset_right = 362.0
+offset_right = 415.0
 offset_bottom = 51.0
-text = "NÍVEL 2"
+text = "Nível 1 - Aeroporto regional"
 label_settings = SubResource("LabelSettings_l7tio")
 
 [node name="DinheiroLabel" type="Label" parent="." unique_id=1969318647]
@@ -45,7 +45,7 @@ offset_left = 543.0
 offset_top = 23.0
 offset_right = 644.0
 offset_bottom = 52.0
-text = "1.000.000"
+text = "0/5"
 label_settings = SubResource("LabelSettings_l7tio")
 
 [node name="DolarIcon" type="Sprite2D" parent="." unique_id=1426827893]

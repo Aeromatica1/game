@@ -31,7 +31,9 @@ func _ready() -> void:
 	senha_campo.text_changed.connect(func(_t): _limpar_erro())
 
 	email_campo.grab_focus()
-	_tentar_sessao_salva()
+	# Não restaura a sessão aqui: esta cena é instanciada junto com o menu na
+	# inicialização, e um login bem-sucedido emitiria `login_sucesso`, levando o
+	# GerenciadorTelas direto para o SaveSlot. A restauração é feita pelo gerenciador.
 
 
 # ------------------------- Fluxo -------------------------
