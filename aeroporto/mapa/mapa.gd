@@ -14,6 +14,8 @@ func _ready() -> void:
 		push_warning("[Mapa] Nenhum save carregado (cena aberta direto?). A barra ficará sem dados.")
 
 	GameState.carregado.connect(atualizar_barra)
+	GameState.carregado.connect(_aplicar_fluxo)
+	GameState.nivel_mudou.connect(_aplicar_fluxo.unbind(1))
 	GameState.dinheiro_mudou.connect(atualizar_barra.unbind(1))
 	GameState.nivel_mudou.connect(atualizar_barra.unbind(1))
 
@@ -21,6 +23,7 @@ func _ready() -> void:
 		barra_aeroporto.connect("voltar_solicitado", voltar)
 
 	atualizar_barra()
+	_aplicar_fluxo()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -36,8 +39,8 @@ func voltar() -> void:
 
 ## Resumo do aeroporto carregado, pronto para exibir.
 func dados_aeroporto() -> Dictionary:
-	var nivel = GameState.nivel_atual()
-	var prog = GameState.progresso_nivel()           # Vector2i(acertos, total) do nível atual
+	var nivel := GameState.nivel_atual()
+	var prog := GameState.progresso_nivel()           # Vector2i(acertos, total) do nível atual
 	var info_nivel: Dictionary = GameState.niveis.get(nivel, {})
 	var prox: Dictionary = GameState.niveis.get(nivel + 1, {})
 	return {
@@ -55,8 +58,15 @@ func dados_aeroporto() -> Dictionary:
 		"proximo_nivel": {} if prox.is_empty() else {
 			"dinheiro_necessario": float(prox.get("dinheiro_necessario", 0.0)),
 			"questoes_necessarias": int(prox.get("questoes_necessarias", 0)),
+			"recompensa": float(prox.get("recompensa", 0.0)),
 		},
 	}
+
+
+## fluxo_passageiros (1 a 10) é a densidade dos NPCs passageiros do mapa.
+func _aplicar_fluxo() -> void:
+	if GameState.aeroporto_id != "":
+		get_tree().call_group("passageiros", "definir_densidade", GameState.fluxo())
 
 
 func atualizar_barra() -> void:

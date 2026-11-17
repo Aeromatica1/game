@@ -58,7 +58,10 @@ func _ready() -> void:
 	# de forma assíncrona; antes eram desenhados uma única vez, ainda vazios).
 	slots_atualizados.connect(_atualizar_botoes)
 	Supabase.session_changed.connect(_on_session_changed)
-	_limpar_slots()            # emite -> botões começam como "livres"
+	if GameState.conta_pronta:
+		_publicar_slots()      # já em cache: desenha na hora
+	else:
+		_limpar_slots()        # emite -> botões começam como "livres"
 	carregar_saves()
 
 
@@ -78,8 +81,9 @@ func _atualizar_botoes(lista: Array) -> void:
 
 # ==================== API pública ====================
 
-## Busca os saves da conta + resumo de cada aeroporto e preenche `slots`.
-func carregar_saves() -> bool:
+## Preenche `slots` a partir do GameState (a conta é baixada uma vez, no login).
+## `forcar` = rebaixa tudo do servidor.
+func carregar_saves(forcar := false) -> bool:
 	if ocupado:
 		return false
 	_set_ocupado(true)
@@ -92,7 +96,7 @@ func carregar_saves() -> bool:
 		_set_ocupado(false)
 		login_necessario.emit()
 		return false
-	var ok := await _buscar_saves()
+	var ok := await _atualizar_slots(forcar)
 	_set_ocupado(false)
 	return ok
 
@@ -123,11 +127,9 @@ func apagar_save(numero: int) -> bool:
 	elif not ok:
 		_falhar("Não foi possível apagar o save.")
 	else:
-		# Não deixa o GameState apontando para um aeroporto que não existe mais.
-		if GameState.aeroporto_id == s.aeroporto_id:
-			GameState.limpar()
+		GameState.remover_save(s.save_id)   # tira do cache (e esquece o save se estava aberto)
+		_publicar_slots()
 		save_apagado.emit(numero)
-		await _buscar_saves()
 	_set_ocupado(false)
 	return ok
 
@@ -186,8 +188,13 @@ func _criar(numero: int) -> String:
 		_falhar(r.error)
 		return ""
 	var aeroporto_id := str(r.data)
-	if not await _buscar_saves():
+	# Só o save novo é baixado; os outros já estão em cache.
+	var rr := await GameState.recarregar_saves()
+	if not rr.ok:
+		_falhar(rr.error)
 		return ""
+	_avisar(rr)
+	_publicar_slots()
 	save_criado.emit(numero)
 	return aeroporto_id
 
@@ -205,142 +212,26 @@ func _selecionar(numero: int) -> bool:
 	return true
 
 
-func _buscar_saves() -> bool:
-	var r := await GameApi.listar_saves()
+## Garante a conta no GameState (pré-carregada no login; sem rede se já estiver pronta)
+## e desenha os slots a partir do cache.
+func _atualizar_slots(forcar := false) -> bool:
+	var r := await GameState.carregar_conta(forcar)
 	if not r.ok:
 		_falhar(r.error)
 		return false
-
-	var saves: Array = r.data if r.data is Array else []
-	var ids: Array = []
-	for s in saves:
-		var a := _aeroporto_de(s)
-		if not a.is_empty():
-			ids.append(str(a.id))
-
-	# Detalhes (respostas, aluguéis, minigames, catálogo de níveis) em paralelo.
-	var respostas := {}
-	var alugueis := {}
-	var minigames := {}
-	if not ids.is_empty():
-		var chamadas: Array = [
-			func(): return await GameApi.get_respostas_de(ids),
-			func(): return await GameApi.get_alugueis_de(ids),
-			func(): return await GameApi.get_minigames_de(ids),
-		]
-		if _niveis_nome.is_empty():
-			chamadas.append(func(): return await GameApi.get_niveis())
-		var res := await _em_paralelo(chamadas)
-		# Os detalhes são secundários: se algum falhar, os saves ainda aparecem
-		# (com esse campo zerado) e o erro é reportado, em vez de esconder tudo.
-		for item in res:
-			if not item.ok:
-				_falhar("Detalhes do save indisponíveis: " + item.error)
-		if res[0].ok:
-			respostas = _agrupar_respostas(res[0].data)
-		if res[1].ok:
-			alugueis = _contar_por_aeroporto(res[1].data)
-		if res[2].ok:
-			minigames = _agrupar_minigames(res[2].data)
-		if res.size() > 3 and res[3].ok:
-			for n in res[3].data:
-				_niveis_nome[int(n.id)] = str(n.get("descricao", ""))
-
-	_limpar_slots(false)
-	for s in saves:
-		var numero := int(s.get("numero_slot", 0))
-		var a := _aeroporto_de(s)
-		if numero < 1 or numero > MAX_SLOTS:
-			_falhar("Save com numero_slot inválido: %s" % str(s.get("numero_slot")))
-			continue
-		if a.is_empty():
-			_falhar("Save do slot %d veio sem aeroporto (RLS na tabela aeroporto?)." % numero)
-			continue
-		var aid := str(a.id)
-		var nivel := int(a.get("nivel_aeroporto_id", 1))
-		var resp: Dictionary = respostas.get(aid, {"respondidas": 0, "acertadas": 0})
-		slots[numero - 1] = {
-			"numero": numero,
-			"vazio": false,
-			"save_id": str(s.id),
-			"aeroporto_id": aid,
-			"data_modificado": str(s.get("data_modificado", "")),
-			"nivel": nivel,
-			"nivel_nome": _niveis_nome.get(nivel, ""),
-			"dinheiro": float(a.get("dinheiro", 0.0)),
-			"fluxo_passageiros": float(a.get("fluxo_passageiros", 0.0)),
-			"questoes_respondidas": resp.respondidas,
-			"questoes_acertadas": resp.acertadas,
-			"alugueis": alugueis.get(aid, 0),
-			"minigames": minigames.get(aid, {}),
-		}
-	slots_atualizados.emit(slots)
+	_avisar(r)
+	_publicar_slots()
 	return true
 
 
-## O embed pode vir como objeto (relação 1:1) ou lista (1:N); aceita os dois.
-func _aeroporto_de(save: Dictionary) -> Dictionary:
-	var a: Variant = save.get("aeroporto")
-	if a is Array:
-		return a[0] if not (a as Array).is_empty() else {}
-	return a if a is Dictionary else {}
+func _publicar_slots() -> void:
+	slots = GameState.resumo_slots(MAX_SLOTS)
+	slots_atualizados.emit(slots)
 
 
-## aeroporto_id -> {respondidas, acertadas} (conta questões distintas).
-func _agrupar_respostas(linhas: Array) -> Dictionary:
-	var vistas := {}   # aeroporto_id -> {respondidas:{qid:true}, acertadas:{qid:true}}
-	for l in linhas:
-		var aid := str(l.aeroporto_id)
-		var qid := int(l.questao_id)
-		if not vistas.has(aid):
-			vistas[aid] = {"respondidas": {}, "acertadas": {}}
-		vistas[aid].respondidas[qid] = true
-		if l.get("acertou", false):
-			vistas[aid].acertadas[qid] = true
-	var out := {}
-	for aid in vistas:
-		out[aid] = {
-			"respondidas": vistas[aid].respondidas.size(),
-			"acertadas": vistas[aid].acertadas.size(),
-		}
-	return out
-
-
-func _contar_por_aeroporto(linhas: Array) -> Dictionary:
-	var out := {}
-	for l in linhas:
-		var aid := str(l.aeroporto_id)
-		out[aid] = int(out.get(aid, 0)) + 1
-	return out
-
-
-func _agrupar_minigames(linhas: Array) -> Dictionary:
-	var out := {}
-	for l in linhas:
-		var aid := str(l.aeroporto_id)
-		if not out.has(aid):
-			out[aid] = {}
-		out[aid][int(l.tipo_minigame_id)] = float(l.high_score)
-	return out
-
-
-## Roda várias chamadas assíncronas ao mesmo tempo e devolve os resultados na ordem.
-func _em_paralelo(chamadas: Array) -> Array:
-	var resultados: Array = []
-	resultados.resize(chamadas.size())
-	var estado := {"pendentes": chamadas.size()}
-	for i in chamadas.size():
-		_executar(chamadas[i], i, resultados, estado)
-	if estado.pendentes > 0:
-		await _lote_pronto
-	return resultados
-
-
-func _executar(chamada: Callable, i: int, resultados: Array, estado: Dictionary) -> void:
-	resultados[i] = await chamada.call()
-	estado.pendentes -= 1
-	if estado.pendentes == 0:
-		_lote_pronto.emit()
+func _avisar(resultado: Dictionary) -> void:
+	for aviso in resultado.get("avisos", []):
+		_falhar(str(aviso))
 
 
 func _limpar_slots(emitir := true) -> void:
@@ -364,5 +255,4 @@ func _falhar(mensagem: String) -> void:
 
 func _on_session_changed(logado: bool) -> void:
 	if not logado:
-		_limpar_slots()
-		GameState.limpar()
+		_limpar_slots()            # o GameState se limpa sozinho no logout

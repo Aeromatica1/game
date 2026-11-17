@@ -19,8 +19,13 @@ var access_token := ""
 var refresh_token := ""
 var expires_at := 0.0       # unix time
 var user_id := ""
+var email := ""
+var username := ""         # vem do user_metadata gravado no cadastro
 var _refreshing := false
 
+const USAR_PROXY_IFSP := true
+const PROXY_HOST := "proxy.spo.ifsp.edu.br"
+const PROXY_PORT := 3128
 
 func _ready() -> void:
 	# As telas de questão/minigame pausam a árvore; sem isto os HTTPRequest (filhos deste nó)
@@ -39,24 +44,18 @@ func is_logged_in() -> bool:
 # (await por chamada evita o problema de um único sinal compartilhado,
 #  que misturaria respostas de requisições simultâneas)
 # ---------------------------------------------------------------------
-
-const USAR_PROXY_IFSP := true
-const PROXY_HOST := "proxy.spo.ifsp.edu.br"
-const PROXY_PORT := 3128
-
 func request(path: String, method: int = HTTPClient.METHOD_GET, body: Variant = null,
 		extra_headers: PackedStringArray = PackedStringArray()) -> Dictionary:
 	if not path.begins_with("/auth/v1/"):
 		await _ensure_fresh_token()
 
 	var http := HTTPRequest.new()
-	
+
 	# Proxy da rede do IFSP
 	
 	if USAR_PROXY_IFSP:
 		http.set_https_proxy("proxy.spo.ifsp.edu.br", 3128)
 	
-	http.timeout = 30.0
 
 	http.timeout = TIMEOUT_SEC
 	add_child(http)
@@ -165,7 +164,10 @@ func _set_session(d: Dictionary) -> void:
 	access_token = d.get("access_token", "")
 	refresh_token = d.get("refresh_token", "")
 	expires_at = float(d.get("expires_at", Time.get_unix_time_from_system() + float(d.get("expires_in", 3600))))
-	user_id = str(d.get("user", {}).get("id", ""))
+	var u: Dictionary = d.get("user", {})
+	user_id = str(u.get("id", ""))
+	email = str(u.get("email", ""))
+	username = str(u.get("user_metadata", {}).get("username", ""))
 	var cfg := ConfigFile.new()
 	cfg.set_value("s", "refresh_token", refresh_token)
 	cfg.save_encrypted_pass(SESSION_FILE, _file_key())
@@ -177,6 +179,8 @@ func _clear_session() -> void:
 	refresh_token = ""
 	expires_at = 0.0
 	user_id = ""
+	email = ""
+	username = ""
 	if FileAccess.file_exists(SESSION_FILE):
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(SESSION_FILE))
 	session_changed.emit(false)
