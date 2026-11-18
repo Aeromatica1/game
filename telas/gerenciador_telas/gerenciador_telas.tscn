@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dwkcqdr4joahc" path="res://telas/menu_principal/menu_principal.tscn" id="4_bi4f8"]
 [ext_resource type="PackedScene" uid="uid://fpu5oujg4j2w" path="res://telas/save_slot/save_slot.tscn" id="5_5hkwe"]
 [ext_resource type="PackedScene" uid="uid://qmp7poka7rhr" path="res://telas/opcoes/opcoes.tscn" id="8_5ndnd"]
+[ext_resource type="PackedScene" uid="uid://bbwh8ow58otjv" path="res://telas/conta/conta.tscn" id="9_lcebb"]
 
 [node name="GerenciadorTelas" type="Node" unique_id=1570137647]
 script = ExtResource("1_jr6vj")
@@ -47,10 +48,14 @@ visible = false
 [node name="Opcoes" parent="." unique_id=1532181423 instance=ExtResource("8_5ndnd")]
 visible = false
 
+[node name="Conta" parent="." unique_id=12880873 instance=ExtResource("9_lcebb")]
+visible = false
+
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoJogar" to="." method="_on_botao_jogar_pressed"]
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoOpcoes" to="." method="_on_botao_opcoes_pressed"]
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoSair" to="." method="_on_botao_sair_pressed"]
 [connection signal="pressed" from="BarraUsuario/Voltar" to="." method="_on_voltar_pressed"]
+[connection signal="pressed" from="BarraUsuario/Conta" to="." method="_on_conta_pressed"]
 [connection signal="pressed" from="Cadastro/CadastroArea/VBoxContainer/EnviarCadastro" to="." method="_on_enviar_cadastro_pressed"]
 [connection signal="pressed" from="Cadastro/CadastroArea/VBoxContainer/LogarArea/LogarLink" to="." method="_on_logar_link_pressed"]
 [connection signal="pressed" from="Login/LoginArea/VBoxContainer/EnviarLogin" to="." method="_on_enviar_login_pressed"]

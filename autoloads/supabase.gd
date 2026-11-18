@@ -8,6 +8,7 @@ extends Node
 ##  - Tokens ficam só em memória; o refresh token é guardado criptografado em user://.
 
 signal session_changed(logged_in: bool)
+signal usuario_atualizado          # e-mail/username mudaram (a sessão continua a mesma)
 signal _refresh_done
 
 const SUPABASE_URL := "https://xovqiaqietshstdfjpoo.supabase.co"          # sempre https
@@ -123,6 +124,37 @@ func sign_out() -> void:
 	if is_logged_in():
 		await request("/auth/v1/logout", HTTPClient.METHOD_POST)
 	_clear_session()
+
+
+## Altera dados da conta logada (PUT /auth/v1/user). `campos` aceita "email" e/ou "password".
+## E-mail: com confirmação ligada no Supabase, a resposta traz `new_email` e o e-mail só muda após o clique no link.
+func atualizar_usuario(campos: Dictionary) -> Dictionary:
+	if not is_logged_in():
+		return {"ok": false, "code": 401, "data": null, "error": "Sem sessão ativa", "error_code": "no_authorization"}
+	# request() só renova o token fora de /auth/v1/; aqui precisamos renovar manualmente.
+	await _ensure_fresh_token()
+	var r := await request("/auth/v1/user", HTTPClient.METHOD_PUT, campos)
+	if r.ok and r.data is Dictionary:
+		email = str(r.data.get("email", email))
+		usuario_atualizado.emit()
+	return r
+
+
+## Troca o username (RPC alterar_username: valida unicidade e atualiza `profiles` + metadata).
+func alterar_username(novo_username: String) -> Dictionary:
+	var r := await call_rpc("alterar_username", {"p_username": novo_username})
+	if r.ok:
+		username = novo_username
+		usuario_atualizado.emit()
+	return r
+
+
+## Apaga a conta logada e todos os dados dela (RPC deletar_minha_conta). Em caso de sucesso, desloga.
+func deletar_conta() -> Dictionary:
+	var r := await call_rpc("deletar_minha_conta")
+	if r.ok:
+		_clear_session()
+	return r
 
 
 ## Tenta retomar a sessão salva (chame no _ready da tela inicial).

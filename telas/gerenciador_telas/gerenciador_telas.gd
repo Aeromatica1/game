@@ -8,6 +8,7 @@ extends Node
 @onready var barra_usuario: CanvasLayer = $BarraUsuario
 @onready var botao_voltar: Button = $BarraUsuario/Voltar
 @onready var opcoes: Control = $Opcoes
+@onready var conta: Control = $Conta
 
 var cena_atual: Control
 var historico_cenas: Array[Control] = []
@@ -18,7 +19,7 @@ func _ready() -> void:
 		Supabase.restore_session()
 
 	# Estado inicial
-	for cena in [cadastro, login, menu_principal, save_slot, opcoes]:
+	for cena in [cadastro, login, menu_principal, save_slot, opcoes, conta]:
 		cena.visible = false
 
 	# Voltando do mapa: reconstrói o histórico guardado; senão começa no menu.
@@ -32,6 +33,7 @@ func _ready() -> void:
 	login.login_sucesso.connect(_on_login_sucesso)
 	cadastro.cadastro_sucesso.connect(_on_cadastro_sucesso)
 	save_slot.jogo_carregado.connect(_on_jogo_carregado)
+	conta.sessao_encerrada.connect(_on_sessao_encerrada)
 
 	if cena_atual == save_slot:
 		save_slot.carregar_saves()
@@ -149,3 +151,25 @@ func _on_jogo_carregado(_aeroporto_id: String) -> void:
 
 func _on_voltar_pressed() -> void:
 	_retornar()
+
+
+func _on_conta_pressed() -> void:
+	# A sessão salva é restaurada de forma assíncrona: espera antes de decidir.
+	if not Supabase.is_logged_in():
+		await Supabase.restore_session()
+	if Supabase.is_logged_in():
+		_trocar_para(conta)
+	else:
+		_trocar_para(login)
+
+
+# ==================== Conta ====================
+
+## Logout ou conta deletada: volta ao menu e zera o histórico (não dá para "voltar" a telas logadas).
+func _on_sessao_encerrada() -> void:
+	cena_atual.visible = false
+	menu_principal.visible = true
+	cena_atual = menu_principal
+	historico_cenas.clear()
+	historico_cenas.append(menu_principal)
+	botao_voltar.visible = false
