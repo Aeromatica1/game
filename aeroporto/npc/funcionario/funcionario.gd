@@ -11,16 +11,17 @@ const TelaQuestao := preload("res://aeroporto/questoes/tela_questao.tscn")
 const TelaMinigame := preload("res://aeroporto/minigames/tela_minigame.gd")
 
 enum Acao { QUESTAO, MINIGAME }
-const TEXTURA_PADRAO := "res://assets/npc/personagem.png"
 
 @export var nome_funcionario: String = "Funcionário"
 @export var cargo: String = ""
 ## Identificador usado para pedir a questão ao banco (ex.: "checkin", "info", "pesagem").
 @export var contexto: String = ""
 @export_enum("baixo", "esquerda", "cima", "direita") var direcao: String = "baixo"
-## Se vazio, usa assets/npc/personagem.png.
+## Aparência (spritesheets de funcionários do pacote airport_npcs).
+@export_enum("employee_m", "staff_f", "service_f", "pilot_m") var personagem: String = "employee_m"
+## Opcional: um spritesheet próprio (mesmo layout) substitui `personagem`.
 @export var textura: Texture2D
-## Variação de cor das roupas (0 a 1). -1 = sem alteração.
+## Variação de cor das roupas (0 a 1). -1 = sem alteração (o normal: cada personagem já tem cores próprias).
 @export_range(-1.0, 1.0) var matiz: float = -1.0
 ## O que acontece ao apertar E: abrir uma questão de matemática ou um minigame.
 @export var acao: Acao = Acao.QUESTAO
@@ -30,7 +31,7 @@ const TEXTURA_PADRAO := "res://assets/npc/personagem.png"
 ## Texto que aparece perto do funcionário. Vazio = "E - Falar" (questão) ou "E - Jogar" (minigame).
 @export var texto_dica: String = ""
 @export var olhar_para_jogador: bool = true
-@export var linha_cabeca: int = 19
+@export var linha_cabeca: int = 20
 
 @onready var corpo: AnimatedSprite2D = $Corpo
 @onready var cabeca: AnimatedSprite2D = $Cabeca
@@ -44,7 +45,7 @@ var _dir_atual := ""
 
 func _ready() -> void:
 	_registrar_input()
-	var tex: Texture2D = textura if textura != null else load(TEXTURA_PADRAO)
+	var tex: Texture2D = textura if textura != null else Sprites.textura_de(personagem)
 	var frames := Sprites.montar(tex, linha_cabeca)
 	corpo.sprite_frames = frames["corpo"]
 	cabeca.sprite_frames = frames["cabeca"]
