@@ -23,17 +23,16 @@ signal fechado
 const TAMANHO_JOGO := Vector2i(1000, 590)
 const ALTURA_CABECALHO := 34
 const LARGURA_BORDA := 3
-const COR_FUNDO_JOGO := Color("#2b2f3a")
 const COR_BORDA := Color(0.35, 0.6, 1.0)
 
 ## Desfoque do que está atrás (o mapa). Lê a tela já desenhada pelas camadas de baixo e faz
 ## uma média de pontos em espiral, então não depende de mipmaps e funciona no GL Compatibility.
-## `raio` (em pixels) controla o quanto borra; `tinta` escurece um pouco para destacar a janela.
+## `raio` (em pixels) controla o quanto borra; `tinta` escurece só um tiquinho (alpha 0 = sem escurecer).
 const SHADER_DESFOQUE := """
 shader_type canvas_item;
 uniform sampler2D tela : hint_screen_texture, repeat_disable, filter_linear;
 uniform float raio = 9.0;
-uniform vec4 tinta : source_color = vec4(0.03, 0.05, 0.1, 0.45);
+uniform vec4 tinta : source_color = vec4(0.03, 0.05, 0.1, 0.15);
 
 void fragment() {
 	vec2 passo = SCREEN_PIXEL_SIZE * raio;
@@ -112,7 +111,7 @@ func _ready() -> void:
 	# 3) a área de jogo em si: moldura + SubViewport de tamanho fixo
 	var painel := PanelContainer.new()
 	var estilo := StyleBoxFlat.new()
-	estilo.bg_color = COR_FUNDO_JOGO
+	estilo.bg_color = Color(0, 0, 0, 0) # transparente: o aeroporto borrado aparece atrás do jogo
 	estilo.border_color = COR_BORDA
 	estilo.set_border_width_all(LARGURA_BORDA)
 	estilo.set_content_margin_all(LARGURA_BORDA)
@@ -126,15 +125,9 @@ func _ready() -> void:
 
 	_viewport = SubViewport.new()
 	_viewport.size = TAMANHO_JOGO
-	_viewport.transparent_bg = false
+	# fundo transparente: o desfoque do mapa (camada de baixo) aparece por trás dos minigames
+	_viewport.transparent_bg = true
 	contentor.add_child(_viewport)
-
-	# fundo da área de jogo (os minigames que não têm fundo próprio usam este)
-	var fundo := ColorRect.new()
-	fundo.color = COR_FUNDO_JOGO
-	fundo.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	fundo.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_viewport.add_child(fundo)
 
 
 func _criar_desfoque() -> ColorRect:

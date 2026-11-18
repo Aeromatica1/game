@@ -160,6 +160,10 @@ var scores: Scores
 
 
 func _ready() -> void:
+	# Aberto dentro da janela do host, o fundo cinza some e o mapa borrado aparece atrás.
+	if has_meta("embutido"):
+		$Background.visible = false
+
 	scores = Scores.new()
 	marks_enabled = bool(scores.settings.get("marks", false))
 	marks_check.set_pressed_no_signal(marks_enabled)

@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dvrqruqcjxvxp" path="res://assets/tilesets/5.png" id="9_m03sd"]
 [ext_resource type="PackedScene" uid="uid://32xpnvwoyo7l" path="res://aeroporto/mapa/objetos/ponte_embarque.tscn" id="9_pyrot"]
 [ext_resource type="PackedScene" uid="uid://cvqbae240sjti" path="res://aeroporto/minigames/block_blast/Main.tscn" id="11_idjp5"]
-[ext_resource type="PackedScene" path="res://aeroporto/minigames/minigames/minesweeper/game.tscn" id="12_axask"]
+[ext_resource type="PackedScene" uid="uid://6buicxxj4a1p" path="res://aeroporto/minigames/minesweeper/game.tscn" id="12_axask"]
 [ext_resource type="PackedScene" uid="uid://chh4c34073pbk" path="res://aeroporto/mapa/balcoes/balcao3.tscn" id="12_dh2m7"]
 [ext_resource type="PackedScene" uid="uid://b8mir5lbjx7c6" path="res://aeroporto/mapa/balcoes/balcao_checkin.tscn" id="13_x30ii"]
 [ext_resource type="PackedScene" uid="uid://cuf0p62et7mrw" path="res://aeroporto/mapa/balcoes/balcaoinfo_2.tscn" id="14_qdpnv"]
