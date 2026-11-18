@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c3egba45ye35x"]
 
-[ext_resource type="Script" uid="uid://b1bmq0v431l8x" path="res://telas/cadastro/cadastro.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://bmsaen6ctcl75" path="res://menu_principal/fundo_aeromatica (1).png" id="2_05n8e"]
+[ext_resource type="Script" uid="uid://bh0xdqbr0ib6w" path="res://telas/cadastro/cadastro.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://t5xp2tf47xnm" path="res://assets/background/login-cadastro.png" id="2_bg"]
 [ext_resource type="FontFile" uid="uid://6v12gewyr54t" path="res://assets/fonts/Silkscreen-Regular.ttf" id="3_o4v00"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_titulo"]
@@ -22,6 +22,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
+
+[node name="FundoCadastro" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="Titulo" type="Label" parent="." unique_id=776004008]
 layout_mode = 1

@@ -8,7 +8,7 @@ const Validacao = preload("res://telas/login/validacao.gd")
 const COOLDOWN_APOS_CADASTRO := 60   # evita reenviar e-mails de confirmação (rate limit do Supabase)
 
 @export_file("*.tscn") var cena_apos_login := ""
-@export_file("*.tscn") var cena_login := "res://login/login.tscn"
+@export_file("*.tscn") var cena_login := "res://telas/login/login.tscn"
 
 @onready var usuario_campo: LineEdit = $CadastroArea/VBoxContainer/UsuarioArea/UsuarioCampo
 @onready var email_campo: LineEdit = $CadastroArea/VBoxContainer/EmailArea/EmailCampo

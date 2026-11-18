@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpq1v6ae3h8"
-path="res://.godot/imported/slider_grabber.png-b333b5fa0a955c3a1fe1bee9df2132c7.ctex"
+uid="uid://mtxohh7u6ull"
+path="res://.godot/imported/passenger_f.png-4dd489bb99db36fb16cb0a9c138453fb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://slider_grabber.png"
-dest_files=["res://.godot/imported/slider_grabber.png-b333b5fa0a955c3a1fe1bee9df2132c7.ctex"]
+source_file="res://assets/airport_characters/spritesheets/passenger_f.png"
+dest_files=["res://.godot/imported/passenger_f.png-4dd489bb99db36fb16cb0a9c138453fb.ctex"]
 
 [params]
 

@@ -8,6 +8,7 @@ extends Node
 ##  - Tokens ficam só em memória; o refresh token é guardado criptografado em user://.
 
 signal session_changed(logged_in: bool)
+signal usuario_atualizado          # e-mail/username mudaram (a sessão continua a mesma)
 signal _refresh_done
 
 const SUPABASE_URL := "https://xovqiaqietshstdfjpoo.supabase.co"          # sempre https
@@ -19,8 +20,13 @@ var access_token := ""
 var refresh_token := ""
 var expires_at := 0.0       # unix time
 var user_id := ""
+var email := ""
+var username := ""         # vem do user_metadata gravado no cadastro
 var _refreshing := false
 
+const USAR_PROXY_IFSP := false
+const PROXY_HOST := "proxy.spo.ifsp.edu.br"
+const PROXY_PORT := 3128
 
 func _ready() -> void:
 	# As telas de questão/minigame pausam a árvore; sem isto os HTTPRequest (filhos deste nó)
@@ -45,6 +51,13 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, body: Variant = 
 		await _ensure_fresh_token()
 
 	var http := HTTPRequest.new()
+
+	# Proxy da rede do IFSP
+	
+	if USAR_PROXY_IFSP:
+		http.set_https_proxy("proxy.spo.ifsp.edu.br", 3128)
+	
+
 	http.timeout = TIMEOUT_SEC
 	add_child(http)
 
@@ -90,18 +103,18 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, body: Variant = 
 # ---------------------------------------------------------------------
 # Autenticação
 # ---------------------------------------------------------------------
-func sign_up(email: String, password: String, username: String) -> Dictionary:
+func sign_up(user_email: String, password: String, new_username: String) -> Dictionary:
 	var r := await request("/auth/v1/signup", HTTPClient.METHOD_POST,
-		{"email": email, "password": password, "data": {"username": username}})
+		{"email": user_email, "password": password, "data": {"username": new_username}})
 	# Com confirmação de e-mail ligada, não vem sessão: o jogador precisa confirmar e logar.
 	if r.ok and r.data is Dictionary and r.data.has("access_token"):
 		_set_session(r.data)
 	return r
 
 
-func sign_in(email: String, password: String) -> Dictionary:
+func sign_in(user_email: String, password: String) -> Dictionary:
 	var r := await request("/auth/v1/token?grant_type=password", HTTPClient.METHOD_POST,
-		{"email": email, "password": password})
+		{"email": user_email, "password": password})
 	if r.ok:
 		_set_session(r.data)
 	return r
@@ -113,8 +126,43 @@ func sign_out() -> void:
 	_clear_session()
 
 
+## Altera dados da conta logada (PUT /auth/v1/user). `campos` aceita "email" e/ou "password".
+## E-mail: com confirmação ligada no Supabase, a resposta traz `new_email` e o e-mail só muda após o clique no link.
+func atualizar_usuario(campos: Dictionary) -> Dictionary:
+	if not is_logged_in():
+		return {"ok": false, "code": 401, "data": null, "error": "Sem sessão ativa", "error_code": "no_authorization"}
+	# request() só renova o token fora de /auth/v1/; aqui precisamos renovar manualmente.
+	await _ensure_fresh_token()
+	var r := await request("/auth/v1/user", HTTPClient.METHOD_PUT, campos)
+	if r.ok and r.data is Dictionary:
+		email = str(r.data.get("email", email))
+		usuario_atualizado.emit()
+	return r
+
+
+## Troca o username (RPC alterar_username: valida unicidade e atualiza `profiles` + metadata).
+func alterar_username(novo_username: String) -> Dictionary:
+	var r := await call_rpc("alterar_username", {"p_username": novo_username})
+	if r.ok:
+		username = novo_username
+		usuario_atualizado.emit()
+	return r
+
+
+## Apaga a conta logada e todos os dados dela (RPC deletar_minha_conta). Em caso de sucesso, desloga.
+func deletar_conta() -> Dictionary:
+	var r := await call_rpc("deletar_minha_conta")
+	if r.ok:
+		_clear_session()
+	return r
+
+
 ## Tenta retomar a sessão salva (chame no _ready da tela inicial).
 func restore_session() -> bool:
+	# Já logado com token válido (ex.: voltando do mapa): não gasta uma requisição de refresh
+	# (que ainda trocaria o refresh token à toa).
+	if is_logged_in() and Time.get_unix_time_from_system() < expires_at - 60.0:
+		return true
 	var cfg := ConfigFile.new()
 	if cfg.load_encrypted_pass(SESSION_FILE, _file_key()) != OK:
 		return false
@@ -152,7 +200,10 @@ func _set_session(d: Dictionary) -> void:
 	access_token = d.get("access_token", "")
 	refresh_token = d.get("refresh_token", "")
 	expires_at = float(d.get("expires_at", Time.get_unix_time_from_system() + float(d.get("expires_in", 3600))))
-	user_id = str(d.get("user", {}).get("id", ""))
+	var u: Dictionary = d.get("user", {})
+	user_id = str(u.get("id", ""))
+	email = str(u.get("email", ""))
+	username = str(u.get("user_metadata", {}).get("username", ""))
 	var cfg := ConfigFile.new()
 	cfg.set_value("s", "refresh_token", refresh_token)
 	cfg.save_encrypted_pass(SESSION_FILE, _file_key())
@@ -164,6 +215,8 @@ func _clear_session() -> void:
 	refresh_token = ""
 	expires_at = 0.0
 	user_id = ""
+	email = ""
+	username = ""
 	if FileAccess.file_exists(SESSION_FILE):
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(SESSION_FILE))
 	session_changed.emit(false)

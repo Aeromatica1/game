@@ -14,14 +14,15 @@ extends Node2D
 ##   * Procura sozinho todos os assentos (poltronas e bancos) e cria os lugares onde
 ##     os NPCs sentam. Cada fileira vira N lugares (largura / `assento_largura`).
 ##   * Mantém a população conforme a densidade: nasce/some fora da tela.
-##   * F3 mostra os assentos (verde = livre, vermelho = ocupado) e F4 a grade andável,
-##     úteis para ajustar `assento_deslocamento` e `assento_largura`.
+##   * Além dos passageiros, alguns funcionários perambulam (poucos, e que não sentam).
 
 const NpcScene := preload("res://aeroporto/npc/npc.tscn")
-const NpcScript := preload("res://aeroporto/npc/npc.gd")
+const Sprites := preload("res://aeroporto/npc/personagem_sprites.gd")
 
 ## Passageiros andando por 1000 px de corredor, para cada nível (índice 0 = nível 1).
 const CAMINHANTES_POR_1000PX: Array[float] = [0.4, 0.9, 1.6, 2.4, 3.4, 4.6, 6.0, 7.6, 9.4, 11.5]
+## Funcionários andando, como fração dos passageiros que andam (mínimo 1 quando há passageiros).
+const FRACAO_FUNCIONARIOS := 0.15
 ## Fração dos assentos que fica ocupada, para cada nível.
 const FRACAO_ASSENTOS: Array[float] = [0.05, 0.12, 0.22, 0.32, 0.43, 0.54, 0.65, 0.75, 0.85, 0.93]
 
@@ -48,8 +49,9 @@ signal densidade_mudou(valor: int)
 @export var tamanho_minimo_regiao: int = 40
 
 @export_group("NPCs")
-## Se vazio, usa o sprite do jogador com cores variadas. Se preencher, use spritesheets
-## no mesmo formato (6x4, células 28x28) e eles são sorteados.
+## Se vazio, sorteia entre os passageiros do pacote airport_npcs (passenger/tourist, 50% de cada sexo)
+## e, para os funcionários que andam, entre employee/staff/service/pilot (ver personagem_sprites.gd).
+## Se preencher, use spritesheets no mesmo formato (32x32, 4x8) e eles substituem os passageiros.
 @export var texturas_npc: Array[Texture2D] = []
 @export var velocidade_min: float = 70.0
 @export var velocidade_max: float = 110.0
@@ -67,9 +69,8 @@ signal densidade_mudou(valor: int)
 @export var assento_deslocamento: Vector2 = Vector2(0, 20)
 @export_enum("baixo", "esquerda", "cima", "direita") var direcao_sentado: String = "baixo"
 
-@export_group("Atalhos / Depuração")
+@export_group("Atalhos")
 @export var teclas_de_atalho: bool = true
-@export var mostrar_hud: bool = true
 
 class Assento:
 	var pos: Vector2          # onde os pés do NPC ficam sentado
@@ -82,6 +83,7 @@ class Assento:
 var ocupado: Dictionary = {}
 var alvo_sentados: int = 0
 var alvo_caminhantes: int = 0
+var alvo_funcionarios: int = 0
 
 var _pronto := false
 var _astar := AStarGrid2D.new()
@@ -95,10 +97,6 @@ var _npcs: Array = []
 var _acum := 0.0
 var _excesso_t := 0.0
 var _largura_px := 1000.0
-var _debug_assentos := false
-var _debug_grade := false
-var _hud: Label
-var _hud_tween: Tween
 
 
 func _ready() -> void:
@@ -108,7 +106,6 @@ func _ready() -> void:
 		seed(semente)
 	else:
 		randomize()
-	_criar_hud()
 	# espera o mundo de física registrar os corpos estáticos antes de testar colisões
 	await get_tree().physics_frame
 	await get_tree().physics_frame
@@ -121,8 +118,8 @@ func _ready() -> void:
 	_recalcular_alvos()
 	_pronto = true
 	_povoar_inicial()
-	print("[Passageiros] células andáveis: %d | assentos: %d | densidade %d -> %d sentados + %d andando"
-		% [_lista_livres.size(), _assentos.size(), densidade, alvo_sentados, alvo_caminhantes])
+	print("[Passageiros] células andáveis: %d | assentos: %d | densidade %d -> %d sentados + %d andando + %d funcionários"
+		% [_lista_livres.size(), _assentos.size(), densidade, alvo_sentados, alvo_caminhantes, alvo_funcionarios])
 
 
 ## Se `chao`/`jogador` não estiverem ligados no Inspector (ex.: o nó foi movido/renomeado),
@@ -388,13 +385,13 @@ func _recalcular_alvos() -> void:
 	var excesso := alvo_caminhantes + alvo_sentados - maximo_de_npcs
 	if excesso > 0:
 		alvo_caminhantes = maxi(0, alvo_caminhantes - excesso)
+	alvo_funcionarios = maxi(1, roundi(alvo_caminhantes * FRACAO_FUNCIONARIOS)) if alvo_caminhantes > 0 else 0
 
 
 func _ao_mudar_densidade() -> void:
 	_recalcular_alvos()
-	print("[Passageiros] densidade %d -> %d sentados + %d andando" % [densidade, alvo_sentados, alvo_caminhantes])
+	print("[Passageiros] densidade %d -> %d sentados + %d andando + %d funcionários" % [densidade, alvo_sentados, alvo_caminhantes, alvo_funcionarios])
 	densidade_mudou.emit(densidade)
-	_mostrar_hud()
 
 
 func _povoar_inicial() -> void:
@@ -412,7 +409,8 @@ func _povoar_inicial() -> void:
 	# andando por aí, longe do jogador
 	for i in alvo_caminhantes:
 		_spawn_caminhante(true)
-	_mostrar_hud()
+	for i in alvo_funcionarios:
+		_spawn_caminhante(true, true)
 
 
 func _process(delta: float) -> void:
@@ -422,25 +420,31 @@ func _process(delta: float) -> void:
 	if _acum >= 0.5:
 		_acum = 0.0
 		_manter_populacao()
-	if _debug_assentos or _debug_grade:
-		queue_redraw()
 
 
 func _manter_populacao() -> void:
+	var n_func := 0
+	for npc in _npcs:
+		if npc.eh_funcionario:
+			n_func += 1
+	var n := _npcs.size() - n_func
 	var alvo := alvo_sentados + alvo_caminhantes
-	var n := _npcs.size()
 	if n < alvo:
 		_excesso_t = 0.0
 		for i in mini(alvo - n, 3):
 			_spawn_caminhante(false)
 	elif n > alvo:
 		_excesso_t += 0.5
-		_remover_excedente(mini(n - alvo, 2))
+		_remover_excedente(mini(n - alvo, 2), false)
 	else:
 		_excesso_t = 0.0
+	if n_func < alvo_funcionarios:
+		_spawn_caminhante(false, true)
+	elif n_func > alvo_funcionarios:
+		_remover_excedente(1, true)
 
 
-func _spawn_caminhante(inicial: bool) -> void:
+func _spawn_caminhante(inicial: bool, funcionario := false) -> void:
 	if _lista_livres.is_empty():
 		return
 	var rect := _retangulo_visivel(128.0)
@@ -460,33 +464,35 @@ func _spawn_caminhante(inicial: bool) -> void:
 			break
 	if not achou:
 		return # sem lugar fora da tela agora; tenta no próximo ciclo
-	var npc := _criar_npc(celula)
+	var npc := _criar_npc(celula, funcionario)
 	if npc != null:
 		npc.iniciar_andando(randf_range(0.0, 2.5))
 
 
-func _criar_npc(celula: Vector2i) -> Node:
+func _criar_npc(celula: Vector2i, funcionario := false) -> Node:
 	var npc := NpcScene.instantiate()
 	get_parent().add_child(npc) # irmão do Player: o y-sort do Mundo cuida da ordem de desenho
 	npc.global_position = celula_global(celula)
 	var textura: Texture2D
-	if texturas_npc.is_empty():
-		textura = load(NpcScript.TEXTURA_PADRAO)
+	if funcionario:
+		textura = Sprites.textura_de(Sprites.sortear("funcionario"))
+	elif texturas_npc.is_empty():
+		textura = Sprites.textura_de(Sprites.sortear("passageiro"))
 	else:
 		textura = texturas_npc[randi() % texturas_npc.size()]
-	npc.configurar(self, textura, randf(), randf_range(0.8, 1.15), celula)
+	npc.configurar(self, textura, celula, funcionario)
 	_npcs.append(npc)
 	return npc
 
 
-func _remover_excedente(quantos: int) -> void:
+func _remover_excedente(quantos: int, funcionarios: bool) -> void:
 	var rect := _retangulo_visivel(96.0)
 	var removidos := 0
 	# primeiro: quem anda e está fora da tela
 	for npc in _npcs.duplicate():
 		if removidos >= quantos:
 			break
-		if npc.removendo or npc.esta_sentado():
+		if npc.removendo or npc.esta_sentado() or npc.eh_funcionario != funcionarios:
 			continue
 		if not rect.has_point(npc.global_position):
 			npc.removendo = true
@@ -497,7 +503,7 @@ func _remover_excedente(quantos: int) -> void:
 		var pior: Node = null
 		var pior_d := -1.0
 		for npc in _npcs:
-			if npc.removendo or npc.esta_sentado():
+			if npc.removendo or npc.esta_sentado() or npc.eh_funcionario != funcionarios:
 				continue
 			var d: float = npc.global_position.distance_to(jogador.global_position) if jogador else 0.0
 			if d > pior_d:
@@ -514,7 +520,7 @@ func _retangulo_visivel(margem: float) -> Rect2:
 	return r.grow(margem)
 
 
-# ------------------------------------------------------------------ HUD / atalhos / debug
+# ------------------------------------------------------------------ atalhos
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not teclas_de_atalho or not event is InputEventKey or not event.pressed or event.echo:
@@ -522,53 +528,5 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	match event.keycode:
 		KEY_PAGEUP:
 			densidade += 1
-			_mostrar_hud()
 		KEY_PAGEDOWN:
 			densidade -= 1
-			_mostrar_hud()
-		KEY_F3:
-			_debug_assentos = not _debug_assentos
-			queue_redraw()
-		KEY_F4:
-			_debug_grade = not _debug_grade
-			queue_redraw()
-
-
-func _criar_hud() -> void:
-	var camada := CanvasLayer.new()
-	camada.layer = 50
-	add_child(camada)
-	_hud = Label.new()
-	_hud.position = Vector2(16, 12)
-	_hud.add_theme_font_size_override("font_size", 20)
-	_hud.add_theme_color_override("font_outline_color", Color.BLACK)
-	_hud.add_theme_constant_override("outline_size", 6)
-	_hud.modulate.a = 0.0
-	camada.add_child(_hud)
-
-
-func _mostrar_hud() -> void:
-	if not mostrar_hud or _hud == null:
-		return
-	_hud.text = "Fluxo de passageiros: %d/10   (%d no aeroporto)\nPgUp/PgDn muda  •  F3 assentos  •  F4 grade" % [densidade, _npcs.size()]
-	if _hud_tween:
-		_hud_tween.kill()
-	_hud.modulate.a = 1.0
-	_hud_tween = create_tween()
-	_hud_tween.tween_interval(2.5)
-	_hud_tween.tween_property(_hud, "modulate:a", 0.0, 0.6)
-
-
-func _draw() -> void:
-	if not _pronto:
-		return
-	if _debug_grade:
-		for c in _lista_livres:
-			var p := to_local(celula_global(c))
-			draw_rect(Rect2(p - _tam * 0.5 + Vector2.ONE, _tam - Vector2(2, 2)), Color(0.2, 0.6, 1.0, 0.18))
-	if _debug_assentos:
-		for a in _assentos:
-			var cor := Color(1, 0.2, 0.2, 0.9) if a.ocupante != null else Color(0.2, 1, 0.3, 0.9)
-			var p := to_local(a.pos)
-			draw_circle(p, 6.0, cor)
-			draw_line(to_local(a.centro), to_local(celula_global(a.acesso)), cor, 2.0)

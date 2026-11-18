@@ -1,12 +1,16 @@
 [gd_scene format=3 uid="uid://b3js48mtek7tn"]
 
-[ext_resource type="Texture2D" uid="uid://cwyd48jdvrb5r" path="res://assets/saveslot/normal.png" id="1_216md"]
-[ext_resource type="Texture2D" uid="uid://cg1jpi6w4i827" path="res://assets/saveslot/pressed.png" id="2_dtl87"]
-[ext_resource type="Texture2D" uid="uid://p6gbn7dewvqm" path="res://assets/saveslot/hover.png" id="3_cri5s"]
+[ext_resource type="Texture2D" uid="uid://by68e4y8efhym" path="res://assets/saveslot/livre_normal.png" id="1_216md"]
+[ext_resource type="Texture2D" uid="uid://bljhcopn0aylb" path="res://assets/saveslot/livre_pressed.png" id="2_dtl87"]
+[ext_resource type="Texture2D" uid="uid://vqaohp5hwtbj" path="res://assets/saveslot/livre_hover.png" id="3_cri5s"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_x2j0j"]
+font_size = 12
 
 [node name="SlotButton" type="TextureButton" unique_id=1165264795]
 custom_minimum_size = Vector2(300, 300)
 custom_maximum_size = Vector2(300, 300)
+anchors_preset = -1
 anchor_left = 0.36979166
 anchor_top = 0.2685185
 anchor_right = 0.6302083
@@ -23,3 +27,26 @@ texture_hover = ExtResource("3_cri5s")
 ignore_texture_size = true
 stretch_mode = 4
 metadata/_edit_use_anchors_ = true
+
+[node name="Informacoes" type="Label" parent="." unique_id=478065417]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 8.0
+offset_right = -13.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "USUÁRIO: PAULIN BACANA
+
+NIVEL 1 - AEROPORTO INTERNACIONAL
+
+DINHEIRO: $ 5.000.000
+
+TAREFAS: 2/5
+
+ÚLTIMO ACESSO: 25/10/2026"
+label_settings = SubResource("LabelSettings_x2j0j")
+vertical_alignment = 1

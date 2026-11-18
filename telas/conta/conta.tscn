@@ -2,6 +2,7 @@
 
 [ext_resource type="FontFile" uid="uid://6v12gewyr54t" path="res://assets/fonts/Silkscreen-Regular.ttf" id="2_7txxv"]
 [ext_resource type="Texture2D" uid="uid://diheuf0rqjaam" path="res://assets/fonts/pencil.png" id="3_on4rb"]
+[ext_resource type="Script" path="res://telas/conta/conta.gd" id="1_conta"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_msah1"]
 font_size = 50
@@ -20,11 +21,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_conta")
 
 [node name="Titulo" type="Label" parent="." unique_id=1098411197]
-layout_mode = 0
-offset_right = 1152.0
-offset_bottom = 109.0
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 65.0
+grow_horizontal = 2
 theme_override_font_sizes/font_size = 16
 text = "Conta"
 label_settings = SubResource("LabelSettings_msah1")
@@ -32,11 +36,18 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ContaArea" type="Panel" parent="." unique_id=891431871]
-layout_mode = 0
-offset_left = 229.5
-offset_top = 109.0
-offset_right = 922.5
-offset_bottom = 589.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -346.5
+offset_top = -260.0
+offset_right = 346.5
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_fvqx8")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ContaArea" unique_id=1335721386]
@@ -50,7 +61,7 @@ offset_right = -62.5
 offset_bottom = -61.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 35
+theme_override_constants/separation = 24
 
 [node name="UsuarioArea" type="HBoxContainer" parent="ContaArea/VBoxContainer" unique_id=1915543812]
 layout_mode = 2
@@ -70,8 +81,9 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.6
 theme_override_fonts/font = ExtResource("2_7txxv")
 placeholder_text = "Username"
+editable = false
 
-[node name="EditBotao" type="TextureButton" parent="ContaArea/VBoxContainer/UsuarioArea" unique_id=146317561]
+[node name="EditUsuario" type="TextureButton" parent="ContaArea/VBoxContainer/UsuarioArea" unique_id=146317561]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 texture_normal = ExtResource("3_on4rb")
@@ -96,8 +108,9 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.6
 theme_override_fonts/font = ExtResource("2_7txxv")
 placeholder_text = "E-mail"
+editable = false
 
-[node name="EditBotao2" type="TextureButton" parent="ContaArea/VBoxContainer/EmailArea" unique_id=663328564]
+[node name="EditEmail" type="TextureButton" parent="ContaArea/VBoxContainer/EmailArea" unique_id=663328564]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 texture_normal = ExtResource("3_on4rb")
@@ -122,14 +135,24 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.6
 theme_override_fonts/font = ExtResource("2_7txxv")
 placeholder_text = "Senha"
-secret = true
+editable = false
 
-[node name="EditBotao2" type="TextureButton" parent="ContaArea/VBoxContainer/SenhaArea" unique_id=1663964165]
+[node name="EditSenha" type="TextureButton" parent="ContaArea/VBoxContainer/SenhaArea" unique_id=1663964165]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 texture_normal = ExtResource("3_on4rb")
 ignore_texture_size = true
 stretch_mode = 5
+
+[node name="StatusTexto" type="RichTextLabel" parent="ContaArea/VBoxContainer" unique_id=1430755500]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_7txxv")
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ApagarArea" type="HBoxContainer" parent="ContaArea/VBoxContainer" unique_id=1226238007]
 custom_minimum_size = Vector2(0, 36)

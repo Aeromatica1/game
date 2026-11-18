@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccg7saded4m6w"
-path="res://.godot/imported/personagem.png-bacc5e9df839c2d54a2eeef26005516d.ctex"
+uid="uid://bvxjj1y0548xb"
+path="res://.godot/imported/service_f.png-7740f040c9cf7f8d4d21251dd2a9bff0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player/personagem.png"
-dest_files=["res://.godot/imported/personagem.png-bacc5e9df839c2d54a2eeef26005516d.ctex"]
+source_file="res://assets/airport_characters/spritesheets/service_f.png"
+dest_files=["res://.godot/imported/service_f.png-7740f040c9cf7f8d4d21251dd2a9bff0.ctex"]
 
 [params]
 

@@ -1,15 +1,17 @@
-[gd_scene format=3 uid="uid://7rog0cnh50w0"]
+[gd_scene format=3 uid="uid://dvbdnbr155lep"]
 
 [ext_resource type="Texture2D" uid="uid://bn31lp8frhhas" path="res://assets/fonts/return.png" id="1_flgqf"]
+[ext_resource type="Texture2D" uid="uid://sxyl0vkbft27" path="res://assets/icons/account.png" id="2_3xylc"]
 
 [node name="BarraUsuario" type="CanvasLayer" unique_id=285376065]
 
 [node name="Voltar" type="Button" parent="." unique_id=852011971]
 custom_minimum_size = Vector2(48, 48)
-offset_left = 24.0
-offset_top = 18.0
-offset_right = 108.0
-offset_bottom = 63.0
+offset_left = 16.0
+offset_top = 9.0
+offset_right = 64.0
+offset_bottom = 57.0
+tooltip_text = "Voltar"
 accessibility_name = "Voltar"
 accessibility_description = "Volta para a tela anterior"
 icon = ExtResource("1_flgqf")
@@ -17,8 +19,18 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="Conta" type="Button" parent="." unique_id=1946992126]
-offset_left = 1000.0
-offset_top = 18.0
-offset_right = 1084.0
-offset_bottom = 63.0
-text = "User"
+custom_minimum_size = Vector2(48, 48)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -64.0
+offset_top = 9.0
+offset_right = -16.0
+offset_bottom = 57.0
+grow_horizontal = 0
+tooltip_text = "Conta"
+accessibility_name = "Conta"
+accessibility_description = "Abre a tela de conta"
+icon = ExtResource("2_3xylc")
+icon_alignment = 1
+expand_icon = true

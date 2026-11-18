@@ -150,10 +150,13 @@ func _validar_no_servidor(indice: int) -> void:
 	var acertou := bool(d.get("acertou", false))
 	if acertou:
 		_pintar(_botoes[indice], Color(0.12, 0.45, 0.22), Color(0.4, 0.9, 0.5))
-		_feedback.text = "Correto!  +%s" % _dinheiro(float(d.get("recompensa", 0.0)))
+		_feedback.text = "Correto!  +%s" % _dinheiro(float(d.get("recompensa", d.get("variacao", 0.0))))
 	else:
 		_pintar(_botoes[indice], Color(0.55, 0.15, 0.18), Color(1.0, 0.45, 0.45))
-		_feedback.text = "Resposta incorreta. Você pode tentar de novo depois."
+		_feedback.text = "Resposta incorreta."
+		var variacao := float(d.get("variacao", 0.0))
+		if variacao < 0.0:
+			_feedback.text += "  -%s" % _dinheiro(-variacao)
 	var explicacao = d.get("explicacao")
 	if explicacao != null and String(explicacao) != "":
 		_feedback.text += "\n" + String(explicacao)

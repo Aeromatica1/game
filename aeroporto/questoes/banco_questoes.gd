@@ -23,7 +23,7 @@ extends RefCounted
 static func proxima_questao(_contexto: String = "") -> Dictionary:
 	if GameState.aeroporto_id == "":
 		return {}
-	var q = GameState.sortear_questao()
+	var q := GameState.sortear_questao()
 	if q.is_empty():
 		return {
 			"sem_questoes": true,

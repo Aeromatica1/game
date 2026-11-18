@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://by68e4y8efhym"
-path="res://.godot/imported/normal.png-540a2a44f7e8dbcd95526be7c078b451.ctex"
+uid="uid://8wg0e4jksmkl"
+path="res://.godot/imported/ocupado_hover.png-6cbed9a1e8faff633a8b216b1f1bf887.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/saveslot/normal.png"
-dest_files=["res://.godot/imported/normal.png-540a2a44f7e8dbcd95526be7c078b451.ctex"]
+source_file="res://assets/saveslot/ocupado_hover.png"
+dest_files=["res://.godot/imported/ocupado_hover.png-6cbed9a1e8faff633a8b216b1f1bf887.ctex"]
 
 [params]
 

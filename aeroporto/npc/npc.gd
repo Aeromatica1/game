@@ -3,15 +3,14 @@ extends CharacterBody2D
 ## olha em volta, e às vezes senta numa poltrona/banco por um tempo.
 ## Quem cria e controla a quantidade de NPCs é o `passageiros_manager.gd`.
 ##
-## O spritesheet tem o mesmo layout do jogador (6 colunas x 4 linhas, células 28x28):
-##   Linhas:  0 = baixo, 1 = esquerda, 2 = cima, 3 = direita
-##   Colunas: 0-2 = andar (parado, passo A, passo B)
+## O spritesheet tem o mesmo layout do jogador (células 32x32, 4 colunas x 8 linhas;
+## ver personagem_sprites.gd). Também serve para funcionários que perambulam
+## (`eh_funcionario`): andam como os passageiros, mas não sentam.
 
 enum Estado { PARADO, ESPERANDO, ANDANDO, SENTANDO, SENTADO, LEVANTANDO }
 
 const Sprites := preload("res://aeroporto/npc/personagem_sprites.gd")
 const DIRECOES := ["baixo", "esquerda", "cima", "direita"]
-const TEXTURA_PADRAO := "res://assets/npc/personagem.png"
 
 var m: Node2D                      # PassageirosManager
 var estado: Estado = Estado.PARADO
@@ -20,6 +19,7 @@ var assento = null                 # PassageirosManager.Assento reservado (ou nu
 var velocidade: float = 90.0
 var direcao: String = "baixo"
 var removendo: bool = false
+var eh_funcionario: bool = false     # funcionário perambulando (não senta)
 
 var _caminho: Array[Vector2i] = []
 var _idx: int = 0
@@ -34,19 +34,15 @@ var _tween: Tween
 
 
 ## Chamado pelo manager logo depois do add_child().
-func configurar(manager: Node2D, textura: Texture2D, matiz: float, brilho: float, celula: Vector2i) -> void:
+func configurar(manager: Node2D, textura: Texture2D, celula: Vector2i, funcionario := false) -> void:
 	m = manager
 	cel = celula
+	eh_funcionario = funcionario
 	velocidade = randf_range(m.velocidade_min, m.velocidade_max)
 	var frames := Sprites.montar(textura)
 	corpo.sprite_frames = frames["corpo"]
 	cabeca.sprite_frames = frames["cabeca"]
 	Sprites.posicionar(corpo, cabeca)
-	if textura.resource_path == TEXTURA_PADRAO:
-		# só varia a cor quando está usando o sprite padrão
-		var mat := Sprites.material_cor(matiz, brilho)
-		corpo.material = mat
-		cabeca.material = mat
 	direcao = DIRECOES[randi() % 4]
 	m.ocupado[cel] = self
 	_anim(false)
@@ -101,7 +97,7 @@ func _process(delta: float) -> void:
 # ------------------------------------------------------------------ decisões
 
 func _decidir() -> void:
-	if m.quer_sentar():
+	if not eh_funcionario and m.quer_sentar():
 		var a = m.reservar_assento(self)
 		if a != null:
 			assento = a
