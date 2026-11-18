@@ -16,9 +16,9 @@ const MenusMapa := preload("res://aeroporto/mapa/menus_mapa.gd")
 ## Para mudar quais portões aparecem em cada nível, é só editar esta tabela.
 const PORTOES_POR_NIVEL := {
 	1: ["Nivel1/Portao1", "Nivel1/Portao2", "Nivel1/Portao3", "Nivel3/Portao2"],
-	2: ["Nivel2/Portao1", "Nivel2/Portao2", "Nivel2/Portao3", "Nivel4/Portao1"],
-	3: ["Nivel3/Portao1", "Nivel3/Portao2", "Nivel3/Portao3"],
-	4: ["Nivel4/Portao1", "Nivel4/Portao2"],
+	2: ["Nivel1/Portao1", "Nivel1/Portao2", "Nivel1/Portao3", "Nivel3/Portao2", "Nivel2/Portao1", "Nivel2/Portao2", "Nivel2/Portao3", "Nivel4/Portao1"],
+	3: ["Nivel1/Portao1", "Nivel1/Portao2", "Nivel1/Portao3", "Nivel2/Portao1", "Nivel2/Portao2", "Nivel2/Portao3", "Nivel4/Portao1", "Nivel3/Portao1", "Nivel3/Portao3"],
+	4: ["Nivel1/Portao1", "Nivel1/Portao2", "Nivel1/Portao3", "Nivel2/Portao1", "Nivel2/Portao2", "Nivel2/Portao3", "Nivel4/Portao1", "Nivel3/Portao1", "Nivel3/Portao2", "Nivel3/Portao3", "Nivel4/Portao2",],
 }
 
 @onready var portoes: Node2D = $Portoes

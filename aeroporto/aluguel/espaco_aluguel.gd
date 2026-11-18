@@ -191,7 +191,7 @@ func _sincronizar() -> void:
 				_loja = LOJAS[tipo].instantiate()
 				_loja.z_index = 0
 				get_parent().add_child.call_deferred(_loja)
-				_loja.global_position = global_position
+				_loja.global_position = global_position + Vector2(0, 100)
 		else:
 			self_modulate = Color(1, 1, 1, 0.35)     # tipo sem cena: só "apaga" o "+"
 	else:
