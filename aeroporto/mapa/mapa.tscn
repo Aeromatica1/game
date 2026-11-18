@@ -32,7 +32,7 @@
 [ext_resource type="PackedScene" uid="uid://bbck8rxcx3d40" path="res://aeroporto/mapa/placas/placa_checkin.tscn" id="31_in6tm"]
 [ext_resource type="PackedScene" uid="uid://pfw0jvvp5ksr" path="res://aeroporto/mapa/placas/placaterminal.tscn" id="31_ktkrk"]
 [ext_resource type="PackedScene" uid="uid://k1ai7li7j5g2" path="res://aeroporto/mapa/janelas/janelasmenores.tscn" id="32_utegi"]
-[ext_resource type="PackedScene" uid="uid://ug37puwf0nck" path="res://aeroporto/player/player.tscn" id="99_player"]
+[ext_resource type="PackedScene" uid="uid://ug37puwf0nck" path="res://aeroporto/minigames/player/player.tscn" id="99_player"]
 [ext_resource type="Script" uid="uid://yqbkgsrbmxyk" path="res://aeroporto/npc/passageiro/passageiros_manager.gd" id="100_passageiros"]
 [ext_resource type="PackedScene" path="res://aeroporto/npc/funcionario/funcionario.tscn" id="101_funcionario"]
 [ext_resource type="Script" uid="uid://m3dgn21eigvf" path="res://aeroporto/aluguel/espaco_aluguel.gd" id="102_aluguel"]

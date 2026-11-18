@@ -601,6 +601,48 @@ func evoluir() -> Dictionary:
 	return r
 
 
+## Envia a pontuação de um minigame ao servidor (RPC `concluir_minigame`).
+## O servidor guarda o recorde e credita o dinheiro; depois recarregamos só o dinheiro
+## para o cache não divergir (a barra do aeroporto se atualiza sozinha pelo sinal).
+func concluir_minigame(tipo_minigame_id_: int, score: float) -> Dictionary:
+	if aeroporto_id == "":
+		return {"ok": false, "code": 0, "data": null, "error": "Nenhum save carregado", "error_code": "no_save"}
+	var r = await GameApi.concluir_minigame(aeroporto_id, tipo_minigame_id_, score)
+	if not r.ok:
+		return r
+	if score > float(minigames.get(tipo_minigame_id_, 0.0)):
+		minigames[tipo_minigame_id_] = score
+	var novo = await GameApi.get_aeroporto(aeroporto_id)
+	if novo.ok and not novo.data.is_empty():
+		_set_dinheiro(float(novo.data[0].dinheiro))
+	return r
+
+
+## Id (em `tipo_minigame`) do primeiro tipo cujo cadastro contém alguma das palavras
+## (ignora maiúsculas; olha todos os campos de texto da linha). -1 se não achar.
+func tipo_minigame_id(palavras: Array) -> int:
+	for t in tipos_minigame:
+		if not t is Dictionary:
+			continue
+		var texto := ""
+		for k in t:
+			if t[k] is String:
+				texto += " " + String(t[k]).to_lower()
+		for p in palavras:
+			if texto.contains(String(p).to_lower()):
+				return _i(t.get("id", -1))
+	return -1
+
+
+## 1234.5 -> "R$ 1.234,50" (mesmo formato usado nas telas de questão e da barra).
+static func formatar_dinheiro(v: float) -> String:
+	var partes := String.num(absf(v), 2).split(".")
+	var inteiro := partes[0]
+	var out := ""
+	while inteiro.length() > 3:
+		out = "." + inteiro.substr(inteiro.length() - 3) + out
+		inteiro = inteiro.substr(0, inteiro.length() - 3)
+	return "R$ " + inteiro + out + "," + partes[1]
 ## Evolui sozinho quando as questões acertadas do nível e o dinheiro atingem o exigido pelo próximo nível.
 func verificar_evolucao() -> void:
 	if not game_over_ativo and pode_evoluir():

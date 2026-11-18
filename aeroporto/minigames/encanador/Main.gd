@@ -35,9 +35,9 @@ const DELIVERY_SPEED := 280.0    # velocidade da mala em pixels por segundo
 # ---------------------------------------------------------------- GRADE -----
 const MIN_SIZE := 4       # tamanho da grade no nível 1 (4x4)
 const MAX_SIZE := 9       # tamanho máximo (9x9) - cresce 1 por nível
-const HUD_W := 512        # largura fixa do HUD (barra de tempo, textos)
-const BOARD_TOP := 66     # onde começa a área do tabuleiro (abaixo do HUD)
-const BOARD_BOTTOM_MARGIN := 6   # com 648 px de altura, o 9x9 (576 px) cabe sem reduzir
+const HUD_W := 600        # largura do HUD (caixas de informação e barra de tempo)
+const BOARD_TOP := 84     # onde começa a área do tabuleiro (abaixo do HUD)
+const BOARD_BOTTOM_MARGIN := 30   # espaço embaixo para a linha de "como jogar"
 const CELL := 64          # tamanho de cada célula em pixels
 const BELT_W := 32        # largura da esteira (= tamanho do sprite reto)
 const MARGIN := 16        # (CELL - BELT_W) / 2  -> esteira centralizada na célula
@@ -77,6 +77,15 @@ const COLOR_IN := Color("#2f7dff")
 const COLOR_OUT_OFF := Color("#2e8b57")
 const COLOR_OUT_ON := Color("#5dff9a")
 
+# Cores do HUD / mensagens (texto claro com contorno preto, para ler em qualquer fundo)
+const COLOR_CAPTION := Color("#9fb0d0")
+const COLOR_SCORE := Color("#ffd84a")
+const COLOR_GOOD := Color("#5dff9a")
+const COLOR_BAD := Color("#ff6b5e")
+const COLOR_TIME_OK := Color("#3fbf3f")
+const COLOR_TIME_WARN := Color("#e6a23c")
+const COLOR_TIME_LOW := Color("#d9382c")
+
 
 class Tile:
 	var node: Node2D
@@ -113,17 +122,26 @@ var board: Node2D
 var level_root: Node2D
 var out_port: ColorRect
 
-var moves_label: Label
+var hud: CanvasLayer
 var score_label: Label
 var level_label: Label
+var time_label: Label
 var time_bar: ProgressBar
+var time_fill: StyleBoxFlat
 var dim: ColorRect
-var msg_label: Label
+var msg_root: CenterContainer
+var msg_panel: PanelContainer
+var msg_title: Label
+var msg_line1: Label
+var msg_line2: Label
+var msg_prompt: Label
 
 
 # ---------------------------------------------------------------- SETUP -----
 func _ready() -> void:
-	RenderingServer.set_default_clear_color(COLOR_BG)
+	# Aberto pelo jogo, o fundo vem da janela do host (e mexer na cor padrão afetaria o mapa todo).
+	if not has_meta("embutido"):
+		RenderingServer.set_default_clear_color(COLOR_BG)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST  # pixel art nítida
 
 	var vp := get_viewport_rect().size
@@ -141,50 +159,124 @@ func _ready() -> void:
 
 
 func _build_hud(vp: Vector2) -> void:
-	var hud := CanvasLayer.new()
+	# O HUD é um CanvasLayer: dentro da janela do host ele fica contido na área de jogo
+	# (o SubViewport), por cima do tabuleiro, e nunca atrás da tela do host.
+	hud = CanvasLayer.new()
 	add_child(hud)
 	var bx := (vp.x - HUD_W) / 2.0
 
-	moves_label = _make_label(hud, Vector2(bx, 2), 24)
-	score_label = _make_label(hud, Vector2(bx + 220, 2), 24)
-	level_label = _make_label(hud, Vector2(bx + 400, 2), 24)
+	# duas caixas: legenda pequena em cima, valor grande embaixo
+	# (sem faixa escura e sem o contador de movimentos, para a tela ficar limpa)
+	var col_w := HUD_W / 2.0
+	level_label = _make_stat(hud, "NÍVEL", Vector2(bx, 4), col_w)
+	score_label = _make_stat(hud, "PONTOS", Vector2(bx + col_w, 4), col_w)
+	score_label.add_theme_color_override("font_color", COLOR_SCORE)
 
-	var time_text := _make_label(hud, Vector2(bx, 34), 20)
-	time_text.text = "TEMPO"
-
+	# barra de tempo: barra | segundos restantes
 	time_bar = ProgressBar.new()
-	time_bar.position = Vector2(bx + 90, 36)
-	time_bar.size = Vector2(HUD_W - 90, 22)
+	time_bar.position = Vector2(bx, 53)
+	time_bar.size = Vector2(HUD_W - 70, 22)
 	time_bar.show_percentage = false
 	time_bar.step = 0.01
 	time_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var fill := StyleBoxFlat.new()
-	fill.bg_color = Color("#3fbf3f")
+	time_fill = StyleBoxFlat.new()
+	time_fill.bg_color = COLOR_TIME_OK
 	var back := StyleBoxFlat.new()
-	back.bg_color = Color("#c0392b")
-	time_bar.add_theme_stylebox_override("fill", fill)
+	back.bg_color = Color("#3a1f1f")
+	time_bar.add_theme_stylebox_override("fill", time_fill)
 	time_bar.add_theme_stylebox_override("background", back)
 	hud.add_child(time_bar)
 
+	time_label = _make_label(hud, Vector2(bx + HUD_W - 62, 49), 24)
+	time_label.size = Vector2(62, 28)
+	time_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_outline(time_label, 6)
+
+	# "como jogar": aparece no começo e some sozinho depois de alguns segundos
+	var dica := _make_label(hud, Vector2(0, vp.y - 26), 15)
+	dica.size = Vector2(vp.x, 22)
+	dica.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	dica.text = "Botão esquerdo: gira para a direita   |   Botão direito: gira para a esquerda   |   Ligue o INÍCIO ao FIM"
+	dica.add_theme_color_override("font_color", Color("#c9d3ea"))
+	_outline(dica, 4)
+	var tw_dica := dica.create_tween()
+	tw_dica.tween_interval(8.0)
+	tw_dica.tween_property(dica, "modulate:a", 0.0, 1.0)
+
+	# --- mensagem de nível completo / tempo esgotado ---
 	dim = ColorRect.new()
-	dim.color = Color(0, 0, 0, 0.55)
+	dim.color = Color(0, 0, 0, 0.6)
 	dim.size = vp
 	dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	dim.visible = false
 	hud.add_child(dim)
 
-	msg_label = _make_label(hud, Vector2(0, vp.y / 2.0 - 90), 36)
-	msg_label.size = Vector2(vp.x, 180)
-	msg_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	msg_label.add_theme_constant_override("outline_size", 10)
-	msg_label.add_theme_color_override("font_outline_color", Color.BLACK)
-	msg_label.visible = false
+	msg_root = CenterContainer.new()
+	msg_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	msg_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	msg_root.visible = false
+	hud.add_child(msg_root)
+
+	msg_panel = PanelContainer.new()
+	var estilo := StyleBoxFlat.new()
+	estilo.bg_color = Color("#141a2b")
+	estilo.border_color = COLOR_GOOD
+	estilo.set_border_width_all(0)
+	estilo.content_margin_left = 44
+	estilo.content_margin_right = 44
+	estilo.content_margin_top = 28
+	estilo.content_margin_bottom = 28
+	msg_panel.add_theme_stylebox_override("panel", estilo)
+	msg_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	msg_root.add_child(msg_panel)
+
+	var caixa := VBoxContainer.new()
+	caixa.add_theme_constant_override("separation", 10)
+	caixa.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	msg_panel.add_child(caixa)
+
+	msg_title = _msg_line(caixa, 48)
+	msg_line1 = _msg_line(caixa, 34)
+	msg_line2 = _msg_line(caixa, 22)
+	msg_line2.add_theme_color_override("font_color", COLOR_CAPTION)
+	msg_prompt = _msg_line(caixa, 24)
+	msg_prompt.add_theme_color_override("font_color", Color.WHITE)
 
 
 func _make_label(parent: Node, pos: Vector2, font_size: int) -> Label:
 	var l := Label.new()
 	l.position = pos
 	l.add_theme_font_size_override("font_size", font_size)
+	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(l)
+	return l
+
+
+func _outline(l: Label, tamanho: int) -> void:
+	l.add_theme_constant_override("outline_size", tamanho)
+	l.add_theme_color_override("font_outline_color", Color.BLACK)
+
+
+## Caixa de informação do HUD: legenda pequena em cima e valor grande embaixo (retorna o valor).
+func _make_stat(parent: Node, caption: String, pos: Vector2, width: float) -> Label:
+	var c := _make_label(parent, pos, 15)
+	c.size = Vector2(width, 18)
+	c.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	c.text = caption
+	c.add_theme_color_override("font_color", COLOR_CAPTION)
+	_outline(c, 4)
+	var v := _make_label(parent, pos + Vector2(0, 17), 30)
+	v.size = Vector2(width, 34)
+	v.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_outline(v, 5)
+	return v
+
+
+func _msg_line(parent: Node, font_size: int) -> Label:
+	var l := Label.new()
+	l.add_theme_font_size_override("font_size", font_size)
+	_outline(l, 8 if font_size >= 30 else 5)
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	parent.add_child(l)
 	return l
@@ -234,8 +326,7 @@ func _new_level() -> void:
 	moves = 0
 	time_total = _level_time()
 	time_left = time_total
-	dim.visible = false
-	msg_label.visible = false
+	_hide_message()
 
 	if level_root:
 		level_root.queue_free()
@@ -385,8 +476,6 @@ func _make_cell_backgrounds_fallback(kinds: Dictionary) -> void:
 
 # ------------------------------------------------- INÍCIO / FIM (marcadores) --
 func _make_markers() -> void:
-	_make_cell_highlight(Vector2i(0, start_row), Color(COLOR_IN, 0.35))
-	_make_cell_highlight(Vector2i(cols - 1, end_row), Color(COLOR_OUT_OFF, 0.35))
 	var in_port := _make_port(true)
 	in_port.color = COLOR_IN
 	out_port = _make_port(false)
@@ -424,19 +513,23 @@ func _make_port(is_start: bool) -> ColorRect:
 	tw.tween_property(arrow, "position:x", base_x + 6.0, 0.4)
 	tw.tween_property(arrow, "position:x", base_x, 0.4)
 
-	# texto ao lado do marcador
+	# texto ao lado do marcador: tamanho fixo na tela (o tabuleiro muda de escala a cada
+	# nível, então desfazemos a escala do tabuleiro para o texto continuar grande e legível)
+	var inv := 1.0 / maxf(board.scale.x, 0.01)
 	var l := Label.new()
 	l.text = "INÍCIO" if is_start else "FIM"
-	l.add_theme_font_size_override("font_size", 18)
-	l.add_theme_constant_override("outline_size", 6)
+	l.add_theme_font_size_override("font_size", 20)
+	l.add_theme_constant_override("outline_size", 5)
 	l.add_theme_color_override("font_outline_color", Color.BLACK)
+	l.add_theme_color_override("font_color", Color("#7db4ff") if is_start else COLOR_OUT_ON)
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	l.size = Vector2(70, 26)
+	l.size = Vector2(110, 34)
+	l.scale = Vector2(inv, inv)
 	if is_start:
 		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		l.position = Vector2(x - 74, cy - 13)
+		l.position = Vector2(x - 6.0 - l.size.x * inv, cy - l.size.y * inv / 2.0)
 	else:
-		l.position = Vector2(x + PORT_W + 4, cy - 13)
+		l.position = Vector2(x + PORT_W + 6.0, cy - l.size.y * inv / 2.0)
 	level_root.add_child(l)
 	return r
 
@@ -728,7 +821,14 @@ func _finish_win() -> void:
 	var bonus := 100 + int(time_left) * 10
 	score += bonus
 	var next_size := clampi(MIN_SIZE + level, MIN_SIZE, MAX_SIZE)
-	_show_message("Nível %d completo!\n+%d pontos\n\nClique para continuar\n(próximo: %dx%d)" % [level, bonus, next_size, next_size])
+	var proximo := "Próximo nível: %d×%d" % [next_size, next_size]
+	if next_size == cols:
+		proximo += "  (mesmo tamanho, menos tempo)"
+	_show_message(
+		"NÍVEL %d COMPLETO!" % level, COLOR_GOOD,
+		"+%d pontos" % bonus, COLOR_SCORE,
+		proximo,
+		"Clique para continuar")
 	_update_hud()
 
 
@@ -791,18 +891,45 @@ func _rotate_tile(c: Vector2i, dir: int) -> void:
 func _lose() -> void:
 	state = State.LOST
 	lock_until = Time.get_ticks_msec() + 500
-	_show_message("Tempo esgotado!\nPontuação final: %d\n\nClique para recomeçar" % score)
+	_show_message(
+		"TEMPO ESGOTADO!", COLOR_BAD,
+		"Pontuação final: %d" % score, COLOR_SCORE,
+		"Você chegou ao nível %d" % level,
+		"Clique para recomeçar")
 
 
-func _show_message(text: String) -> void:
-	msg_label.text = text
-	msg_label.visible = true
+func _show_message(title: String, title_color: Color, line1: String, line1_color: Color,
+		line2: String, prompt: String) -> void:
+	msg_title.text = title
+	msg_title.add_theme_color_override("font_color", title_color)
+	msg_line1.text = line1
+	msg_line1.add_theme_color_override("font_color", line1_color)
+	msg_line2.text = line2
+	msg_prompt.text = prompt
+	var estilo := msg_panel.get_theme_stylebox("panel") as StyleBoxFlat
+	if estilo:
+		estilo.border_color = title_color
 	dim.visible = true
+	msg_root.visible = true
+
+
+func _hide_message() -> void:
+	dim.visible = false
+	msg_root.visible = false
 
 
 func _update_hud() -> void:
-	moves_label.text = "MOVIMENTOS: %d" % moves
-	score_label.text = "PONTOS: %d" % score
-	level_label.text = "NÍVEL: %d (%dx%d)" % [level, cols, rows]
+	score_label.text = "%d" % score
+	level_label.text = "%d  (%d×%d)" % [level, cols, rows]
 	time_bar.max_value = time_total
 	time_bar.value = time_left
+	time_label.text = "%d s" % ceili(time_left)
+	# a barra muda de cor conforme o tempo vai acabando
+	var frac := time_left / maxf(time_total, 0.01)
+	var cor := COLOR_TIME_OK
+	if frac < 0.25:
+		cor = COLOR_TIME_LOW
+	elif frac < 0.5:
+		cor = COLOR_TIME_WARN
+	time_fill.bg_color = cor
+	time_label.add_theme_color_override("font_color", cor if frac < 0.5 else Color.WHITE)

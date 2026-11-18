@@ -8,8 +8,11 @@ extends Control
 ##  - "chording": esquerdo+direito juntos, ou botão do meio, num número já
 ##    revelado abre os vizinhos se a quantidade de bandeiras bater
 ##  - primeiro clique sempre seguro (e sempre abre uma região)
+##  - modo progressivo: ao vencer, o próximo nível tem mais casas e mais minas.
+##    A altura do tabuleiro é fixa e ele cresce pelos lados (uma coluna de cada lado)
 ##  - cronômetro só começa no primeiro clique; contadores de 3 dígitos
-##  - rosto que reinicia (sorrindo, "oh", morto, de óculos) e tecla F2
+##  - policial que reinicia (clique nele ou tecla F2); ao lado dele, as minas restantes
+##  - cronômetro com o tempo de jogo, no canto direito da moldura
 ##  - ao perder: mostra minas, bandeiras erradas e a mina que explodiu
 ##  - ao ganhar: marca as minas restantes e grava o recorde (best time)
 
@@ -23,10 +26,26 @@ const Scores = preload("res://aeroporto/minigames/minesweeper/minesweeper_scores
 const PREFIX = "res://assets/minigames/minesweeper/"
 
 const TEX_HIDDEN: Texture2D = preload(PREFIX + "hidden.png")
+const TEX_HIDDEN_HOVER: Texture2D = preload(PREFIX + "hidden_hover.png")
 const TEX_SAFE: Texture2D = preload(PREFIX + "safe.png")
 const TEX_FLAG: Texture2D = preload(PREFIX + "flag.png")
 const TEX_MINE: Texture2D = preload(PREFIX + "mine.png")
 const TEX_MINE_HIT: Texture2D = preload(PREFIX + "mine_selected.png")
+
+# Tipos de "mina": bomba, arma, faca e droga. Cada mina sorteia um tipo ao ser
+# colocada (índice 0 = bomba, que é o mine.png padrão).
+const MINE_TEXTURES = [
+	TEX_MINE,
+	preload(PREFIX + "mine_arma.png"),
+	preload(PREFIX + "mine_faca.png"),
+	preload(PREFIX + "mine_droga.png"),
+]
+const MINE_HIT_TEXTURES = [
+	TEX_MINE_HIT,
+	preload(PREFIX + "mine_arma_selected.png"),
+	preload(PREFIX + "mine_faca_selected.png"),
+	preload(PREFIX + "mine_droga_selected.png"),
+]
 ## índice = quantidade de minas vizinhas (0 usa TEX_SAFE)
 const NUMBER_TEXTURES = [
 	null,
@@ -43,61 +62,72 @@ const MARK_FONT: Font = preload("res://assets/pixel_operator/PixelOperatorMono-B
 
 const COLOR_WRONG_FLAG := Color(1.0, 0.25, 0.25)
 const COLOR_QUESTION := Color(0.92, 0.92, 0.92)
-const COLOR_FACE := Color(1.0, 0.85, 0.15)
+const COLOR_LED := Color(1.0, 0.15, 0.1)
 
-## dificuldades oficiais do Campo Minado
-const CUSTOM := "custom"
-const LEVELS := {
-	"beginner": {"name": "Iniciante", "cols": 9, "rows": 9, "mines": 10},
-	"intermediate": {"name": "Intermediário", "cols": 16, "rows": 16, "mines": 40},
-	"expert": {"name": "Especialista", "cols": 30, "rows": 16, "mines": 99},
-}
-const CUSTOM_MIN_MINES := 10
+## Moldura do tabuleiro (grid_frame.png): cabeçalho com o policial + contador de
+## minas à esquerda e o cronômetro + tempo à direita. Medidas em pixels da imagem;
+## a arte é ampliada em múltiplos inteiros (ver ui_scale) para ficar nítida.
+const TEX_FRAME: Texture2D = preload(PREFIX + "grid_frame.png")
+const FRAME_BORDER_X := 10.0          # borda esquerda / direita
+const FRAME_HEADER_H := 23.0          # altura do cabeçalho
+const FRAME_BORDER_BOTTOM := 10.0     # borda de baixo
+const FRAME_HEAD_SIDE := 76.0         # largura de cada ponta do cabeçalho
+const FRAME_MIN_WIDTH := FRAME_HEAD_SIDE * 2.0
+const FRAME_FILL := Color8(16, 43, 70)
+const FACE_RECT := Rect2(10, 1, 32, 22)          # área clicável do policial
+const MINES_LED_RECT := Rect2(42, 3, 30, 18)     # número ao lado do policial
+const TIME_LED_SIZE := Vector2(34, 18)           # número ao lado do cronômetro
+const TIME_LED_FROM_RIGHT := 52.0                # distância da borda direita
 
-const MAX_CELL_SIZE := 32.0
-const MIN_CELL_SIZE := 12.0
+## Modo progressivo. A altura é fixa (BASE_ROWS); a cada nível entram
+## COLS_PER_LEVEL colunas (uma de cada lado) até MAX_COLS. Depois disso o tamanho
+## para de crescer e só a densidade de minas continua subindo, até MAX_DENSITY.
+const CELL_BASE := 32.0               # tamanho da casa na arte (px)
+const BASE_COLS := 7
+const BASE_ROWS := 7
+const COLS_PER_LEVEL := 2
+const MAX_COLS := 15
+const BASE_DENSITY := 0.12            # minas / casas no nível 1
+const DENSITY_PER_LEVEL := 0.012
+const MAX_DENSITY := 0.22
+const LEVEL_KEY := "level_%d"         # chave dos recordes de cada nível
+const HINT_START := ""
+
+## Cores da mensagem de status (canto direito do HUD)
+const COLOR_STATUS_INFO := Color(0.8, 0.88, 1.0)
+const COLOR_STATUS_LOST := Color(1.0, 0.42, 0.37)
+const COLOR_STATUS_WON := Color(0.36, 1.0, 0.6)
+const COLOR_STATUS_RECORD := Color(1.0, 0.85, 0.29)
 
 @onready var back_button: Button = %BackButton
-@onready var btn_beginner: Button = %BtnBeginner
-@onready var btn_intermediate: Button = %BtnIntermediate
-@onready var btn_expert: Button = %BtnExpert
-@onready var btn_custom: Button = %BtnCustom
 @onready var marks_check: CheckBox = %MarksCheck
 @onready var records_button: Button = %RecordsButton
 
 @onready var best_label: Label = %BestLabel
-@onready var mines_label: Label = %MinesLabel
-@onready var time_label: Label = %TimeLabel
 @onready var status_label: Label = %StatusLabel
+@onready var next_button: Button = %NextButton
 @onready var face: Control = %Face
 @onready var board_area: Control = %BoardArea
+@onready var frame: Control = %Frame
 @onready var board: Control = %Board
 
 @onready var overlay: Control = %Overlay
 @onready var dim: Control = %Dim
-@onready var custom_panel: Control = %CustomPanel
-@onready var cols_slider: HSlider = %ColsSlider
-@onready var rows_slider: HSlider = %RowsSlider
-@onready var mines_slider: HSlider = %MinesSlider
-@onready var cols_value: Label = %ColsValue
-@onready var rows_value: Label = %RowsValue
-@onready var mines_value: Label = %MinesValue
-@onready var custom_start: Button = %CustomStart
-@onready var custom_cancel: Button = %CustomCancel
 @onready var scores_panel: Control = %ScoresPanel
 @onready var scores_text: Label = %ScoresText
 @onready var reset_scores_button: Button = %ResetScoresButton
 @onready var close_scores_button: Button = %CloseScoresButton
 
 # configuração do jogo atual
-var level_key: String = "beginner"
-var cols: int = 9
-var rows: int = 9
-var mine_count: int = 10
+var level: int = 1
+var cols: int = BASE_COLS
+var rows: int = BASE_ROWS
+var mine_count: int = 6
 var marks_enabled: bool = false
 
 # estado do tabuleiro (arrays lineares: índice = linha * cols + coluna)
 var mines := PackedByteArray()      # 1 = tem mina
+var mine_kind := PackedByteArray()  # tipo visual da mina (índice em MINE_TEXTURES)
 var adjacent := PackedByteArray()   # minas vizinhas
 var cells := PackedByteArray()      # valores de Cell
 var exploded: int = -1              # mina que o jogador acionou
@@ -108,9 +138,15 @@ var state: State = State.READY
 var elapsed: float = 0.0            # segundos de jogo (só conta com a tela visível)
 var shown_seconds: int = -1
 var status_text: String = ""
+var status_color: Color = COLOR_STATUS_INFO
 
 # input
-var cell_size: float = MAX_CELL_SIZE
+var cell_size: float = CELL_BASE
+var ui_scale: float = 1.0           # ampliação da arte (casas = 32 * ui_scale px)
+var mines_text := "000"
+var time_text := "000"
+var _mines_led := Rect2()           # caixas dos números dentro da moldura
+var _time_led := Rect2()
 var hover: int = -1
 var left_down: bool = false
 var right_down: bool = false
@@ -120,23 +156,20 @@ var chord_fired: bool = false       # o chord já foi executado neste gesto
 var face_pressed: bool = false
 var reset_armed: bool = false
 
-var level_buttons: Dictionary = {}
 var scores: Scores
 
 
 func _ready() -> void:
+	# Aberto dentro da janela do host, o fundo cinza some e o mapa borrado aparece atrás.
+	if has_meta("embutido"):
+		$Background.visible = false
+
 	scores = Scores.new()
 	marks_enabled = bool(scores.settings.get("marks", false))
 	marks_check.set_pressed_no_signal(marks_enabled)
 
-	level_buttons = {
-		"beginner": btn_beginner,
-		"intermediate": btn_intermediate,
-		"expert": btn_expert,
-		CUSTOM: btn_custom,
-	}
-
 	# tabuleiro e rosto
+	frame.draw.connect(_draw_frame)
 	board.draw.connect(_draw_board)
 	board.gui_input.connect(_on_board_gui_input)
 	board.mouse_exited.connect(_on_board_mouse_exited)
@@ -146,43 +179,55 @@ func _ready() -> void:
 
 	# barra superior
 	back_button.pressed.connect(func() -> void: voltar_pressed.emit())
-	btn_beginner.pressed.connect(_start_level.bind("beginner"))
-	btn_intermediate.pressed.connect(_start_level.bind("intermediate"))
-	btn_expert.pressed.connect(_start_level.bind("expert"))
-	btn_custom.pressed.connect(_open_custom)
+	next_button.pressed.connect(_restart_or_advance)
 	marks_check.toggled.connect(_on_marks_toggled)
 	records_button.pressed.connect(_open_scores)
 
-	# janelas (personalizado / recordes)
+	# janela de recordes
 	dim.gui_input.connect(_on_dim_gui_input)
-	cols_slider.value_changed.connect(_on_custom_slider_changed)
-	rows_slider.value_changed.connect(_on_custom_slider_changed)
-	mines_slider.value_changed.connect(_on_custom_slider_changed)
-	custom_start.pressed.connect(_on_custom_start)
-	custom_cancel.pressed.connect(_close_overlay)
 	reset_scores_button.pressed.connect(_on_reset_scores_pressed)
 	close_scores_button.pressed.connect(_close_overlay)
 
-	_start_level("beginner")
+	_start_level(1)
 
 
 # =============================================================================
 #  Novo jogo
 # =============================================================================
 
-func _start_level(key: String) -> void:
-	var cfg: Dictionary = LEVELS[key]
-	level_key = key
+func _start_level(n: int) -> void:
+	level = maxi(1, n)
+	var cfg := _level_config(level)
 	cols = int(cfg["cols"])
 	rows = int(cfg["rows"])
 	mine_count = int(cfg["mines"])
 	new_game()
 
 
-## Reinicia com a configuração atual (é o que o rosto e o F2 fazem).
+## Tamanho e minas de cada nível: altura fixa, colunas crescendo de 2 em 2 (uma de
+## cada lado) até MAX_COLS e densidade de minas subindo até MAX_DENSITY.
+func _level_config(n: int) -> Dictionary:
+	var c := mini(BASE_COLS + COLS_PER_LEVEL * (n - 1), MAX_COLS)
+	var r := BASE_ROWS
+	var density := minf(BASE_DENSITY + DENSITY_PER_LEVEL * (n - 1), MAX_DENSITY)
+	var m := clampi(roundi(c * r * density), 1, c * r - 9)
+	return {"cols": c, "rows": r, "mines": m}
+
+
+## Policial, F2 e botão "Próximo nível": depois de vencer sobe de nível,
+## nos outros casos recomeça o nível atual.
+func _restart_or_advance() -> void:
+	if state == State.WON:
+		_start_level(level + 1)
+	else:
+		new_game()
+
+
+## Reinicia o nível atual.
 func new_game() -> void:
 	var total := cols * rows
 	mines = _new_bytes(total)
+	mine_kind = _new_bytes(total)
 	adjacent = _new_bytes(total)
 	cells = _new_bytes(total)
 
@@ -192,7 +237,8 @@ func new_game() -> void:
 	elapsed = 0.0
 	shown_seconds = -1
 	state = State.READY
-	status_text = ""
+	status_text = HINT_START
+	status_color = COLOR_STATUS_INFO
 
 	hover = -1
 	left_down = false
@@ -202,7 +248,6 @@ func new_game() -> void:
 	chord_fired = false
 	face_pressed = false
 
-	_sync_level_buttons()
 	_layout_board()
 	_refresh_hud()
 	board.queue_redraw()
@@ -214,12 +259,6 @@ func _new_bytes(length: int) -> PackedByteArray:
 	bytes.resize(length)
 	bytes.fill(0)
 	return bytes
-
-
-func _sync_level_buttons() -> void:
-	var button: Button = level_buttons.get(level_key)
-	if button != null:
-		button.set_pressed_no_signal(true)
 
 
 # =============================================================================
@@ -277,6 +316,7 @@ func _place_mines(first: int) -> void:
 	candidates.shuffle()
 	for k in mine_count:
 		mines[candidates[k]] = 1
+		mine_kind[candidates[k]] = randi() % MINE_TEXTURES.size()
 
 	for i in total:
 		if mines[i] == 1:
@@ -292,6 +332,7 @@ func _reveal_cell(i: int) -> void:
 	if state == State.READY:
 		_place_mines(i)
 		state = State.PLAYING
+		status_text = ""
 		elapsed = 0.0
 	if mines[i] == 1:
 		_lose(i)
@@ -359,7 +400,8 @@ func _check_win() -> void:
 func _lose(hit: int) -> void:
 	state = State.LOST
 	exploded = hit
-	status_text = "Perdeu!"
+	status_text = "Perdeu! Clique no policial ou F2"
+	status_color = COLOR_STATUS_LOST
 
 
 func _win() -> void:
@@ -370,12 +412,15 @@ func _win() -> void:
 	flag_count = mine_count
 
 	var ms := maxi(1, roundi(elapsed * 1000.0))
-	status_text = "Venceu! %s" % _format_ms(ms)
-	# só as dificuldades oficiais têm recorde (como no jogo original)
-	if level_key != CUSTOM:
-		var result: Dictionary = scores.submit(level_key, ms)
-		if bool(result["new_record"]):
-			status_text = "Novo recorde! %s" % _format_ms(ms)
+	status_text = "Nível %d concluído em %s!" % [level, _format_ms(ms)]
+	status_color = COLOR_STATUS_WON
+	var result: Dictionary = scores.submit(LEVEL_KEY % level, ms)
+	if bool(result["new_record"]):
+		status_text = "NOVO RECORDE! %s" % _format_ms(ms)
+		status_color = COLOR_STATUS_RECORD
+	if level > int(scores.settings.get("best_level", 0)):
+		scores.settings["best_level"] = level
+		scores.save_to_disk()
 
 
 # =============================================================================
@@ -402,33 +447,111 @@ func _format_ms(ms: int) -> String:
 # =============================================================================
 
 func _refresh_hud() -> void:
-	mines_label.text = "%03d" % (mine_count - flag_count)
+	mines_text = "%03d" % (mine_count - flag_count)
 	_refresh_time()
 	status_label.text = status_text
+	status_label.add_theme_color_override("font_color", status_color)
+	next_button.visible = state == State.WON
 
-	if level_key == CUSTOM:
-		best_label.text = "Personalizado: sem recorde"
-	else:
-		var best := scores.best_ms(level_key)
-		best_label.text = "Recorde: %s" % (_format_ms(best) if best > 0 else "--")
+	var best := scores.best_ms(LEVEL_KEY % level)
+	var best_text := _format_ms(best) if best > 0 else "--"
+	best_label.text = "Nível %d  ·  Recorde: %s" % [level, best_text]
 
 
 func _refresh_time() -> void:
-	time_label.text = "%03d" % mini(int(elapsed), 999)
+	time_text = "%03d" % mini(int(elapsed), 999)
+	frame.queue_redraw()
 
 
 # =============================================================================
 #  Tabuleiro: layout e desenho
 # =============================================================================
 
+## Escala da arte: a maior em que o nível mais largo ainda cabe na área de jogo. Inteira
+## quando dá (2x, 3x: pixel art nítida); se a janela for apertada, usa passos de 0,25.
+## Assim as casas têm tamanho fixo e o tabuleiro só cresce pelos lados.
+func _pick_scale(area: Vector2) -> float:
+	var need_w := MAX_COLS * CELL_BASE + FRAME_BORDER_X * 2.0
+	var need_h := BASE_ROWS * CELL_BASE + FRAME_HEADER_H + FRAME_BORDER_BOTTOM
+	var fit := minf(area.x / need_w, area.y / need_h)
+	if fit >= 2.0:
+		return minf(floorf(fit), 3.0)
+	return maxf(1.0, floorf(fit * 4.0) / 4.0)
+
+
 func _layout_board() -> void:
 	var area := board_area.size
 	if area.x <= 0.0 or area.y <= 0.0:
 		return
-	cell_size = clampf(floorf(minf(area.x / cols, area.y / rows)), MIN_CELL_SIZE, MAX_CELL_SIZE)
+	ui_scale = _pick_scale(area)
+	var sc := ui_scale
+	cell_size = CELL_BASE * sc
 	board.size = Vector2(cols, rows) * cell_size
-	board.position = ((area - board.size) * 0.5).floor()
+
+	# a moldura fica centralizada: quando entram colunas, ela abre para os dois lados
+	var bx := roundf(FRAME_BORDER_X * sc)
+	var hh := roundf(FRAME_HEADER_H * sc)
+	var frame_w := maxf(board.size.x + bx * 2.0, FRAME_MIN_WIDTH * sc)
+	frame.size = Vector2(frame_w, board.size.y + hh + roundf(FRAME_BORDER_BOTTOM * sc))
+	frame.position = Vector2(
+		floorf((area.x - frame.size.x) * 0.5),
+		maxf(0.0, floorf((area.y - frame.size.y) * 0.5)))
+	board.position = frame.position + Vector2(floorf((frame_w - board.size.x) * 0.5), hh)
+
+	# policial e números ficam dentro do cabeçalho da moldura
+	face.position = FACE_RECT.position * sc
+	face.size = FACE_RECT.size * sc
+	_mines_led = Rect2(MINES_LED_RECT.position * sc, MINES_LED_RECT.size * sc)
+	_time_led = Rect2(
+		Vector2(frame_w - TIME_LED_FROM_RIGHT * sc, MINES_LED_RECT.position.y * sc),
+		TIME_LED_SIZE * sc)
+
+	frame.queue_redraw()
 	board.queue_redraw()
+	face.queue_redraw()
+
+
+## Desenha a moldura esticando só o miolo do cabeçalho, as bordas e o rodapé
+## (a arte é ampliada por ui_scale), então ela serve para qualquer largura.
+func _draw_frame() -> void:
+	var sc := ui_scale
+	var w := frame.size.x
+	var h := frame.size.y
+	var bx := roundf(FRAME_BORDER_X * sc)
+	var hh := roundf(FRAME_HEADER_H * sc)
+	var bb := roundf(FRAME_BORDER_BOTTOM * sc)
+	var side := FRAME_HEAD_SIDE * sc
+	var body_h := h - hh - bb
+
+	# fundo atrás do tabuleiro
+	frame.draw_rect(Rect2(bx, hh, w - bx * 2.0, body_h), FRAME_FILL)
+
+	# cabeçalho: ponta do policial | miolo esticado | ponta do cronômetro
+	frame.draw_texture_rect_region(TEX_FRAME, Rect2(0, 0, side, hh), Rect2(14, 0, FRAME_HEAD_SIDE, FRAME_HEADER_H))
+	frame.draw_texture_rect_region(TEX_FRAME, Rect2(side, 0, w - side * 2.0, hh), Rect2(90, 0, 125, FRAME_HEADER_H))
+	frame.draw_texture_rect_region(TEX_FRAME, Rect2(w - side, 0, side, hh), Rect2(215, 0, FRAME_HEAD_SIDE, FRAME_HEADER_H))
+
+	# bordas laterais
+	frame.draw_texture_rect_region(TEX_FRAME, Rect2(0, hh, bx, body_h), Rect2(14, 24, 10, 255))
+	frame.draw_texture_rect_region(TEX_FRAME, Rect2(w - bx, hh, bx, body_h), Rect2(281, 24, 10, 255))
+
+	# rodapé: canto | miolo esticado | canto
+	var by := h - bb
+	frame.draw_texture_rect_region(TEX_FRAME, Rect2(0, by, bx, bb), Rect2(14, 280, 10, 10))
+	frame.draw_texture_rect_region(TEX_FRAME, Rect2(bx, by, w - bx * 2.0, bb), Rect2(24, 280, 257, 10))
+	frame.draw_texture_rect_region(TEX_FRAME, Rect2(w - bx, by, bx, bb), Rect2(281, 280, 10, 10))
+
+	# números: minas restantes (ao lado do policial) e tempo (ao lado do cronômetro)
+	_draw_led(_mines_led, mines_text)
+	_draw_led(_time_led, time_text)
+
+
+func _draw_led(box: Rect2, text: String) -> void:
+	var fs := int(roundf(16.0 * ui_scale))
+	var ascent := MARK_FONT.get_ascent(fs)
+	var descent := MARK_FONT.get_descent(fs)
+	var y := box.position.y + (box.size.y - (ascent + descent)) * 0.5 + ascent
+	frame.draw_string(MARK_FONT, Vector2(box.position.x, y), text, HORIZONTAL_ALIGNMENT_CENTER, box.size.x, fs, COLOR_LED)
 
 
 func _draw_board() -> void:
@@ -453,9 +576,9 @@ func _draw_cell(i: int, rect: Rect2) -> void:
 
 	if state == State.LOST:
 		if i == exploded:
-			tex = TEX_MINE_HIT
+			tex = MINE_HIT_TEXTURES[mine_kind[i]]
 		elif mines[i] == 1 and cell != Cell.FLAGGED:
-			tex = TEX_MINE
+			tex = MINE_TEXTURES[mine_kind[i]]
 		elif cell == Cell.FLAGGED:
 			if mines[i] == 1:
 				tex = TEX_FLAG
@@ -477,6 +600,10 @@ func _draw_cell(i: int, rect: Rect2) -> void:
 		if (cell == Cell.HIDDEN or cell == Cell.QUESTION) and _is_pressed_preview(i):
 			tex = TEX_SAFE
 			question = false
+
+	# casa fechada sob o mouse fica mais clara: mostra que dá para clicar
+	if tex == TEX_HIDDEN and i == hover and _playable() and not left_down:
+		tex = TEX_HIDDEN_HOVER
 
 	board.draw_texture_rect(tex, rect, false)
 
@@ -503,55 +630,14 @@ func _is_pressed_preview(i: int) -> bool:
 
 
 # =============================================================================
-#  Rosto
+#  Policial (botão de novo jogo)
 # =============================================================================
 
+## O desenho do policial já está na moldura; aqui só escurece enquanto o botão
+## está pressionado.
 func _draw_face() -> void:
-	var box := face.size
-	var center := box * 0.5
-	var fr := minf(box.x, box.y) * 0.5 * 0.62
-
-	# botão com chanfro (afundado enquanto está pressionado)
-	var light := Color(0.62, 0.62, 0.62)
-	var dark := Color(0.12, 0.12, 0.12)
-	face.draw_rect(Rect2(Vector2.ZERO, box), Color(0.40, 0.40, 0.40))
-	var top_left := dark if face_pressed else light
-	var bottom_right := light if face_pressed else dark
-	face.draw_rect(Rect2(0, 0, box.x, 3), top_left)
-	face.draw_rect(Rect2(0, 0, 3, box.y), top_left)
-	face.draw_rect(Rect2(0, box.y - 3, box.x, 3), bottom_right)
-	face.draw_rect(Rect2(box.x - 3, 0, 3, box.y), bottom_right)
-
-	face.draw_circle(center, fr, COLOR_FACE)
-	face.draw_arc(center, fr, 0.0, TAU, 32, Color.BLACK, 2.0)
-
-	var eye_y := center.y - fr * 0.25
-	var eye_dx := fr * 0.38
-	var smile_center := Vector2(center.x, center.y + fr * 0.05)
-
-	if state == State.LOST:
-		# olhos em X e boca triste
-		var k := fr * 0.16
-		for side in [-1.0, 1.0]:
-			var e := Vector2(center.x + side * eye_dx, eye_y)
-			face.draw_line(e + Vector2(-k, -k), e + Vector2(k, k), Color.BLACK, 2.0)
-			face.draw_line(e + Vector2(-k, k), e + Vector2(k, -k), Color.BLACK, 2.0)
-		face.draw_arc(Vector2(center.x, center.y + fr * 0.65), fr * 0.38, deg_to_rad(200), deg_to_rad(340), 12, Color.BLACK, 2.0)
-	elif state == State.WON:
-		# óculos escuros e sorriso
-		face.draw_rect(Rect2(center.x - fr * 0.78, eye_y - fr * 0.22, fr * 1.56, fr * 0.1), Color.BLACK)
-		for side in [-1.0, 1.0]:
-			face.draw_rect(Rect2(center.x + side * eye_dx - fr * 0.27, eye_y - fr * 0.2, fr * 0.54, fr * 0.38), Color.BLACK)
-		face.draw_arc(smile_center, fr * 0.55, deg_to_rad(25), deg_to_rad(155), 14, Color.BLACK, 2.0)
-	elif _playable() and hover >= 0 and (left_down or middle_down):
-		# "oh!" enquanto o botão está pressionado no tabuleiro
-		for side in [-1.0, 1.0]:
-			face.draw_circle(Vector2(center.x + side * eye_dx, eye_y), fr * 0.14, Color.BLACK)
-		face.draw_circle(Vector2(center.x, center.y + fr * 0.42), fr * 0.16, Color.BLACK)
-	else:
-		for side in [-1.0, 1.0]:
-			face.draw_circle(Vector2(center.x + side * eye_dx, eye_y), fr * 0.1, Color.BLACK)
-		face.draw_arc(smile_center, fr * 0.55, deg_to_rad(25), deg_to_rad(155), 14, Color.BLACK, 2.0)
+	if face_pressed:
+		face.draw_rect(Rect2(Vector2.ZERO, face.size), Color(0, 0, 0, 0.3))
 
 
 func _on_face_gui_input(event: InputEvent) -> void:
@@ -566,7 +652,7 @@ func _on_face_gui_input(event: InputEvent) -> void:
 		face_pressed = false
 		face.queue_redraw()
 		if inside:
-			new_game()
+			_restart_or_advance()
 
 
 # =============================================================================
@@ -596,8 +682,8 @@ func _on_board_gui_input(event: InputEvent) -> void:
 		var h := _cell_at(motion.position)
 		if h != hover:
 			hover = h
+			board.queue_redraw()
 			if left_down or middle_down:
-				board.queue_redraw()
 				face.queue_redraw()
 		return
 
@@ -678,46 +764,8 @@ func _on_marks_toggled(enabled: bool) -> void:
 
 
 # =============================================================================
-#  Janelas: campo personalizado e recordes
+#  Janela de recordes
 # =============================================================================
-
-func _max_mines(c: int, r: int) -> int:
-	# mesmo limite do jogo original: no máximo (colunas-1) x (linhas-1)
-	return (c - 1) * (r - 1)
-
-
-func _open_custom() -> void:
-	cols_slider.set_value_no_signal(cols)
-	rows_slider.set_value_no_signal(rows)
-	mines_slider.max_value = _max_mines(cols, rows)
-	mines_slider.set_value_no_signal(mine_count)
-	_update_custom_labels()
-	overlay.show()
-	custom_panel.show()
-	scores_panel.hide()
-
-
-func _on_custom_slider_changed(_value: float) -> void:
-	var c := int(cols_slider.value)
-	var r := int(rows_slider.value)
-	mines_slider.max_value = _max_mines(c, r)
-	_update_custom_labels()
-
-
-func _update_custom_labels() -> void:
-	cols_value.text = str(int(cols_slider.value))
-	rows_value.text = str(int(rows_slider.value))
-	mines_value.text = str(int(mines_slider.value))
-
-
-func _on_custom_start() -> void:
-	cols = int(cols_slider.value)
-	rows = int(rows_slider.value)
-	mine_count = clampi(int(mines_slider.value), CUSTOM_MIN_MINES, _max_mines(cols, rows))
-	level_key = CUSTOM
-	_close_overlay()
-	new_game()
-
 
 func _open_scores() -> void:
 	reset_armed = false
@@ -725,20 +773,29 @@ func _open_scores() -> void:
 	_refresh_scores_text()
 	overlay.show()
 	scores_panel.show()
-	custom_panel.hide()
 
 
 func _refresh_scores_text() -> void:
 	var lines := PackedStringArray()
-	for key in LEVELS:
-		lines.append(String(LEVELS[key]["name"]))
-		var top := scores.top(key)
+	lines.append("Maior nível concluído: %d" % int(scores.settings.get("best_level", 0)))
+	lines.append("")
+
+	var levels: Array[int] = []
+	for key in scores.level_keys():
+		var key_text := String(key)
+		if key_text.begins_with("level_"):
+			levels.append(int(key_text.substr(6)))
+	levels.sort()
+
+	if levels.is_empty():
+		lines.append("   --")
+	for n in levels:
+		var cfg := _level_config(n)
+		var top := scores.top(LEVEL_KEY % n)
 		if top.is_empty():
-			lines.append("   --")
-		for k in top.size():
-			var entry: Dictionary = top[k]
-			lines.append("  %d. %s   %s" % [k + 1, _format_ms(int(entry["time_ms"])).lpad(9), String(entry["date"])])
-		lines.append("")
+			continue
+		var entry: Dictionary = top[0]
+		lines.append("Nível %2d  %2d×%d  %s   %s" % [n, cfg["cols"], cfg["rows"], _format_ms(int(entry["time_ms"])).lpad(9), String(entry["date"])])
 	scores_text.text = "\n".join(lines).strip_edges()
 
 
@@ -749,6 +806,8 @@ func _on_reset_scores_pressed() -> void:
 		reset_scores_button.text = "Confirmar?"
 		return
 	scores.reset()
+	scores.settings["best_level"] = 0
+	scores.save_to_disk()
 	reset_armed = false
 	reset_scores_button.text = "Zerar recordes"
 	_refresh_scores_text()
@@ -757,9 +816,7 @@ func _on_reset_scores_pressed() -> void:
 
 func _close_overlay() -> void:
 	overlay.hide()
-	custom_panel.hide()
 	scores_panel.hide()
-	_sync_level_buttons()   # cancelar o "Personalizado" volta o destaque ao nível atual
 
 
 func _on_dim_gui_input(event: InputEvent) -> void:
@@ -768,14 +825,24 @@ func _on_dim_gui_input(event: InputEvent) -> void:
 		_close_overlay()
 
 
+## Chamado pelo host (tela_minigame) quando o jogador aperta Esc: se a janela de recordes
+## estiver aberta, fecha só ela e avisa que o Esc foi usado (true); senão o host fecha o jogo.
+func tratar_esc() -> bool:
+	if overlay.visible:
+		_close_overlay()
+		return true
+	return false
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_visible_in_tree():
 		return
-	if overlay.visible and event.is_action_pressed("ui_cancel"):
+	# dentro do jogo principal quem trata o Esc é o host (ver tratar_esc)
+	if overlay.visible and event.is_action_pressed("ui_cancel") and not has_meta("embutido"):
 		_close_overlay()
 		get_viewport().set_input_as_handled()
 		return
 	var key := event as InputEventKey
 	if key != null and key.pressed and not key.echo and key.keycode == KEY_F2 and not overlay.visible:
-		new_game()
+		_restart_or_advance()
 		get_viewport().set_input_as_handled()
