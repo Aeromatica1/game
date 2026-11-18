@@ -123,7 +123,6 @@ var level_root: Node2D
 var out_port: ColorRect
 
 var hud: CanvasLayer
-var moves_label: Label
 var score_label: Label
 var level_label: Label
 var time_label: Label
@@ -166,29 +165,17 @@ func _build_hud(vp: Vector2) -> void:
 	add_child(hud)
 	var bx := (vp.x - HUD_W) / 2.0
 
-	# faixa escura atrás do HUD (garante contraste com qualquer fundo)
-	var faixa := ColorRect.new()
-	faixa.color = Color(0, 0, 0, 0.35)
-	faixa.size = Vector2(vp.x, BOARD_TOP - 6)
-	faixa.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	hud.add_child(faixa)
-
-	# três caixas: legenda pequena em cima, valor grande embaixo
-	var col_w := HUD_W / 3.0
+	# duas caixas: legenda pequena em cima, valor grande embaixo
+	# (sem faixa escura e sem o contador de movimentos, para a tela ficar limpa)
+	var col_w := HUD_W / 2.0
 	level_label = _make_stat(hud, "NÍVEL", Vector2(bx, 4), col_w)
-	moves_label = _make_stat(hud, "MOVIMENTOS", Vector2(bx + col_w, 4), col_w)
-	score_label = _make_stat(hud, "PONTOS", Vector2(bx + col_w * 2.0, 4), col_w)
+	score_label = _make_stat(hud, "PONTOS", Vector2(bx + col_w, 4), col_w)
 	score_label.add_theme_color_override("font_color", COLOR_SCORE)
 
-	# barra de tempo: "TEMPO" | barra | segundos restantes
-	var time_text := _make_label(hud, Vector2(bx, 52), 18)
-	time_text.text = "TEMPO"
-	time_text.add_theme_color_override("font_color", COLOR_CAPTION)
-	_outline(time_text, 5)
-
+	# barra de tempo: barra | segundos restantes
 	time_bar = ProgressBar.new()
-	time_bar.position = Vector2(bx + 80, 53)
-	time_bar.size = Vector2(HUD_W - 80 - 70, 22)
+	time_bar.position = Vector2(bx, 53)
+	time_bar.size = Vector2(HUD_W - 70, 22)
 	time_bar.show_percentage = false
 	time_bar.step = 0.01
 	time_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -205,13 +192,16 @@ func _build_hud(vp: Vector2) -> void:
 	time_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_outline(time_label, 6)
 
-	# "como jogar", sempre visível embaixo
-	var dica := _make_label(hud, Vector2(0, vp.y - 26), 17)
+	# "como jogar": aparece no começo e some sozinho depois de alguns segundos
+	var dica := _make_label(hud, Vector2(0, vp.y - 26), 15)
 	dica.size = Vector2(vp.x, 22)
 	dica.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	dica.text = "Botão esquerdo: gira a peça para a direita   |   Botão direito: gira para a esquerda   |   Ligue o INÍCIO ao FIM"
+	dica.text = "Botão esquerdo: gira para a direita   |   Botão direito: gira para a esquerda   |   Ligue o INÍCIO ao FIM"
 	dica.add_theme_color_override("font_color", Color("#c9d3ea"))
-	_outline(dica, 5)
+	_outline(dica, 4)
+	var tw_dica := dica.create_tween()
+	tw_dica.tween_interval(8.0)
+	tw_dica.tween_property(dica, "modulate:a", 0.0, 1.0)
 
 	# --- mensagem de nível completo / tempo esgotado ---
 	dim = ColorRect.new()
@@ -231,7 +221,7 @@ func _build_hud(vp: Vector2) -> void:
 	var estilo := StyleBoxFlat.new()
 	estilo.bg_color = Color("#141a2b")
 	estilo.border_color = COLOR_GOOD
-	estilo.set_border_width_all(4)
+	estilo.set_border_width_all(0)
 	estilo.content_margin_left = 44
 	estilo.content_margin_right = 44
 	estilo.content_margin_top = 28
@@ -278,7 +268,7 @@ func _make_stat(parent: Node, caption: String, pos: Vector2, width: float) -> La
 	var v := _make_label(parent, pos + Vector2(0, 17), 30)
 	v.size = Vector2(width, 34)
 	v.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_outline(v, 8)
+	_outline(v, 5)
 	return v
 
 
@@ -486,8 +476,6 @@ func _make_cell_backgrounds_fallback(kinds: Dictionary) -> void:
 
 # ------------------------------------------------- INÍCIO / FIM (marcadores) --
 func _make_markers() -> void:
-	_make_cell_highlight(Vector2i(0, start_row), Color(COLOR_IN, 0.35))
-	_make_cell_highlight(Vector2i(cols - 1, end_row), Color(COLOR_OUT_OFF, 0.35))
 	var in_port := _make_port(true)
 	in_port.color = COLOR_IN
 	out_port = _make_port(false)
@@ -530,8 +518,8 @@ func _make_port(is_start: bool) -> ColorRect:
 	var inv := 1.0 / maxf(board.scale.x, 0.01)
 	var l := Label.new()
 	l.text = "INÍCIO" if is_start else "FIM"
-	l.add_theme_font_size_override("font_size", 26)
-	l.add_theme_constant_override("outline_size", 8)
+	l.add_theme_font_size_override("font_size", 20)
+	l.add_theme_constant_override("outline_size", 5)
 	l.add_theme_color_override("font_outline_color", Color.BLACK)
 	l.add_theme_color_override("font_color", Color("#7db4ff") if is_start else COLOR_OUT_ON)
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -839,7 +827,7 @@ func _finish_win() -> void:
 	_show_message(
 		"NÍVEL %d COMPLETO!" % level, COLOR_GOOD,
 		"+%d pontos" % bonus, COLOR_SCORE,
-		"100 de base + %d s de tempo restante × 10" % int(time_left) + "\n" + proximo,
+		proximo,
 		"Clique para continuar")
 	_update_hud()
 
@@ -931,7 +919,6 @@ func _hide_message() -> void:
 
 
 func _update_hud() -> void:
-	moves_label.text = "%d" % moves
 	score_label.text = "%d" % score
 	level_label.text = "%d  (%d×%d)" % [level, cols, rows]
 	time_bar.max_value = time_total

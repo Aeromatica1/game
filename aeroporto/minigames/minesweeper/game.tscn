@@ -9,11 +9,10 @@ content_margin_top = 16.0
 content_margin_right = 18.0
 content_margin_bottom = 16.0
 bg_color = Color(0.17, 0.17, 0.17, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.5, 0.5, 0.5, 1)
+border_width_left = 0
+border_width_top = 0
+border_width_right = 0
+border_width_bottom = 0
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -61,7 +60,7 @@ theme_override_constants/separation = 6
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "Voltar"
 
 [node name="Spacer" type="Control" parent="Margin/VBox/TopBar" unique_id=645041189]
@@ -73,18 +72,18 @@ unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Ligado: o clique direito alterna bandeira, depois ?, depois vazio"
 focus_mode = 0
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "Usar marcas (?)"
 
 [node name="RecordsButton" type="Button" parent="Margin/VBox/TopBar" unique_id=472276276]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "Recordes"
 
 [node name="Hud" type="HBoxContainer" parent="Margin/VBox" unique_id=1011162404]
-custom_minimum_size = Vector2(0, 32)
+custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 theme_override_constants/separation = 14
 
@@ -94,8 +93,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 22
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 18
 text = "Recorde: --"
 vertical_alignment = 1
 text_overrun_behavior = 3
@@ -106,8 +105,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.8, 0.88, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 22
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 18
 horizontal_alignment = 2
 vertical_alignment = 1
 text_overrun_behavior = 3

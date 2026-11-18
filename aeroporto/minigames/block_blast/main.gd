@@ -8,7 +8,7 @@ signal fechar_pedido
 const PECA_DIR := "res://assets/minigames/block_blast/"
 
 ## Faixa no topo reservada para a pontuação (o grid e a bandeja usam o resto da tela).
-const TOPO_PONTOS := 84.0
+const TOPO_PONTOS := 64.0
 const COR_PONTOS := Color(1.0, 0.85, 0.2)
 const COR_DINHEIRO := Color(0.45, 1.0, 0.55)
 ## Palavras usadas para achar este minigame na tabela `tipo_minigame` do servidor
@@ -43,7 +43,6 @@ var pontos := 0
 var fim := false
 var saco: Array = []
 
-var rotulo_titulo: Label     # "PONTOS"
 var rotulo_pontos: Label     # número grande, no meio do topo
 var rotulo_dinheiro: Label   # dinheiro do aeroporto (canto superior direito)
 var fundo_fim: ColorRect     # escurece a tela no game over
@@ -287,17 +286,10 @@ func _novo_rotulo(tamanho: int, cor: Color, contorno: int) -> Label:
 func _criar_hud() -> void:
 	var vp := get_viewport_rect().size
 
-	# pontuação: grande e no meio (horizontal) do topo da tela
-	rotulo_titulo = _novo_rotulo(18, Color(0.75, 0.82, 1.0), 5)
-	rotulo_titulo.text = "PONTOS"
-	rotulo_titulo.position = Vector2(0, 6)
-	rotulo_titulo.size = Vector2(vp.x, 22)
-	rotulo_titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_child(rotulo_titulo)
-
-	rotulo_pontos = _novo_rotulo(52, COR_PONTOS, 12)
-	rotulo_pontos.position = Vector2(0, 24)
-	rotulo_pontos.size = Vector2(vp.x, 58)
+	# pontuação: só o número, no meio (horizontal) do topo da tela
+	rotulo_pontos = _novo_rotulo(42, COR_PONTOS, 6)
+	rotulo_pontos.position = Vector2(0, 8)
+	rotulo_pontos.size = Vector2(vp.x, 50)
 	rotulo_pontos.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(rotulo_pontos)
 
@@ -306,7 +298,7 @@ func _criar_hud() -> void:
 	rotulo_dinheiro.position = Vector2(0, 8)
 	rotulo_dinheiro.size = Vector2(vp.x - 14.0, 24)
 	rotulo_dinheiro.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	rotulo_dinheiro.visible = GameState.aeroporto_id != ""
+	rotulo_dinheiro.visible = GameState.aeroporto_id != "" and not has_meta("embutido")
 	add_child(rotulo_dinheiro)
 	_atualizar_dinheiro(GameState.dinheiro())
 	GameState.dinheiro_mudou.connect(_atualizar_dinheiro)
@@ -320,13 +312,13 @@ func _criar_hud() -> void:
 	fundo_fim.visible = false
 	add_child(fundo_fim)
 
-	rotulo_fim_titulo = _novo_rotulo(56, Color(1, 0.4, 0.35), 12)
+	rotulo_fim_titulo = _novo_rotulo(44, Color(1, 0.4, 0.35), 6)
 	rotulo_fim_titulo.position = Vector2(0, vp.y / 2.0 - 130.0)
 	rotulo_fim_titulo.size = Vector2(vp.x, 70)
 	rotulo_fim_titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	fundo_fim.add_child(rotulo_fim_titulo)
 
-	rotulo_fim_corpo = _novo_rotulo(32, Color.WHITE, 8)
+	rotulo_fim_corpo = _novo_rotulo(26, Color.WHITE, 5)
 	rotulo_fim_corpo.position = Vector2(0, vp.y / 2.0 - 40.0)
 	rotulo_fim_corpo.size = Vector2(vp.x, 140)
 	rotulo_fim_corpo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

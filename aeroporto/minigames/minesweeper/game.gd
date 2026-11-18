@@ -91,7 +91,7 @@ const BASE_DENSITY := 0.12            # minas / casas no nível 1
 const DENSITY_PER_LEVEL := 0.012
 const MAX_DENSITY := 0.22
 const LEVEL_KEY := "level_%d"         # chave dos recordes de cada nível
-const HINT_START := "Clique em uma casa. Botão direito = bandeira"
+const HINT_START := ""
 
 ## Cores da mensagem de status (canto direito do HUD)
 const COLOR_STATUS_INFO := Color(0.8, 0.88, 1.0)
@@ -455,7 +455,7 @@ func _refresh_hud() -> void:
 
 	var best := scores.best_ms(LEVEL_KEY % level)
 	var best_text := _format_ms(best) if best > 0 else "--"
-	best_label.text = "NÍVEL %d  ·  %d×%d  ·  %d minas  ·  Recorde: %s" % [level, cols, rows, mine_count, best_text]
+	best_label.text = "Nível %d  ·  Recorde: %s" % [level, best_text]
 
 
 func _refresh_time() -> void:
