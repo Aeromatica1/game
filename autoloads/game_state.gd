@@ -635,7 +635,7 @@ func tipo_minigame_id(palavras: Array) -> int:
 
 
 ## 1234.5 -> "R$ 1.234,50" (mesmo formato usado nas telas de questão e da barra).
-static func formatar_dinheiro(v: float) -> String:
+func formatar_dinheiro(v: float) -> String:
 	var partes := String.num(absf(v), 2).split(".")
 	var inteiro := partes[0]
 	var out := ""

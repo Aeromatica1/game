@@ -181,7 +181,6 @@ func _concluir(tipo: String, tipo_aluguel_id: int, acertou: Variant) -> void:
 ## Mostra a loja (e esconde o "+") se esta área já está alugada no save.
 func _sincronizar() -> void:
 	var linha := GameState.aluguel_da_area(numero_area) if numero_area > 0 else {}
-	print(linha)
 	_alugada = not linha.is_empty()
 	if _alugada:
 		_dica.visible = false

@@ -3308,6 +3308,13 @@ metadata/_edit_lock_ = true
 [node name="Player" parent="." unique_id=877658340 instance=ExtResource("99_player")]
 position = Vector2(2655, -135)
 
+[node name="Camera2D" parent="Player" index="3" unique_id=1557238545]
+limit_left = -642
+limit_top = -472
+limit_right = 13950
+limit_bottom = 706
+position_smoothing_speed = 4.0
+
 [node name="Passageiros" type="Node2D" parent="." unique_id=2072315660]
 position = Vector2(-32, -120)
 script = ExtResource("100_passageiros")
@@ -3326,9 +3333,9 @@ position = Vector2(1123, -365)
 nome_funcionario = "Atendente"
 cargo = "Check-in"
 contexto = "checkin"
+personagem = "staff_f"
 acao = 1
 minigame = ExtResource("11_idjp5")
-personagem = "staff_f"
 
 [node name="Func_Info" parent="Funcionarios" unique_id=23584488 instance=ExtResource("101_funcionario")]
 z_index = 101
@@ -3336,7 +3343,6 @@ position = Vector2(-80, -331)
 nome_funcionario = "Atendente"
 cargo = "Informações"
 contexto = "info"
-personagem = "employee_m"
 
 [node name="Func_Empresa" parent="Funcionarios" unique_id=1911737166 instance=ExtResource("101_funcionario")]
 z_index = 101
@@ -3352,10 +3358,10 @@ position = Vector2(6551, -331)
 nome_funcionario = "Atendente"
 cargo = "Pesagem de bagagem"
 contexto = "pesagem"
+personagem = "service_f"
 acao = 1
 minigame = ExtResource("14_v2x1l")
 texto_dica = "E - Jogar"
-personagem = "service_f"
 
 [node name="Func_Inspecao" parent="Funcionarios" unique_id=1035112327 instance=ExtResource("101_funcionario")]
 z_index = 101
@@ -3366,7 +3372,6 @@ contexto = "pesagem"
 acao = 1
 minigame = ExtResource("12_axask")
 texto_dica = "E - Jogar"
-personagem = "employee_m"
 
 [node name="Bancos" type="Node2D" parent="." unique_id=1805895097]
 position = Vector2(-32, -123)
@@ -3883,3 +3888,5 @@ metadata/_edit_lock_ = true
 position = Vector2(6917.5, 856.375)
 shape = SubResource("RectangleShape2D_in6tm")
 metadata/_edit_lock_ = true
+
+[editable path="Player"]
