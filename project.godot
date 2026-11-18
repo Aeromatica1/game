@@ -20,6 +20,7 @@ GameState="*uid://ca03qahjqtnd3"
 Supabase="*uid://buruhkr3c5wpx"
 GameApi="*uid://dfr4kwfowfiu3"
 Navegacao="*res://autoloads/navegacao.gd"
+Audio="*res://autoloads/audio.gd"
 
 [display]
 

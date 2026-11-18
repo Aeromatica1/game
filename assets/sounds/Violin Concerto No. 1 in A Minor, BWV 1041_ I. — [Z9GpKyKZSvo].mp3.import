@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cmmhu7iflwa71"
+path="res://.godot/imported/Violin Concerto No. 1 in A Minor, BWV 1041_ I. — [Z9GpKyKZSvo].mp3-0736baf9d84bb55f003ff2655d4f6fd8.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Violin Concerto No. 1 in A Minor, BWV 1041_ I. — [Z9GpKyKZSvo].mp3"
+dest_files=["res://.godot/imported/Violin Concerto No. 1 in A Minor, BWV 1041_ I. — [Z9GpKyKZSvo].mp3-0736baf9d84bb55f003ff2655d4f6fd8.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
