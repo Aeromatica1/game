@@ -11,7 +11,7 @@ O nome nasce da junção de **"Aeroporto"** com **"Matemática"**, os dois temas
 ## 📦 O que há neste repositório
 
 - **Jogo**: desenvolvido na **Godot Engine**.
-- **Site**: desenvolvido com **HTML, CSS e JavaScript**.
+- **Site**: desenvolvido com **HTML, CSS, JavaScript e Spring Boot**.
 
 ## 🛠️ Tecnologias
 
@@ -20,7 +20,7 @@ As principais tecnologias utilizadas no projeto foram **Godot** e **Spring Boot*
 | Parte | Tecnologia |
 |-------|------------|
 | Jogo  | Godot Engine |
-| Site  | HTML, CSS e JavaScript |
+| Site  | HTML, CSS, JavaScript, Spring Boot |
 
 Outras ferramentas que fizeram parte do desenvolvimento: C++, SQLite, Docker, LaTeX, FL Studio e Visual Studio Code.
 
@@ -111,10 +111,6 @@ As fórmulas do sistema são usadas em todos os níveis, com dificuldade maior n
   *(A = aluguel mensal, M = metragem em m², V = valor base por m² em R$/m², Fp = fator de fluxo de passageiros de 1 a 10, Na = nível do aeroporto de 1 a 4)*
 - **Preço das passagens:** `P = (S · C · P + M · NQ) / NP`
   *(S = distância em km, C = consumo médio de combustível em L/km, P = preço do combustível em R$/L, M = custo de manutenção em R$, NQ = nível de qualidade do avião de 1 a 5, NP = número de passageiros)*
-- **Custo de expansão das pistas:** `Custo = C · l · M`
-  *(C = comprimento em km, l = largura em km, M = custo por m² em R$/m²)*
-- **Custo das aeronaves:** `V = Cp · T + 1000 · Vm · B`
-  *(V = valor da aeronave em R$, Cp = número de assentos, T = valor por assento em R$, Vm = velocidade média em km/h, B = bônus tecnológico de 1 a 100)*
 
 ---
 
