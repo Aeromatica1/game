@@ -27,9 +27,13 @@ func pre_carregar_mapa() -> void:
 
 ## Guarda o histórico atual das telas e abre o mapa.
 func ir_para_mapa(historico_telas: Array[String]) -> void:
-	_historico = historico_telas.duplicate()
+	pre_carregar_mapa()          # carrega em segundo plano enquanto a tela escurece
+	Transicao.executar(_abrir_mapa.bind(historico_telas.duplicate()))
+
+
+func _abrir_mapa(historico_telas: Array[String]) -> void:
+	_historico = historico_telas
 	_pendente = true
-	pre_carregar_mapa()
 	var cena: PackedScene = null
 	if _mapa_pedido:
 		cena = ResourceLoader.load_threaded_get(CENA_MAPA) as PackedScene
@@ -41,15 +45,19 @@ func ir_para_mapa(historico_telas: Array[String]) -> void:
 
 
 ## Volta ao menu principal (sem restaurar o histórico de telas).
-func voltar_ao_menu() -> void:
-	_historico = []
-	_pendente = false
-	get_tree().change_scene_to_file(CENA_TELAS)
+## `antes_da_troca` (opcional) roda com a tela já escura, logo antes de trocar a cena.
+func voltar_ao_menu(antes_da_troca: Callable = Callable()) -> void:
+	Transicao.executar(func() -> void:
+		if antes_da_troca.is_valid():
+			antes_da_troca.call()
+		_historico = []
+		_pendente = false
+		get_tree().change_scene_to_file(CENA_TELAS))
 
 
 ## Volta do mapa para a tela anterior do histórico (a última, normalmente SaveSlot).
 func voltar_do_mapa() -> void:
-	get_tree().change_scene_to_file(CENA_TELAS)
+	Transicao.executar(func() -> void: get_tree().change_scene_to_file(CENA_TELAS))
 
 
 ## Entrega (uma única vez) o histórico guardado; vazio se não houver.

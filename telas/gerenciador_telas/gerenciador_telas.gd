@@ -71,7 +71,10 @@ func _restaurar_historico(nomes: Array[String]) -> bool:
 func _trocar_para(cena_nova: Control) -> void:
 	if cena_nova == cena_atual:
 		return
+	Transicao.executar(_aplicar_troca.bind(cena_nova))
 
+
+func _aplicar_troca(cena_nova: Control) -> void:
 	cena_atual.visible = false
 	cena_nova.visible = true
 
@@ -87,7 +90,12 @@ func _trocar_para(cena_nova: Control) -> void:
 func _retornar() -> void:
 	if historico_cenas.size() <= 1:
 		return
-		
+	Transicao.executar(_aplicar_retorno)
+
+
+func _aplicar_retorno() -> void:
+	if historico_cenas.size() <= 1:
+		return
 	historico_cenas.pop_back()
 	var cena_anterior: Control = historico_cenas.back()
 
@@ -172,6 +180,10 @@ func _on_conta_pressed() -> void:
 
 ## Logout ou conta deletada: volta ao menu e zera o histórico (não dá para "voltar" a telas logadas).
 func _on_sessao_encerrada() -> void:
+	Transicao.executar(_aplicar_sessao_encerrada)
+
+
+func _aplicar_sessao_encerrada() -> void:
 	cena_atual.visible = false
 	menu_principal.visible = true
 	cena_atual = menu_principal

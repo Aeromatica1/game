@@ -63,15 +63,17 @@ func _garantir_reset() -> bool:
 func _reiniciar() -> void:
 	if not await _garantir_reset():
 		return
-	GameState.encerrar_game_over()
-	get_tree().paused = false
-	get_tree().reload_current_scene()      # recarrega o mapa já com o save zerado
+	# Com a tela escura: recarrega o mapa já com o save zerado.
+	Transicao.executar(func() -> void:
+		GameState.encerrar_game_over()
+		get_tree().paused = false
+		get_tree().reload_current_scene())
 
 
 func _menu() -> void:
 	if not await _garantir_reset():
 		return
-	GameState.encerrar_game_over()
-	GameState.limpar()
-	get_tree().paused = false
-	Navegacao.voltar_ao_menu()
+	Navegacao.voltar_ao_menu(func() -> void:
+		GameState.encerrar_game_over()
+		GameState.limpar()
+		get_tree().paused = false)

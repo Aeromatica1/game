@@ -3400,7 +3400,7 @@ texto_dica = "E - Jogar"
 
 [node name="Func_Inspecao" parent="Funcionarios" unique_id=1035112327 instance=ExtResource("101_funcionario")]
 z_index = 101
-position = Vector2(4716, -350)
+position = Vector2(4492, -284)
 nome_funcionario = "Atendente"
 cargo = "Pesagem de bagagem"
 contexto = "pesagem"
