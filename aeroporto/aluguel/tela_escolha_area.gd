@@ -192,7 +192,11 @@ func _criar_cartao(i: int, op: Dictionary) -> Button:
 	v.add_child(_rotulo("%d)  %s" % [i + 1, op.nome], 24, Color.WHITE))
 	if op.has("preco"):
 		v.add_child(_rotulo("Aluguel %s" % _dinheiro(float(op.preco)), 17, Color(1.0, 0.8, 0.5)))
-		v.add_child(_rotulo("Renda %s" % _dinheiro(float(op.renda)), 17, Color(0.55, 0.95, 0.6)))
+		var cfg := GameState.renda_da_descricao(str(op.tipo))
+		if not cfg.is_empty():
+			v.add_child(_rotulo("Renda %s a cada %ds" % [_dinheiro(float(cfg.valor)), int(cfg.intervalo)], 17, Color(0.55, 0.95, 0.6)))
+		else:
+			v.add_child(_rotulo("Renda %s" % _dinheiro(float(op.renda)), 17, Color(0.55, 0.95, 0.6)))
 	if bloqueio != "":
 		v.add_child(_rotulo(bloqueio, 17, Color(1, 0.5, 0.5)))
 	return b

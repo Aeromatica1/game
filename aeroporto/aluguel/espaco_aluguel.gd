@@ -42,6 +42,7 @@ var _jogador: Node2D
 var _alugada := false
 var _ocupado := false
 var _loja: Node2D
+var _info_renda: Label
 
 
 func _ready() -> void:
@@ -78,8 +79,34 @@ func _ready() -> void:
 	_dica.scale = Vector2(1.0 / scale.x, 1.0 / scale.y)
 	_dica.position = Vector2(-90.0 / scale.x - 35, -(tam.y * 0.5 + 40.0) / scale.y + 25)
 
+	# Info da renda (visível só perto da loja já alugada): valor, ciclo e contagem regressiva.
+	_info_renda = Label.new()
+	_info_renda.add_theme_font_size_override("font_size", 16)
+	_info_renda.add_theme_color_override("font_color", Color(0.55, 1, 0.6))
+	_info_renda.add_theme_color_override("font_outline_color", Color.BLACK)
+	_info_renda.add_theme_constant_override("outline_size", 6)
+	_info_renda.z_index = 20
+	_info_renda.visible = false
+	add_child(_info_renda)
+	_info_renda.scale = _dica.scale
+	_info_renda.position = _dica.position
+
 	GameState.aluguel_feito.connect(_ao_aluguel_feito)
+	GameState.renda_recebida.connect(_ao_renda_recebida)
 	_sincronizar()
+
+
+func _process(_delta: float) -> void:
+	if not _alugada or not _perto:
+		_info_renda.visible = false
+		return
+	var tipo_id := int(GameState.aluguel_da_area(numero_area).get("tipo_aluguel_id", -1))
+	var cfg := GameState.renda_do_tipo(tipo_id)
+	_info_renda.visible = not cfg.is_empty()
+	if _info_renda.visible:
+		_info_renda.text = "Renda %s a cada %ds  •  próxima em %ds" % [
+			GameState.formatar_dinheiro(float(cfg.valor)), int(cfg.intervalo),
+			ceili(GameState.segundos_para_renda(numero_area))]
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -196,6 +223,27 @@ func _sincronizar() -> void:
 			self_modulate = Color(1, 1, 1, 0.35)     # tipo sem cena: só "apaga" o "+"
 	else:
 		self_modulate = Color.WHITE
+
+
+## A loja pagou um ciclo de renda: mostra "+R$ ..." subindo acima dela.
+func _ao_renda_recebida(numero: int, valor: float) -> void:
+	if numero != numero_area or not _alugada:
+		return
+	var l := Label.new()
+	l.text = "+ %s" % GameState.formatar_dinheiro(valor)
+	l.add_theme_font_size_override("font_size", 20)
+	l.add_theme_color_override("font_color", Color(0.55, 1, 0.6))
+	l.add_theme_color_override("font_outline_color", Color.BLACK)
+	l.add_theme_constant_override("outline_size", 6)
+	l.z_index = 40
+	add_child(l)
+	l.scale = Vector2(1.0 / scale.x, 1.0 / scale.y)
+	l.position = _dica.position + Vector2(0, -20.0 / scale.y)
+	var tw := create_tween()
+	tw.set_parallel(true)
+	tw.tween_property(l, "position:y", l.position.y - 60.0 / scale.y, 1.6)
+	tw.tween_property(l, "modulate:a", 0.0, 1.6).set_delay(0.6)
+	tw.chain().tween_callback(l.queue_free)
 
 
 func _ao_aluguel_feito(numero: int) -> void:

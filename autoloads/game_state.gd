@@ -19,6 +19,7 @@ signal carregado                     # save atual carregado (questões prontas)
 signal dinheiro_mudou(valor: float)
 signal nivel_mudou(nivel: int)
 signal aluguel_feito(numero_area: int)
+signal renda_recebida(numero_area: int, valor: float)   # uma loja alugada pagou um ciclo de renda
 signal evoluiu(novo_nivel: int)                # só quando o jogador sobe de nível (não no reset)
 signal game_over(motivo: String)
 signal progresso_reiniciado(ok: bool)
@@ -55,6 +56,24 @@ var _vistas := {}                   # questões já sorteadas neste ciclo (para 
 var _carregando_conta := false
 var _resultado_conta := {}
 
+# ------------------------- Renda temporária dos aluguéis -------------------------
+## Cada loja alugada rende `renda` (R$) a cada `renda_intervalo` (s), colunas de `tipo_aluguel`
+## (sql/renda_temporaria.sql). Quanto mais cara a loja, maior o valor e mais curto o ciclo.
+## Conta só com o jogo rodando (pausado = sem renda). O servidor confere o intervalo
+## (RPC `coletar_renda`) e é quem credita.
+## RENDA abaixo é só reserva, para quando o banco ainda não tem a coluna `renda_intervalo`.
+const RENDA := {
+	"lanchonete": {"valor": 500.0, "intervalo": 60.0},
+	"livraria": {"valor": 800.0, "intervalo": 50.0},
+	"cafeteria": {"valor": 15000.0, "intervalo": 50.0},
+	"sushi": {"valor": 20000.0, "intervalo": 40.0},
+	"restaurante": {"valor": 250000.0, "intervalo": 40.0},
+}
+var _renda_tempo := {}              # numero_area(int) -> segundos acumulados no ciclo atual
+var _coletando_renda := false
+var _fila_renda: Array[int] = []
+var _renda_indisponivel := false    # RPC ausente no banco: avisa uma vez e para de tentar
+
 
 class _Lote extends RefCounted:
 	signal pronto
@@ -64,6 +83,24 @@ class _Lote extends RefCounted:
 
 func _ready() -> void:
 	Supabase.session_changed.connect(_ao_mudar_sessao)
+
+
+func _process(delta: float) -> void:
+	if aeroporto_id == "" or game_over_ativo or _renda_indisponivel or alugueis.is_empty():
+		return
+	var vencidas: Array[int] = []
+	for l in alugueis:
+		var area := _i(l.get("numero_area", 0))
+		var cfg := renda_do_tipo(_i(l.get("tipo_aluguel_id", -1)))
+		if area <= 0 or cfg.is_empty():
+			continue
+		var t: float = float(_renda_tempo.get(area, 0.0)) + delta
+		if t >= float(cfg.intervalo):
+			t = fmod(t, float(cfg.intervalo))
+			vencidas.append(area)
+		_renda_tempo[area] = t
+	if not vencidas.is_empty():
+		_coletar_rendas(vencidas)
 
 
 func _ao_mudar_sessao(logado: bool) -> void:
@@ -195,6 +232,9 @@ func limpar() -> void:
 	_vistas = {}
 	game_over_ativo = false
 	reset_ok = false
+	_renda_tempo = {}
+	_fila_renda.clear()
+	_renda_indisponivel = false
 
 
 ## Resumo dos `max_slots` slots para a tela de saves (índice = numero - 1).
@@ -536,6 +576,72 @@ func responder(questao_id: int, alternativa_id: int) -> Dictionary:
 	return r
 
 
+## {valor, intervalo} de renda do tipo de aluguel ({} se o tipo não rende / não existe).
+func renda_do_tipo(tipo_aluguel_id: int) -> Dictionary:
+	return _renda_de(tipo_aluguel(tipo_aluguel_id))
+
+
+## Renda de um tipo pela descrição ("sushi", "Restaurante"...).
+func renda_da_descricao(descricao: String) -> Dictionary:
+	var desc := descricao.strip_edges().to_lower()
+	for t in tipos_aluguel:
+		if str(t.get("descricao", "")).strip_edges().to_lower() == desc:
+			return _renda_de(t)
+	return _renda_de({"descricao": desc})
+
+
+## Lê renda/renda_intervalo da linha de tipo_aluguel (reserva: RENDA).
+func _renda_de(t: Dictionary) -> Dictionary:
+	var reserva: Dictionary = RENDA.get(str(t.get("descricao", "")).strip_edges().to_lower(), {})
+	var valor := float(t.get("renda", reserva.get("valor", 0.0)))
+	var intervalo := float(t.get("renda_intervalo", reserva.get("intervalo", 0.0)))
+	if valor <= 0.0 or intervalo <= 0.0:
+		return {}
+	return {"valor": valor, "intervalo": intervalo}
+
+
+## Segundos que faltam para a loja da área pagar de novo (-1 se a área não rende).
+func segundos_para_renda(numero_area: int) -> float:
+	var cfg := renda_do_tipo(_i(aluguel_da_area(numero_area).get("tipo_aluguel_id", -1)))
+	if cfg.is_empty():
+		return -1.0
+	return maxf(0.0, float(cfg.intervalo) - float(_renda_tempo.get(numero_area, 0.0)))
+
+
+## Pede ao servidor o pagamento das áreas cujo ciclo fechou (uma requisição por vez;
+## o que vencer durante uma requisição entra na fila e é cobrado em seguida).
+func _coletar_rendas(areas: Array[int]) -> void:
+	for a in areas:
+		if not _fila_renda.has(a):
+			_fila_renda.append(a)
+	if _coletando_renda:
+		return
+	_coletando_renda = true
+	var aid := aeroporto_id
+	while not _fila_renda.is_empty():
+		var area: int = _fila_renda.pop_front()
+		var r = await GameApi.coletar_renda(aid, area)
+		if aid != aeroporto_id:                       # trocou de save durante a requisição
+			_fila_renda.clear()
+			break
+		if not r.ok:
+			if r.code == 404:
+				_renda_indisponivel = true
+				_fila_renda.clear()
+				push_warning("[Renda] RPC coletar_renda não existe no banco (rode sql/renda_temporaria.sql).")
+				break
+			push_warning("[Renda] área %d: %s" % [area, str(r.error)])
+			continue
+		var d: Dictionary = r.data if r.data is Dictionary else {}
+		if d.has("dinheiro"):
+			aeroporto["dinheiro"] = float(d.dinheiro)
+			dinheiro_mudou.emit(dinheiro())
+		if bool(d.get("creditado", false)):
+			renda_recebida.emit(area, float(d.get("valor", 0.0)))
+			call_deferred("verificar_evolucao")       # a renda pode completar o dinheiro exigido
+	_coletando_renda = false
+
+
 ## Linha de aluguel_localizacao da área `numero_area` (1 a 27) ou {} se estiver livre.
 func aluguel_da_area(numero_area: int) -> Dictionary:
 	for l in alugueis:
@@ -562,6 +668,7 @@ func alugar(tipo_aluguel_id: int, numero_area: int) -> Dictionary:
 		"tipo_aluguel_id": tipo_aluguel_id,
 		"numero_area": numero_area,
 	})
+	_renda_tempo[numero_area] = 0.0                    # o ciclo de renda começa agora
 	# O servidor cobrou o preço: relê a linha do aeroporto para o dinheiro não divergir.
 	var novo = await GameApi.get_aeroporto(aeroporto_id)
 	if novo.ok and novo.data is Array and not novo.data.is_empty():
@@ -705,6 +812,7 @@ func reiniciar_progresso() -> Dictionary:
 		respostas.clear()
 		concluidas.clear()
 		alugueis.clear()
+		_renda_tempo = {}
 		_vistas = {}
 		_ultima_sorteada = -1
 		var novo = await GameApi.get_aeroporto(aeroporto_id)

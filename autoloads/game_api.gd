@@ -98,6 +98,14 @@ func alugar_espaco(aeroporto_id: String, tipo_aluguel_id: int, numero_area: int)
 		"p_aeroporto": aeroporto_id, "p_tipo": int(tipo_aluguel_id), "p_area": int(numero_area)})
 
 
+## Cobra a renda de uma loja alugada. O servidor só credita se o ciclo da loja já fechou.
+## `data` = { creditado: bool, valor: float (se creditado), dinheiro: float }
+## Requer a função do banco em sql/renda_temporaria.sql.
+func coletar_renda(aeroporto_id: String, numero_area: int) -> Dictionary:
+	return await Supabase.call_rpc("coletar_renda", {
+		"p_aeroporto": aeroporto_id, "p_area": int(numero_area)})
+
+
 ## Valida a resposta NO SERVIDOR.
 ## `data` = { acertou: bool, recompensa: float, dinheiro: float, explicacao: String|null }
 func responder_questao(aeroporto_id: String, questao_id: int, alternativa_id: int) -> Dictionary:
