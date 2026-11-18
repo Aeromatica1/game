@@ -1,7 +1,7 @@
 extends RefCounted
 ## Recordes (melhores tempos) do Campo Minado.
 ##
-## Guarda os MAX_ENTRIES melhores tempos de cada dificuldade em
+## Guarda os MAX_ENTRIES melhores tempos de cada nível em
 ## user://minesweeper_scores.json. Os dados ficam num formato simples e
 ## versionado (to_dict / from_dict), pensado para ser embutido depois no
 ## sistema de saves da conta ou enviado a um ranking validado pelo servidor.
@@ -20,11 +20,16 @@ const MAX_ENTRIES := 5
 var _levels: Dictionary = {}
 
 ## preferências do minigame que também vale a pena persistir
-var settings: Dictionary = {"marks": false}
+var settings: Dictionary = {"marks": false, "best_level": 0}
 
 
 func _init() -> void:
 	load_from_disk()
+
+
+## Chaves (níveis) que já têm algum tempo registrado.
+func level_keys() -> Array:
+	return _levels.keys()
 
 
 ## Melhor tempo da dificuldade em ms, ou 0 se ainda não existe.
@@ -104,6 +109,7 @@ func from_dict(data: Dictionary) -> void:
 	var raw_settings: Variant = data.get("settings", {})
 	if typeof(raw_settings) == TYPE_DICTIONARY:
 		settings["marks"] = bool(raw_settings.get("marks", false))
+		settings["best_level"] = maxi(0, int(raw_settings.get("best_level", 0)))
 
 
 func save_to_disk() -> bool:
