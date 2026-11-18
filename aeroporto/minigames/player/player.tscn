@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ug37puwf0nck"]
 
-[ext_resource type="Script" uid="uid://jutn20vr67cs" path="res://aeroporto/player/player.gd" id="1_player"]
+[ext_resource type="Script" uid="uid://jutn20vr67cs" path="res://aeroporto/minigames/player/player.gd" id="1_player"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pes"]
 size = Vector2(12, 8)

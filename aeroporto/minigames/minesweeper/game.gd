@@ -91,7 +91,13 @@ const BASE_DENSITY := 0.12            # minas / casas no nível 1
 const DENSITY_PER_LEVEL := 0.012
 const MAX_DENSITY := 0.22
 const LEVEL_KEY := "level_%d"         # chave dos recordes de cada nível
-const HINT_START := "Clique em uma casa para começar"
+const HINT_START := "Clique em uma casa. Botão direito = bandeira"
+
+## Cores da mensagem de status (canto direito do HUD)
+const COLOR_STATUS_INFO := Color(0.8, 0.88, 1.0)
+const COLOR_STATUS_LOST := Color(1.0, 0.42, 0.37)
+const COLOR_STATUS_WON := Color(0.36, 1.0, 0.6)
+const COLOR_STATUS_RECORD := Color(1.0, 0.85, 0.29)
 
 @onready var back_button: Button = %BackButton
 @onready var marks_check: CheckBox = %MarksCheck
@@ -132,10 +138,11 @@ var state: State = State.READY
 var elapsed: float = 0.0            # segundos de jogo (só conta com a tela visível)
 var shown_seconds: int = -1
 var status_text: String = ""
+var status_color: Color = COLOR_STATUS_INFO
 
 # input
 var cell_size: float = CELL_BASE
-var ui_scale: int = 1               # ampliação inteira da arte (casas = 32 * ui_scale px)
+var ui_scale: float = 1.0           # ampliação da arte (casas = 32 * ui_scale px)
 var mines_text := "000"
 var time_text := "000"
 var _mines_led := Rect2()           # caixas dos números dentro da moldura
@@ -227,6 +234,7 @@ func new_game() -> void:
 	shown_seconds = -1
 	state = State.READY
 	status_text = HINT_START
+	status_color = COLOR_STATUS_INFO
 
 	hover = -1
 	left_down = false
@@ -388,7 +396,8 @@ func _check_win() -> void:
 func _lose(hit: int) -> void:
 	state = State.LOST
 	exploded = hit
-	status_text = "Perdeu! Clique no policial (ou F2) para tentar de novo"
+	status_text = "Perdeu! Clique no policial ou F2"
+	status_color = COLOR_STATUS_LOST
 
 
 func _win() -> void:
@@ -399,10 +408,12 @@ func _win() -> void:
 	flag_count = mine_count
 
 	var ms := maxi(1, roundi(elapsed * 1000.0))
-	status_text = "Nível %d concluído! %s" % [level, _format_ms(ms)]
+	status_text = "Nível %d concluído em %s!" % [level, _format_ms(ms)]
+	status_color = COLOR_STATUS_WON
 	var result: Dictionary = scores.submit(LEVEL_KEY % level, ms)
 	if bool(result["new_record"]):
-		status_text = "Nível %d concluído! Novo recorde: %s" % [level, _format_ms(ms)]
+		status_text = "NOVO RECORDE! %s" % _format_ms(ms)
+		status_color = COLOR_STATUS_RECORD
 	if level > int(scores.settings.get("best_level", 0)):
 		scores.settings["best_level"] = level
 		scores.save_to_disk()
@@ -435,11 +446,12 @@ func _refresh_hud() -> void:
 	mines_text = "%03d" % (mine_count - flag_count)
 	_refresh_time()
 	status_label.text = status_text
+	status_label.add_theme_color_override("font_color", status_color)
 	next_button.visible = state == State.WON
 
 	var best := scores.best_ms(LEVEL_KEY % level)
 	var best_text := _format_ms(best) if best > 0 else "--"
-	best_label.text = "Nível %d  ·  %d×%d  ·  %d minas  ·  Recorde: %s" % [level, cols, rows, mine_count, best_text]
+	best_label.text = "NÍVEL %d  ·  %d×%d  ·  %d minas  ·  Recorde: %s" % [level, cols, rows, mine_count, best_text]
 
 
 func _refresh_time() -> void:
@@ -451,17 +463,16 @@ func _refresh_time() -> void:
 #  Tabuleiro: layout e desenho
 # =============================================================================
 
-## Escala inteira da arte: a maior em que o nível mais largo ainda cabe na área.
-## Assim as casas têm tamanho fixo (32 * escala) e o tabuleiro só cresce pelos lados.
-func _pick_scale(area: Vector2) -> int:
-	var sc := 3
-	while sc > 1:
-		var need_w := (MAX_COLS * CELL_BASE + FRAME_BORDER_X * 2.0) * sc
-		var need_h := (BASE_ROWS * CELL_BASE + FRAME_HEADER_H + FRAME_BORDER_BOTTOM) * sc
-		if area.x >= need_w and area.y >= need_h:
-			return sc
-		sc -= 1
-	return 1
+## Escala da arte: a maior em que o nível mais largo ainda cabe na área de jogo. Inteira
+## quando dá (2x, 3x: pixel art nítida); se a janela for apertada, usa passos de 0,25.
+## Assim as casas têm tamanho fixo e o tabuleiro só cresce pelos lados.
+func _pick_scale(area: Vector2) -> float:
+	var need_w := MAX_COLS * CELL_BASE + FRAME_BORDER_X * 2.0
+	var need_h := BASE_ROWS * CELL_BASE + FRAME_HEADER_H + FRAME_BORDER_BOTTOM
+	var fit := minf(area.x / need_w, area.y / need_h)
+	if fit >= 2.0:
+		return minf(floorf(fit), 3.0)
+	return maxf(1.0, floorf(fit * 4.0) / 4.0)
 
 
 func _layout_board() -> void:
@@ -469,15 +480,15 @@ func _layout_board() -> void:
 	if area.x <= 0.0 or area.y <= 0.0:
 		return
 	ui_scale = _pick_scale(area)
-	var sc := float(ui_scale)
+	var sc := ui_scale
 	cell_size = CELL_BASE * sc
 	board.size = Vector2(cols, rows) * cell_size
 
 	# a moldura fica centralizada: quando entram colunas, ela abre para os dois lados
-	var bx := FRAME_BORDER_X * sc
-	var hh := FRAME_HEADER_H * sc
+	var bx := roundf(FRAME_BORDER_X * sc)
+	var hh := roundf(FRAME_HEADER_H * sc)
 	var frame_w := maxf(board.size.x + bx * 2.0, FRAME_MIN_WIDTH * sc)
-	frame.size = Vector2(frame_w, board.size.y + hh + FRAME_BORDER_BOTTOM * sc)
+	frame.size = Vector2(frame_w, board.size.y + hh + roundf(FRAME_BORDER_BOTTOM * sc))
 	frame.position = Vector2(
 		floorf((area.x - frame.size.x) * 0.5),
 		maxf(0.0, floorf((area.y - frame.size.y) * 0.5)))
@@ -499,12 +510,12 @@ func _layout_board() -> void:
 ## Desenha a moldura esticando só o miolo do cabeçalho, as bordas e o rodapé
 ## (a arte é ampliada por ui_scale), então ela serve para qualquer largura.
 func _draw_frame() -> void:
-	var sc := float(ui_scale)
+	var sc := ui_scale
 	var w := frame.size.x
 	var h := frame.size.y
-	var bx := FRAME_BORDER_X * sc
-	var hh := FRAME_HEADER_H * sc
-	var bb := FRAME_BORDER_BOTTOM * sc
+	var bx := roundf(FRAME_BORDER_X * sc)
+	var hh := roundf(FRAME_HEADER_H * sc)
+	var bb := roundf(FRAME_BORDER_BOTTOM * sc)
 	var side := FRAME_HEAD_SIDE * sc
 	var body_h := h - hh - bb
 
@@ -532,7 +543,7 @@ func _draw_frame() -> void:
 
 
 func _draw_led(box: Rect2, text: String) -> void:
-	var fs := 16 * ui_scale
+	var fs := int(roundf(16.0 * ui_scale))
 	var ascent := MARK_FONT.get_ascent(fs)
 	var descent := MARK_FONT.get_descent(fs)
 	var y := box.position.y + (box.size.y - (ascent + descent)) * 0.5 + ascent
@@ -810,10 +821,20 @@ func _on_dim_gui_input(event: InputEvent) -> void:
 		_close_overlay()
 
 
+## Chamado pelo host (tela_minigame) quando o jogador aperta Esc: se a janela de recordes
+## estiver aberta, fecha só ela e avisa que o Esc foi usado (true); senão o host fecha o jogo.
+func tratar_esc() -> bool:
+	if overlay.visible:
+		_close_overlay()
+		return true
+	return false
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_visible_in_tree():
 		return
-	if overlay.visible and event.is_action_pressed("ui_cancel"):
+	# dentro do jogo principal quem trata o Esc é o host (ver tratar_esc)
+	if overlay.visible and event.is_action_pressed("ui_cancel") and not has_meta("embutido"):
 		_close_overlay()
 		get_viewport().set_input_as_handled()
 		return
