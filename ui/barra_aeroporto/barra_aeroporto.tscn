@@ -4,110 +4,183 @@
 [ext_resource type="Texture2D" uid="uid://cqhq4ijul4q3e" path="res://assets/icons/dollaricon.png" id="1_y6bl5"]
 [ext_resource type="Texture2D" uid="uid://cr0ffugxviieq" path="res://assets/icons/tasksicon.png" id="2_8hvx6"]
 [ext_resource type="Texture2D" uid="uid://bn31lp8frhhas" path="res://assets/fonts/return.png" id="2_cen7h"]
+[ext_resource type="Texture2D" uid="uid://0gc37sf5k32k" path="res://assets/icons/erradas.png" id="3_tl6et"]
+[ext_resource type="Texture2D" uid="uid://cg5f7jxom84vh" path="res://assets/icons/aluguel.png" id="4_45baj"]
+[ext_resource type="Texture2D" uid="uid://bybacw06hj6uw" path="res://assets/icons/menu.png" id="7_45baj"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_l7tio"]
 font_size = 20
 
+[sub_resource type="LabelSettings" id="LabelSettings_ilb3f"]
+font_size = 17
+
 [node name="BarraAeroporto" type="CanvasLayer" unique_id=379957839]
+process_mode = 3
+layer = 3
 script = ExtResource("1_gu55u")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=686513490]
+[node name="Margem" type="MarginContainer" parent="."]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 66.0
 grow_horizontal = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 9
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 9
 
-[node name="Tarefa" type="Control" parent="HBoxContainer" unique_id=1112411192]
+[node name="Itens" type="HBoxContainer" parent="Margem"]
 layout_mode = 2
-size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 0
 
-[node name="TarefasLabel" type="Label" parent="HBoxContainer/Tarefa" unique_id=160314504]
-layout_mode = 0
-offset_left = 578.0
-offset_top = 25.0
-offset_right = 621.0
-offset_bottom = 51.0
-text = "0/5"
-label_settings = SubResource("LabelSettings_l7tio")
-
-[node name="TarefasIcon" type="Sprite2D" parent="HBoxContainer/Tarefa" unique_id=1040646569]
-position = Vector2(555, 37)
-texture = ExtResource("2_8hvx6")
-
-[node name="Erradas" type="Control" parent="HBoxContainer" unique_id=586088190]
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="ErradasIcon" type="Sprite2D" parent="HBoxContainer/Erradas" unique_id=1592884314]
-position = Vector2(689, 38)
-texture = ExtResource("2_8hvx6")
-
-[node name="ErradasIcon2" type="Label" parent="HBoxContainer/Erradas" unique_id=282410513]
-layout_mode = 0
-offset_left = 714.0
-offset_top = 24.0
-offset_right = 815.0
-offset_bottom = 53.0
-text = "0/5"
-label_settings = SubResource("LabelSettings_l7tio")
-
-[node name="Alugados" type="Control" parent="HBoxContainer" unique_id=373215647]
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="ErradasLabel" type="Label" parent="HBoxContainer/Alugados" unique_id=168637572]
-layout_mode = 0
-offset_left = 833.0
-offset_top = 25.0
-offset_right = 934.0
-offset_bottom = 54.0
-text = "0/5"
-label_settings = SubResource("LabelSettings_l7tio")
-
-[node name="ErradasIcon" type="Sprite2D" parent="HBoxContainer/Alugados" unique_id=1583788685]
-position = Vector2(808, 39)
-texture = ExtResource("2_8hvx6")
-
-[node name="Dinheiro" type="Control" parent="HBoxContainer" unique_id=892320652]
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="DinheiroLabel" type="Label" parent="HBoxContainer/Dinheiro" unique_id=1969318647]
-layout_mode = 0
-offset_left = 945.0
-offset_top = 24.0
-offset_right = 1063.0
-offset_bottom = 53.0
-text = "1.000.000"
-label_settings = SubResource("LabelSettings_l7tio")
-
-[node name="DolarIcon" type="Sprite2D" parent="HBoxContainer/Dinheiro" unique_id=1426827893]
-position = Vector2(920, 38)
-texture = ExtResource("1_y6bl5")
-
-[node name="Nivel" type="Control" parent="HBoxContainer" unique_id=661140756]
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="NivelLabel" type="Label" parent="HBoxContainer/Nivel" unique_id=1210786944]
-layout_mode = 0
-offset_left = 110.0
-offset_top = 27.0
-offset_right = 484.0
-offset_bottom = 55.0
-text = "Nível 1 - Aeroporto regional"
-label_settings = SubResource("LabelSettings_l7tio")
-
-[node name="Voltar" type="Button" parent="." unique_id=254574463]
+[node name="Voltar" type="Button" parent="Margem/Itens"]
 custom_minimum_size = Vector2(48, 48)
-offset_left = 17.0
-offset_top = 18.0
-offset_right = 101.0
-offset_bottom = 66.0
+layout_mode = 2
 accessibility_name = "Voltar"
 accessibility_description = "Volta para a tela anterior"
+tooltip_text = "Voltar"
 icon = ExtResource("2_cen7h")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Espaco1" type="Control" parent="Margem/Itens"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="NivelLabel" type="Label" parent="Margem/Itens"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+text = "Nível 4 - Aeroporto internacional"
+label_settings = SubResource("LabelSettings_ilb3f")
+vertical_alignment = 1
+
+[node name="Espaco2" type="Control" parent="Margem/Itens"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Tarefa" type="HBoxContainer" parent="Margem/Itens"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Tarefas certas / necessárias para evoluir"
+theme_override_constants/separation = 6
+
+[node name="TarefasIcon" type="TextureRect" parent="Margem/Itens/Tarefa"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("2_8hvx6")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TarefasLabel" type="Label" parent="Margem/Itens/Tarefa"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+mouse_filter = 2
+text = "0/5"
+label_settings = SubResource("LabelSettings_l7tio")
+vertical_alignment = 1
+
+[node name="Espaco3" type="Control" parent="Margem/Itens"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Erradas" type="HBoxContainer" parent="Margem/Itens"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Erradas / limite do nível (ao atingir, game over)"
+theme_override_constants/separation = 6
+
+[node name="ErradasIcon" type="TextureRect" parent="Margem/Itens/Erradas"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("3_tl6et")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ErradasLabel" type="Label" parent="Margem/Itens/Erradas"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+mouse_filter = 2
+text = "0/5"
+label_settings = SubResource("LabelSettings_l7tio")
+vertical_alignment = 1
+
+[node name="Espaco4" type="Control" parent="Margem/Itens"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Alugados" type="HBoxContainer" parent="Margem/Itens"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Espaços alugados / total de espaços"
+theme_override_constants/separation = 6
+
+[node name="AlugadosIcon" type="TextureRect" parent="Margem/Itens/Alugados"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_45baj")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AlugadosLabel" type="Label" parent="Margem/Itens/Alugados"]
+custom_minimum_size = Vector2(76, 0)
+layout_mode = 2
+mouse_filter = 2
+text = "0/27"
+label_settings = SubResource("LabelSettings_l7tio")
+vertical_alignment = 1
+
+[node name="Espaco5" type="Control" parent="Margem/Itens"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Dinheiro" type="HBoxContainer" parent="Margem/Itens"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Dinheiro"
+theme_override_constants/separation = 6
+
+[node name="DolarIcon" type="TextureRect" parent="Margem/Itens/Dinheiro"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("1_y6bl5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DinheiroLabel" type="Label" parent="Margem/Itens/Dinheiro"]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+mouse_filter = 2
+text = "1.000.000,00"
+label_settings = SubResource("LabelSettings_l7tio")
+vertical_alignment = 1
+
+[node name="Espaco6" type="Control" parent="Margem/Itens"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Menu" type="Button" parent="Margem/Itens"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+accessibility_name = "Menu"
+accessibility_description = "Abre ou fecha o menu de opções"
+tooltip_text = "Opções (Esc)"
+icon = ExtResource("7_45baj")
 icon_alignment = 1
 expand_icon = true

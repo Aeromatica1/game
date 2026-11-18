@@ -4,10 +4,11 @@ extends Control
 ## - Monta o resumo do aeroporto (vindo do GameState) e entrega à BarraAeroporto,
 ##   mantendo-o atualizado quando dinheiro/nível mudam.
 ## - Permite voltar às telas anteriores via autoload Navegacao (que guarda o
-##   histórico do GerenciadorTelas): tecla Esc (ui_cancel) ou o sinal
-##   `voltar_solicitado` da barra, se ela tiver um botão de voltar.
+##   histórico do GerenciadorTelas): sinal `voltar_solicitado` da barra (botão Voltar).
+## - Esc / ícone de menu abrem e fecham as Opções; F1 abre e fecha a Ajuda (menus_mapa.gd).
 
 const GameOverCena := preload("res://aeroporto/game_over/game_over.tscn")
+const MenusMapa := preload("res://aeroporto/mapa/menus_mapa.gd")
 
 @onready var barra_aeroporto: Node = $BarraAeroporto
 
@@ -22,19 +23,22 @@ func _ready() -> void:
 	GameState.nivel_mudou.connect(atualizar_barra.unbind(1))
 	GameState.evoluiu.connect(_ao_evoluir)
 	GameState.game_over.connect(_ao_game_over)
+	GameState.aluguel_feito.connect(atualizar_barra.unbind(1))
+	GameState.progresso_reiniciado.connect(atualizar_barra.unbind(1))
 
 	if barra_aeroporto.has_signal("voltar_solicitado"):
 		barra_aeroporto.connect("voltar_solicitado", voltar)
 
+	var menus := MenusMapa.new()
+	add_child(menus)
+	if barra_aeroporto.has_signal("menu_solicitado"):
+		barra_aeroporto.connect("menu_solicitado", menus.alternar_menu)
+	if barra_aeroporto.has_method("modo_menu"):
+		menus.menu_aberto_mudou.connect(func(aberto: bool): barra_aeroporto.call("modo_menu", aberto))
+
 	atualizar_barra()
 	_aplicar_fluxo()
 	GameState.verificar_evolucao()      # requisitos já cumpridos (ex.: evolução que falhou antes)
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		get_viewport().set_input_as_handled()
-		voltar()
 
 
 func _ao_evoluir(novo_nivel: int) -> void:
@@ -96,7 +100,9 @@ func dados_aeroporto() -> Dictionary:
 		"questoes_acertadas": prog.x,
 		"questoes_do_nivel": prog.y,
 		"questoes_acertadas_total": GameState.concluidas.size(),
+		"erradas": GameState.erros_do_nivel(),
 		"alugueis": GameState.alugueis.size(),
+		"alugueis_total": _total_espacos(),
 		"minigames": GameState.minigames.duplicate(),   # tipo_minigame_id -> high_score
 		"pode_evoluir": GameState.pode_evoluir(),
 		# Requisitos do próximo nível ({} se já está no último).
@@ -106,6 +112,12 @@ func dados_aeroporto() -> Dictionary:
 			"recompensa": float(prox.get("recompensa", 0.0)),
 		},
 	}
+
+
+## Total de espaços alugáveis do mapa (nós do grupo "espacos_aluguel"; 27 se ainda não existirem).
+func _total_espacos() -> int:
+	var n := get_tree().get_nodes_in_group("espacos_aluguel").size()
+	return n if n > 0 else 27
 
 
 ## fluxo_passageiros (1 a 10) é a densidade dos NPCs passageiros do mapa.

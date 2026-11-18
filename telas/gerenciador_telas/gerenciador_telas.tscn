@@ -63,6 +63,7 @@ visible = false
 [connection signal="pressed" from="SaveSlot/AreaSlots/Control/Slot3" to="." method="_on_slot_3_pressed"]
 [connection signal="pressed" from="SaveSlot/AreaSlots/Control/Slot2" to="." method="_on_slot_2_pressed"]
 [connection signal="pressed" from="SaveSlot/AreaSlots/Control/Slot1" to="." method="_on_slot_1_pressed"]
+[connection signal="pressed" from="Opcoes/OpcoesArea/VBoxContainer/Concluido" to="." method="_on_concluido_pressed"]
 
 [editable path="MenuPrincipal"]
 [editable path="BarraUsuario"]
@@ -72,3 +73,4 @@ visible = false
 [editable path="SaveSlot/AreaSlots/Control/Slot3"]
 [editable path="SaveSlot/AreaSlots/Control/Slot2"]
 [editable path="SaveSlot/AreaSlots/Control/Slot1"]
+[editable path="Opcoes"]

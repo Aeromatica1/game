@@ -173,3 +173,7 @@ func _on_sessao_encerrada() -> void:
 	historico_cenas.clear()
 	historico_cenas.append(menu_principal)
 	botao_voltar.visible = false
+
+
+func _on_concluido_pressed() -> void:
+	_trocar_para(menu_principal)

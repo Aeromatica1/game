@@ -211,7 +211,7 @@ text = "[font_size=32][color=#ffd95a]Como responder uma questão[/color][/font_s
 [color=#ffd95a]Dica:[/color] use papel e lápis à vontade. As contas são o caminho para evoluir o aeroporto!"
 metadata/_tab_index = 3
 
-[node name="Button" type="Button" parent="." unique_id=1000085602]
+[node name="Concluir" type="Button" parent="." unique_id=1000085602]
 layout_mode = 0
 offset_left = 948.0
 offset_top = 121.0

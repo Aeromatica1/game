@@ -55,6 +55,15 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_58dca"]
+bg_color = Color(0.6666426, 0.5414955, 3.85046e-07, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rti7y"]
+bg_color = Color(0.41386995, 0.33262643, 2.8878452e-07, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h83wc"]
+bg_color = Color(0.8468091, 0.69235027, 1.540184e-06, 1)
+
 [node name="Opcoes" type="Control" unique_id=1532181423]
 layout_mode = 3
 anchors_preset = 15
@@ -97,9 +106,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 50.0
-offset_top = 40.0
+offset_top = 31.5
 offset_right = -50.0
-offset_bottom = -40.0
+offset_bottom = -31.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 40
@@ -164,3 +173,12 @@ theme_override_fonts/font = ExtResource("2_rti7y")
 text = "70%"
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="Concluido" type="Button" parent="OpcoesArea/VBoxContainer" unique_id=1961620594]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_58dca")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_rti7y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_h83wc")
+text = "Concluir"
