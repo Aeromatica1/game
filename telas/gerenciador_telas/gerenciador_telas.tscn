@@ -4,11 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://c3egba45ye35x" path="res://telas/cadastro/cadastro.tscn" id="2_deupt"]
 [ext_resource type="Texture2D" uid="uid://cgmqpukisr10a" path="res://assets/background/fundo.png" id="2_u051b"]
 [ext_resource type="PackedScene" uid="uid://bcgwlv0eu3ck7" path="res://telas/login/login.tscn" id="3_6napt"]
-[ext_resource type="PackedScene" uid="uid://7rog0cnh50w0" path="res://ui/barra_usuario/barra_usuario.tscn" id="3_u051b"]
+[ext_resource type="PackedScene" uid="uid://dvbdnbr155lep" path="res://ui/barra_usuario/barra_usuario.tscn" id="3_u051b"]
 [ext_resource type="PackedScene" uid="uid://dwkcqdr4joahc" path="res://telas/menu_principal/menu_principal.tscn" id="4_bi4f8"]
 [ext_resource type="PackedScene" uid="uid://fpu5oujg4j2w" path="res://telas/save_slot/save_slot.tscn" id="5_5hkwe"]
 [ext_resource type="PackedScene" uid="uid://qmp7poka7rhr" path="res://telas/opcoes/opcoes.tscn" id="8_5ndnd"]
 [ext_resource type="PackedScene" uid="uid://bbwh8ow58otjv" path="res://telas/conta/conta.tscn" id="9_lcebb"]
+[ext_resource type="PackedScene" uid="uid://cc2cetff4vmac" path="res://telas/creditos/creditos.tscn" id="10_jd2dk"]
 
 [node name="GerenciadorTelas" type="Node" unique_id=1570137647]
 script = ExtResource("1_jr6vj")
@@ -51,8 +52,12 @@ visible = false
 [node name="Conta" parent="." unique_id=12880873 instance=ExtResource("9_lcebb")]
 visible = false
 
+[node name="Créditos" parent="." unique_id=2090910204 instance=ExtResource("10_jd2dk")]
+visible = false
+
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoJogar" to="." method="_on_botao_jogar_pressed"]
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoOpcoes" to="." method="_on_botao_opcoes_pressed"]
+[connection signal="pressed" from="MenuPrincipal/Botoes/Créditos" to="." method="_on_créditos_pressed"]
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoSair" to="." method="_on_botao_sair_pressed"]
 [connection signal="pressed" from="BarraUsuario/Voltar" to="." method="_on_voltar_pressed"]
 [connection signal="pressed" from="BarraUsuario/Conta" to="." method="_on_conta_pressed"]

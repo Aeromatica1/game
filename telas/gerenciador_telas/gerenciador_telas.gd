@@ -9,6 +9,7 @@ extends Node
 @onready var botao_voltar: Button = $BarraUsuario/Voltar
 @onready var opcoes: Control = $Opcoes
 @onready var conta: Control = $Conta
+@onready var creditos: Control = $Créditos
 
 var cena_atual: Control
 var historico_cenas: Array[Control] = []
@@ -177,3 +178,7 @@ func _on_sessao_encerrada() -> void:
 
 func _on_concluido_pressed() -> void:
 	_trocar_para(menu_principal)
+
+
+func _on_créditos_pressed() -> void:
+	_trocar_para(creditos)
