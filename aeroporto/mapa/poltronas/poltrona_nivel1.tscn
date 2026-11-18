@@ -23,6 +23,7 @@ size = Vector2(192, 48)
 [node name="PoltronaNivel1" type="Node2D" unique_id=1573440342]
 
 [node name="Fileira1" type="Node2D" parent="." unique_id=1041298585]
+scale = Vector2(1.2, 1.2)
 
 [node name="Linha1" type="Sprite2D" parent="Fileira1" unique_id=548336177]
 texture = ExtResource("1_r44na")
@@ -40,6 +41,7 @@ vertices = PackedVector2Array(-96, -24, 96, -24, 96, 24, -96, 24)
 affect_navigation_mesh = true
 
 [node name="Fileira2" type="Node2D" parent="." unique_id=1791321594]
+scale = Vector2(1.2, 1.2)
 
 [node name="Linha2" type="Sprite2D" parent="Fileira2" unique_id=177846497]
 position = Vector2(224, 0)
@@ -58,6 +60,7 @@ position = Vector2(224, 0)
 vertices = PackedVector2Array(-96, -24, 96, -24, 96, 24, -96, 24)
 
 [node name="Fileira3" type="Node2D" parent="." unique_id=1342191182]
+scale = Vector2(1.2, 1.2)
 
 [node name="Linha3" type="Sprite2D" parent="Fileira3" unique_id=857184601]
 position = Vector2(0, 56)
@@ -75,6 +78,7 @@ shape = SubResource("RectangleShape2D_3lcau")
 vertices = PackedVector2Array(-96, 32, 96, 32, 96, 80, -96, 80)
 
 [node name="Fileira4" type="Node2D" parent="." unique_id=2062555272]
+scale = Vector2(1.2, 1.2)
 
 [node name="Linha4" type="Sprite2D" parent="Fileira4" unique_id=1744100869]
 position = Vector2(224, 56)
@@ -92,6 +96,7 @@ shape = SubResource("RectangleShape2D_nbnpn")
 vertices = PackedVector2Array(128, 32, 320, 32, 320, 80, 128, 80)
 
 [node name="Fileira5" type="Node2D" parent="." unique_id=565015388]
+scale = Vector2(1.2, 1.2)
 
 [node name="Linha5" type="Sprite2D" parent="Fileira5" unique_id=1342998168]
 position = Vector2(0, 112)
@@ -109,6 +114,7 @@ shape = SubResource("RectangleShape2D_lmtmf")
 vertices = PackedVector2Array(-96, 88, 96, 88, 96, 136, -96, 136)
 
 [node name="Fileira6" type="Node2D" parent="." unique_id=1388086150]
+scale = Vector2(1.2, 1.2)
 
 [node name="Linha6" type="Sprite2D" parent="Fileira6" unique_id=232689451]
 position = Vector2(224, 112)

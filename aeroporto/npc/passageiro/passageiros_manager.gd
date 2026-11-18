@@ -86,6 +86,8 @@ var alvo_caminhantes: int = 0
 var alvo_funcionarios: int = 0
 
 var _pronto := false
+var _reconstruindo := false
+var _refazer := false
 var _astar := AStarGrid2D.new()
 var _livres: Dictionary = {}              # Vector2i -> true
 var _lista_livres: Array[Vector2i] = []
@@ -144,6 +146,41 @@ func _achar_referencias() -> void:
 			var achados := get_tree().root.find_children("Player", "Node2D", true, false)
 			if not achados.is_empty():
 				jogador = achados[0]
+
+
+## Refaz a grade andável e os assentos (ex.: depois de portões serem liberados/bloqueados).
+## Os NPCs atuais somem e a população é recriada já com o mapa novo.
+func reconstruir() -> void:
+	if _reconstruindo:
+		_refazer = true     # já refazendo: roda de novo ao terminar, com o mapa mais recente
+		return
+	if not _pronto:
+		return              # 1º cálculo ainda não rodou: ele já vai enxergar o mapa atual
+	_reconstruindo = true
+	_pronto = false
+	for npc in _npcs.duplicate():
+		if is_instance_valid(npc):
+			npc.assento = null      # evita liberar_assento() em assento que será descartado
+			npc.removendo = true
+			npc.queue_free()
+	_npcs.clear()
+	ocupado.clear()
+	_assentos.clear()
+	_reservados = 0
+	_livres.clear()
+	_lista_livres.clear()
+	# espera a física registrar/remover os corpos (e os NPCs antigos saírem da árvore)
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	_construir_grade()
+	_coletar_assentos()
+	_recalcular_alvos()
+	_pronto = true
+	_povoar_inicial()
+	_reconstruindo = false
+	if _refazer:
+		_refazer = false
+		reconstruir()
 
 
 func definir_densidade(valor: int) -> void:
@@ -238,7 +275,9 @@ func _coletar_assentos() -> void:
 	_achar_fontes(get_tree().root, fontes)
 	for s in fontes:
 		var largura: float = s.region_rect.size.x if s.region_enabled else float(s.texture.get_width())
-		var n := maxi(1, roundi(largura / assento_largura))
+		# a escala do sprite conta: um banco ampliado ganha mais lugares (n usa a largura na tela;
+		# `passo` fica em coordenadas locais porque to_global() já aplica a escala)
+		var n := maxi(1, roundi(largura * absf(s.global_scale.x) / assento_largura))
 		var passo := largura / n
 		for i in n:
 			var centro := s.to_global(Vector2(-largura * 0.5 + passo * (i + 0.5), 0.0))
@@ -254,6 +293,9 @@ func _coletar_assentos() -> void:
 
 
 func _achar_fontes(no: Node, saida: Array[Sprite2D]) -> void:
+	# portões bloqueados (invisíveis) não têm assentos
+	if no is CanvasItem and not (no as CanvasItem).is_visible_in_tree():
+		return
 	var caminho := no.scene_file_path
 	if caminho.contains("poltrona_nivel"):
 		for s in no.find_children("*", "Sprite2D", true, false):

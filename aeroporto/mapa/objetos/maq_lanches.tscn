@@ -3,10 +3,10 @@
 [ext_resource type="Texture2D" uid="uid://43y7tfsicaci" path="res://assets/tilesets/3.png" id="1_mvqaw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c0xmb"]
-size = Vector2(165, 26)
+size = Vector2(170, 107)
 
 [node name="Node2D" type="Node2D" unique_id=385482150]
-z_index = 300
+z_index = 500
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1523089157]
 position = Vector2(4.5, -3)
@@ -18,5 +18,5 @@ region_rect = Rect2(288, 0, 162, 100)
 [node name="maq_lanches" type="StaticBody2D" parent="." unique_id=416190523]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="maq_lanches" unique_id=2120191756]
-position = Vector2(3.5, 34)
+position = Vector2(3, -2.5)
 shape = SubResource("RectangleShape2D_c0xmb")

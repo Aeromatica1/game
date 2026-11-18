@@ -76,7 +76,7 @@ func _ready() -> void:
 	add_child(_dica)
 	# o Label herdaria a escala do sprite; compensa e posiciona acima dele
 	_dica.scale = Vector2(1.0 / scale.x, 1.0 / scale.y)
-	_dica.position = Vector2(-90.0 / scale.x, -(tam.y * 0.5 + 40.0) / scale.y)
+	_dica.position = Vector2(-90.0 / scale.x - 35, -(tam.y * 0.5 + 40.0) / scale.y + 25)
 
 	GameState.aluguel_feito.connect(_ao_aluguel_feito)
 	_sincronizar()

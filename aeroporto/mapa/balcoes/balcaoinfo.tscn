@@ -3,13 +3,13 @@
 [ext_resource type="Texture2D" uid="uid://gw5nbsv81xq" path="res://assets/tilesets/2.png" id="1_q75h8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5igcj"]
-size = Vector2(58.997757, 147.1253)
+size = Vector2(60.99768, 152.01167)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l7tio"]
-size = Vector2(43, 12)
+size = Vector2(47, 12)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ilb3f"]
-size = Vector2(50, 14)
+size = Vector2(56, 14)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j7jb1"]
 size = Vector2(54, 40)
@@ -26,7 +26,7 @@ region_rect = Rect2(193.24826, 409.2363, 189.97757, 71.865326)
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=496776972]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2089437419]
-position = Vector2(25.421423, 16.50368)
+position = Vector2(25.004366, 15.500039)
 rotation = 1.579523
 shape = SubResource("RectangleShape2D_5igcj")
 

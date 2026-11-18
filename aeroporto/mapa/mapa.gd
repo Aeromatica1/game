@@ -12,13 +12,26 @@ const MenusMapa := preload("res://aeroporto/mapa/menus_mapa.gd")
 
 @onready var barra_aeroporto: Node = $BarraAeroporto
 
+## Portões liberados em cada nível do aeroporto (caminhos relativos ao nó "Portoes").
+## Para mudar quais portões aparecem em cada nível, é só editar esta tabela.
+const PORTOES_POR_NIVEL := {
+	1: ["Nivel1/Portao1", "Nivel1/Portao2", "Nivel1/Portao3", "Nivel3/Portao2"],
+	2: ["Nivel2/Portao1", "Nivel2/Portao2", "Nivel2/Portao3", "Nivel4/Portao1"],
+	3: ["Nivel3/Portao1", "Nivel3/Portao2", "Nivel3/Portao3"],
+	4: ["Nivel4/Portao1", "Nivel4/Portao2"],
+}
+
+@onready var portoes: Node2D = $Portoes
+
 func _ready() -> void:
 	if GameState.aeroporto_id == "":
 		push_warning("[Mapa] Nenhum save carregado (cena aberta direto?). A barra ficará sem dados.")
 
 	GameState.carregado.connect(atualizar_barra)
 	GameState.carregado.connect(_aplicar_fluxo)
+	GameState.carregado.connect(_atualizar_portoes)
 	GameState.nivel_mudou.connect(_aplicar_fluxo.unbind(1))
+	GameState.nivel_mudou.connect(_atualizar_portoes.unbind(1))
 	GameState.dinheiro_mudou.connect(atualizar_barra.unbind(1))
 	GameState.nivel_mudou.connect(atualizar_barra.unbind(1))
 	GameState.evoluiu.connect(_ao_evoluir)
@@ -39,6 +52,39 @@ func _ready() -> void:
 	atualizar_barra()
 	_aplicar_fluxo()
 	GameState.verificar_evolucao()      # requisitos já cumpridos (ex.: evolução que falhou antes)
+	
+	_atualizar_portoes()
+
+
+## Liga só os portões do nível atual e desliga os outros de verdade.
+## `visible = false` sozinho só esconde o desenho: StaticBody2D continua colidindo e os
+## passageiros continuam sentando nas poltronas. Por isso cada portão passa por `_ativar_portao`.
+func _atualizar_portoes() -> void:
+	var nivel := clampi(GameState.nivel_atual(), 1, PORTOES_POR_NIVEL.size())
+	var ativos: Array = PORTOES_POR_NIVEL[nivel]
+	var mudou := false
+	for grupo in portoes.get_children():
+		for portao in grupo.get_children():
+			var ativo: bool = ativos.has("%s/%s" % [grupo.name, portao.name])
+			if _ativar_portao(portao, ativo):
+				mudou = true
+	if mudou:
+		# o mapa de andar/assentos dos passageiros precisa enxergar os portões novos
+		get_tree().call_group("passageiros", "reconstruir")
+
+
+## Mostra/esconde um portão e liga/desliga a física dele. Devolve true se o estado mudou.
+func _ativar_portao(portao: Node2D, ativo: bool) -> bool:
+	var estava_ativo := portao.visible and portao.process_mode != Node.PROCESS_MODE_DISABLED
+	portao.visible = ativo
+	portao.process_mode = Node.PROCESS_MODE_INHERIT if ativo else Node.PROCESS_MODE_DISABLED
+	for no in portao.find_children("*", "CollisionShape2D", true, false):
+		(no as CollisionShape2D).set_deferred("disabled", not ativo)
+	for no in portao.find_children("*", "CollisionPolygon2D", true, false):
+		(no as CollisionPolygon2D).set_deferred("disabled", not ativo)
+	for no in portao.find_children("*", "NavigationObstacle2D", true, false):
+		(no as NavigationObstacle2D).set_deferred("affect_navigation_mesh", ativo)
+	return estava_ativo != ativo
 
 
 func _ao_evoluir(novo_nivel: int) -> void:

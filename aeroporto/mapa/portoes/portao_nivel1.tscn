@@ -16,6 +16,7 @@ size = Vector2(66.5, 34.5)
 
 [node name="Balcão" type="Node2D" parent="." unique_id=1089016117]
 z_index = 300
+position = Vector2(1, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Balcão" unique_id=571283815]
 z_index = 3
@@ -48,7 +49,7 @@ region_rect = Rect2(403.18765, 692.74744, 269.73453, 71.84235)
 [node name="Poltronas" type="Node2D" parent="." unique_id=704042857]
 
 [node name="PoltronaNivel1" parent="Poltronas" unique_id=1573440342 instance=ExtResource("4_on4t0")]
-position = Vector2(-129, 112)
+position = Vector2(-174, 113)
 
 [node name="PoltronaNivel1_SegundaFileira" parent="Poltronas" unique_id=689432093 instance=ExtResource("4_on4t0")]
 position = Vector2(461, 112)
@@ -63,12 +64,14 @@ position = Vector2(280, 288)
 [node name="PEmbarque" type="Marker2D" parent="PontoEmbarque" unique_id=153517709]
 position = Vector2(280, 320)
 
-[node name="Aviao" type="Sprite2D" parent="." unique_id=297509099]
+[node name="Externo" type="Node2D" parent="." unique_id=1036057159]
+
+[node name="Aviao" type="Sprite2D" parent="Externo" unique_id=297509099]
 z_index = 1000
 position = Vector2(-201, 487)
 scale = Vector2(0.9005779, 0.90057826)
 texture = ExtResource("4_01wx1")
 
-[node name="ponte_embarque" parent="." unique_id=525699968 instance=ExtResource("5_wxxrb")]
+[node name="ponte_embarque" parent="Externo" unique_id=525699968 instance=ExtResource("5_wxxrb")]
 z_index = 500
 position = Vector2(181, 453)

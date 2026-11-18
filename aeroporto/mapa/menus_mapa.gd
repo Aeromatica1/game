@@ -42,7 +42,6 @@ func _ready() -> void:
 	if concluir:
 		concluir.pressed.connect(fechar)
 
-
 func _exit_tree() -> void:
 	# Mudança de cena com um menu aberto (ex.: botão Voltar): não deixa a árvore pausada.
 	if _pausou and get_tree() != null:

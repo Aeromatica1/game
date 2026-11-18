@@ -20,17 +20,17 @@
 [ext_resource type="Texture2D" uid="uid://bvfaaomu7wwb" path="res://assets/tilesets/novaloja.png" id="16_ktkrk"]
 [ext_resource type="PackedScene" uid="uid://mlyh8fdrodqk" path="res://aeroporto/mapa/objetos/telefones.tscn" id="16_u1hem"]
 [ext_resource type="Texture2D" uid="uid://76vmgeh4e2d3" path="res://assets/tilesets/novoportao.png" id="17_3davs"]
-[ext_resource type="PackedScene" uid="uid://illu5sgl426j" path="res://aeroporto/mapa/balcoes/despacho.tscn" id="17_g1sof"]
-[ext_resource type="PackedScene" uid="uid://du2a7aoeene1q" path="res://aeroporto/mapa/portoes/portao1.tscn" id="20_db5or"]
+[ext_resource type="PackedScene" uid="uid://du2a7aoeene1q" path="res://aeroporto/mapa/portoes/portao_nivel1.tscn" id="20_db5or"]
 [ext_resource type="PackedScene" uid="uid://mnjy238kb0ka" path="res://aeroporto/mapa/janelas/janelas.tscn" id="21_2nuym"]
 [ext_resource type="PackedScene" uid="uid://difd6luxtlshw" path="res://aeroporto/mapa/objetos/painel.tscn" id="25_idjp5"]
 [ext_resource type="PackedScene" uid="uid://wyngvxdqufgf" path="res://aeroporto/mapa/objetos/maq_lanches.tscn" id="26_axask"]
-[ext_resource type="PackedScene" uid="uid://dfidtp2xfp0eg" path="res://aeroporto/mapa/balcoes/despacho_1.tscn" id="27_axask"]
 [ext_resource type="PackedScene" uid="uid://biodv20fmbffb" path="res://aeroporto/mapa/objetos/plantas.tscn" id="29_el40d"]
 [ext_resource type="PackedScene" uid="uid://b2ye7b15ss7kh" path="res://aeroporto/mapa/objetos/carrinho.tscn" id="30_ktkrk"]
 [ext_resource type="PackedScene" uid="uid://bbck8rxcx3d40" path="res://aeroporto/mapa/placas/placa_checkin.tscn" id="31_in6tm"]
 [ext_resource type="PackedScene" uid="uid://pfw0jvvp5ksr" path="res://aeroporto/mapa/placas/placaterminal.tscn" id="31_ktkrk"]
+[ext_resource type="PackedScene" uid="uid://cfe4mavnmc3i4" path="res://aeroporto/mapa/portoes/portao_nivel2.tscn" id="32_gyto6"]
 [ext_resource type="PackedScene" uid="uid://k1ai7li7j5g2" path="res://aeroporto/mapa/janelas/janelasmenores.tscn" id="32_utegi"]
+[ext_resource type="PackedScene" uid="uid://r441yuannl8p" path="res://aeroporto/mapa/portoes/portao_nivel3.tscn" id="33_ur7rw"]
 [ext_resource type="PackedScene" uid="uid://ug37puwf0nck" path="res://aeroporto/minigames/player/player.tscn" id="99_player"]
 [ext_resource type="Script" uid="uid://yqbkgsrbmxyk" path="res://aeroporto/npc/passageiro/passageiros_manager.gd" id="100_passageiros"]
 [ext_resource type="PackedScene" path="res://aeroporto/npc/funcionario/funcionario.tscn" id="101_funcionario"]
@@ -3306,6 +3306,7 @@ metadata/_edit_lock_ = true
 
 [node name="Player" parent="." unique_id=877658340 instance=ExtResource("99_player")]
 position = Vector2(2655, -135)
+velocidade_correr = 1000.0
 
 [node name="Camera2D" parent="Player" index="3" unique_id=1557238545]
 limit_left = -642
@@ -3328,7 +3329,17 @@ position = Vector2(9638, -288)
 
 [node name="Func_Checkin" parent="Funcionarios" unique_id=310538071 instance=ExtResource("101_funcionario")]
 z_index = 101
-position = Vector2(1123, -365)
+position = Vector2(872, -312)
+nome_funcionario = "Atendente"
+cargo = "Check-in"
+contexto = "checkin"
+personagem = "staff_f"
+acao = 1
+minigame = ExtResource("11_idjp5")
+
+[node name="Func_Checkin2" parent="Funcionarios" unique_id=744603153 instance=ExtResource("101_funcionario")]
+z_index = 101
+position = Vector2(12839, -301)
 nome_funcionario = "Atendente"
 cargo = "Check-in"
 contexto = "checkin"
@@ -3338,7 +3349,21 @@ minigame = ExtResource("11_idjp5")
 
 [node name="Func_Info" parent="Funcionarios" unique_id=23584488 instance=ExtResource("101_funcionario")]
 z_index = 101
-position = Vector2(-80, -331)
+position = Vector2(-283, -313)
+nome_funcionario = "Atendente"
+cargo = "Informações"
+contexto = "info"
+
+[node name="Func_Info2" parent="Funcionarios" unique_id=900325610 instance=ExtResource("101_funcionario")]
+z_index = 101
+position = Vector2(7835, -278)
+nome_funcionario = "Atendente"
+cargo = "Informações"
+contexto = "info"
+
+[node name="Func_Info3" parent="Funcionarios" unique_id=87073933 instance=ExtResource("101_funcionario")]
+z_index = 101
+position = Vector2(9975, -309)
 nome_funcionario = "Atendente"
 cargo = "Informações"
 contexto = "info"
@@ -3353,7 +3378,18 @@ personagem = "pilot_m"
 
 [node name="Func_Esteiras" parent="Funcionarios" unique_id=667485869 instance=ExtResource("101_funcionario")]
 z_index = 101
-position = Vector2(6551, -331)
+position = Vector2(6589, -333)
+nome_funcionario = "Atendente"
+cargo = "Pesagem de bagagem"
+contexto = "pesagem"
+personagem = "service_f"
+acao = 1
+minigame = ExtResource("14_v2x1l")
+texto_dica = "E - Jogar"
+
+[node name="Func_Esteiras2" parent="Funcionarios" unique_id=1269216948 instance=ExtResource("101_funcionario")]
+z_index = 101
+position = Vector2(10495, -284)
 nome_funcionario = "Atendente"
 cargo = "Pesagem de bagagem"
 contexto = "pesagem"
@@ -3364,7 +3400,17 @@ texto_dica = "E - Jogar"
 
 [node name="Func_Inspecao" parent="Funcionarios" unique_id=1035112327 instance=ExtResource("101_funcionario")]
 z_index = 101
-position = Vector2(4772, -336)
+position = Vector2(4716, -350)
+nome_funcionario = "Atendente"
+cargo = "Pesagem de bagagem"
+contexto = "pesagem"
+acao = 1
+minigame = ExtResource("12_axask")
+texto_dica = "E - Jogar"
+
+[node name="Func_Inspecao2" parent="Funcionarios" unique_id=1139286894 instance=ExtResource("101_funcionario")]
+z_index = 101
+position = Vector2(12156, -305)
 nome_funcionario = "Atendente"
 cargo = "Pesagem de bagagem"
 contexto = "pesagem"
@@ -3481,14 +3527,20 @@ position = Vector2(-32, -123)
 [node name="Esteira" parent="Maquinas" unique_id=2093555639 instance=ExtResource("14_xpjw3")]
 position = Vector2(645, -250)
 
+[node name="Esteira2" parent="Maquinas" unique_id=1854025257 instance=ExtResource("14_xpjw3")]
+position = Vector2(9967, -242)
+
 [node name="Lanches1" parent="Maquinas" unique_id=385482150 instance=ExtResource("26_axask")]
-position = Vector2(187, -178)
+z_index = 0
+position = Vector2(160, -186)
 
 [node name="Lanches2" parent="Maquinas" unique_id=416190523 instance=ExtResource("26_axask")]
+z_index = 0
 position = Vector2(7261, -178)
 
 [node name="Lanches3" parent="Maquinas" unique_id=2030042373 instance=ExtResource("26_axask")]
-position = Vector2(1617, -178)
+z_index = 0
+position = Vector2(1617, -222)
 
 [node name="Telefones1" parent="Maquinas" unique_id=1357770341 instance=ExtResource("16_u1hem")]
 position = Vector2(11923, -170)
@@ -3515,191 +3567,156 @@ position = Vector2(33, -117)
 
 [node name="AreaAluguel1" type="Sprite2D" parent="AreasAluguel" unique_id=1058556688]
 z_index = 300
-position = Vector2(3212.9998, -245)
-scale = Vector2(0.7147777, 0.69686407)
+position = Vector2(-520, -236)
+scale = Vector2(0.7, 0.683)
 texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="AreaAluguel2" type="Sprite2D" parent="AreasAluguel" unique_id=1187193576]
 z_index = 300
-position = Vector2(3792.9998, -245)
-scale = Vector2(0.7147777, 0.69686407)
+position = Vector2(3393, -234.99991)
+scale = Vector2(0.7, 0.683)
 texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="AreaAluguel3" type="Sprite2D" parent="AreasAluguel" unique_id=1722418918]
 z_index = 300
-position = Vector2(4297.001, -245)
-scale = Vector2(0.7147777, 0.69686407)
+position = Vector2(2999, -235.99991)
+scale = Vector2(0.7, 0.683)
 texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="AreaAluguel4" type="Sprite2D" parent="AreasAluguel" unique_id=1969216332]
 z_index = 300
-position = Vector2(5672.9995, -245)
-scale = Vector2(0.7147777, 0.69686407)
+position = Vector2(3802.0005, -233.99988)
+scale = Vector2(0.7, 0.683)
 texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="AreaAluguel5" type="Sprite2D" parent="AreasAluguel" unique_id=188344000]
 z_index = 300
-position = Vector2(6122.001, -245)
-scale = Vector2(0.7147777, 0.69686407)
+position = Vector2(4222, -233.99988)
+scale = Vector2(0.7, 0.683)
 texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="AreaAluguel6" type="Sprite2D" parent="AreasAluguel" unique_id=589078271]
 z_index = 300
-position = Vector2(8558.001, -245)
-scale = Vector2(0.7147777, 0.69686407)
+position = Vector2(5549, -236.99991)
+scale = Vector2(0.7, 0.683)
 texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="AreaAluguel7" type="Sprite2D" parent="AreasAluguel" unique_id=1466044388]
 z_index = 300
-position = Vector2(8943.001, -245)
-scale = Vector2(0.7147777, 0.69686407)
+position = Vector2(5890.0005, -236.99991)
+scale = Vector2(0.7, 0.683)
 texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="AreaAluguel8" type="Sprite2D" parent="AreasAluguel" unique_id=516005786]
 z_index = 300
-position = Vector2(10836.001, -245)
-scale = Vector2(0.7147777, 0.69686407)
+position = Vector2(6220.0005, -236.99991)
+scale = Vector2(0.7, 0.683)
 texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="AreaAluguel9" type="Sprite2D" parent="AreasAluguel" unique_id=414636000]
 z_index = 300
-position = Vector2(11210.001, -245)
-scale = Vector2(0.7147777, 0.69686407)
+position = Vector2(8433, -235.99982)
+scale = Vector2(0.7, 0.683)
 texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="AreaAluguel10" type="Sprite2D" parent="AreasAluguel" unique_id=646654571]
 z_index = 300
-position = Vector2(11596.001, -245)
-scale = Vector2(0.7147777, 0.69686407)
+position = Vector2(8779, -237.99994)
+scale = Vector2(0.7, 0.683)
 texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="AreaAluguel11" type="Sprite2D" parent="AreasAluguel" unique_id=1230878153]
 z_index = 300
-position = Vector2(13103.001, -245)
-scale = Vector2(0.7147777, 0.69686407)
+position = Vector2(9119, -239.00018)
+scale = Vector2(0.7, 0.683)
 texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="AreaAluguel12" type="Sprite2D" parent="AreasAluguel" unique_id=1906419935]
 z_index = 300
-position = Vector2(13515.002, -245)
-scale = Vector2(0.7147777, 0.69686407)
+position = Vector2(10846, -238.99988)
+scale = Vector2(0.7, 0.683)
 texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="AreaAluguel13" type="Sprite2D" parent="AreasAluguel" unique_id=303922611]
 z_index = 300
-position = Vector2(4060, 204)
+position = Vector2(-411, 201.99997)
 scale = Vector2(0.4975802, 0.49134612)
 texture = ExtResource("17_3davs")
 script = ExtResource("102_aluguel")
 
-[node name="AreaAluguel14" type="Sprite2D" parent="AreasAluguel" unique_id=1372548050]
+[node name="AreaAluguel14" type="Sprite2D" parent="AreasAluguel" unique_id=1805130552]
 z_index = 300
-position = Vector2(4701.9995, 204)
+position = Vector2(11158.001, -238.99988)
+scale = Vector2(0.7, 0.683)
+texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
+
+[node name="AreaAluguel16" type="Sprite2D" parent="AreasAluguel" unique_id=1770215795]
+z_index = 300
+position = Vector2(11479.002, -238.99988)
+scale = Vector2(0.7, 0.683)
+texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
+
+[node name="AreaAluguel17" type="Sprite2D" parent="AreasAluguel" unique_id=979240695]
+z_index = 300
+position = Vector2(12975.001, -235.99991)
+scale = Vector2(0.7, 0.683)
+texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
+
+[node name="AreaAluguel18" type="Sprite2D" parent="AreasAluguel" unique_id=2128908100]
+z_index = 300
+position = Vector2(13345.001, -235.99991)
+scale = Vector2(0.7, 0.683)
+texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
+
+[node name="AreaAluguel19" type="Sprite2D" parent="AreasAluguel" unique_id=1477851475]
+z_index = 300
+position = Vector2(13737.001, -235.99991)
+scale = Vector2(0.7, 0.683)
+texture = ExtResource("16_ktkrk")
+script = ExtResource("102_aluguel")
+
+[node name="AreaAluguel20" type="Sprite2D" parent="AreasAluguel" unique_id=1141996108]
+z_index = 300
+position = Vector2(3760, 203.00002)
 scale = Vector2(0.4975802, 0.49134612)
 texture = ExtResource("17_3davs")
 script = ExtResource("102_aluguel")
 
-[node name="AreaAluguel15" type="Sprite2D" parent="AreasAluguel" unique_id=1417019332]
+[node name="AreaAluguel21" type="Sprite2D" parent="AreasAluguel" unique_id=897073631]
 z_index = 300
-position = Vector2(5340, 204)
+position = Vector2(7713.0005, 211)
 scale = Vector2(0.4975802, 0.49134612)
 texture = ExtResource("17_3davs")
 script = ExtResource("102_aluguel")
 
-[node name="AreaAluguel16" type="Sprite2D" parent="AreasAluguel" unique_id=1390091299]
+[node name="AreaAluguel22" type="Sprite2D" parent="AreasAluguel" unique_id=162241276]
 z_index = 300
-position = Vector2(5984, 204)
-scale = Vector2(0.4975802, 0.49134612)
-texture = ExtResource("17_3davs")
+position = Vector2(11483.001, 203)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
-[node name="AreaAluguel17" type="Sprite2D" parent="AreasAluguel" unique_id=1662843418]
+[node name="AreaAluguel23" type="Sprite2D" parent="AreasAluguel" unique_id=1825651298]
 z_index = 300
-position = Vector2(6622, 204)
-scale = Vector2(0.4975802, 0.49134612)
-texture = ExtResource("17_3davs")
-script = ExtResource("102_aluguel")
-
-[node name="AreaAluguel18" type="Sprite2D" parent="AreasAluguel" unique_id=1257328977]
-z_index = 300
-position = Vector2(7264.9995, 204)
-scale = Vector2(0.4975802, 0.49134612)
-texture = ExtResource("17_3davs")
-script = ExtResource("102_aluguel")
-
-[node name="AreaAluguel19" type="Sprite2D" parent="AreasAluguel" unique_id=1764164934]
-z_index = 300
-position = Vector2(7903, 204)
-scale = Vector2(0.4975802, 0.49134612)
-texture = ExtResource("17_3davs")
-script = ExtResource("102_aluguel")
-
-[node name="AreaAluguel20" type="Sprite2D" parent="AreasAluguel" unique_id=1087006308]
-z_index = 300
-position = Vector2(8544.001, 204)
-scale = Vector2(0.4975802, 0.49134612)
-texture = ExtResource("17_3davs")
-script = ExtResource("102_aluguel")
-
-[node name="AreaAluguel21" type="Sprite2D" parent="AreasAluguel" unique_id=1161041412]
-z_index = 300
-position = Vector2(9182, 204)
-scale = Vector2(0.4975802, 0.49134612)
-texture = ExtResource("17_3davs")
-script = ExtResource("102_aluguel")
-
-[node name="AreaAluguel22" type="Sprite2D" parent="AreasAluguel" unique_id=465870676]
-z_index = 300
-position = Vector2(9822.001, 204)
-scale = Vector2(0.4975802, 0.49134612)
-texture = ExtResource("17_3davs")
-script = ExtResource("102_aluguel")
-
-[node name="AreaAluguel23" type="Sprite2D" parent="AreasAluguel" unique_id=866625626]
-z_index = 300
-position = Vector2(10464.001, 204)
-scale = Vector2(0.4975802, 0.49134612)
-texture = ExtResource("17_3davs")
-script = ExtResource("102_aluguel")
-
-[node name="AreaAluguel24" type="Sprite2D" parent="AreasAluguel" unique_id=835129084]
-z_index = 300
-position = Vector2(11103, 204)
-scale = Vector2(0.4975802, 0.49134612)
-texture = ExtResource("17_3davs")
-script = ExtResource("102_aluguel")
-
-[node name="AreaAluguel25" type="Sprite2D" parent="AreasAluguel" unique_id=1270654903]
-z_index = 300
-position = Vector2(11745, 204)
-scale = Vector2(0.4975802, 0.49134612)
-texture = ExtResource("17_3davs")
-script = ExtResource("102_aluguel")
-
-[node name="AreaAluguel26" type="Sprite2D" parent="AreasAluguel" unique_id=757718369]
-z_index = 300
-position = Vector2(12389, 204)
-scale = Vector2(0.4975802, 0.49134612)
-texture = ExtResource("17_3davs")
-script = ExtResource("102_aluguel")
-
-[node name="AreaAluguel27" type="Sprite2D" parent="AreasAluguel" unique_id=93442675]
-z_index = 300
-position = Vector2(13025.001, 204)
-scale = Vector2(0.4975802, 0.49134612)
-texture = ExtResource("17_3davs")
+position = Vector2(12768.002, 194)
+scale = Vector2(0.7147777, 0.69686407)
+texture = ExtResource("16_ktkrk")
 script = ExtResource("102_aluguel")
 
 [node name="Balcoes" type="Node2D" parent="." unique_id=117960552]
@@ -3713,22 +3730,13 @@ position = Vector2(4816, -168)
 z_index = 100
 position = Vector2(8092, -177)
 
-[node name="BalcaoDespacho1" parent="Balcoes" unique_id=1158266390 instance=ExtResource("17_g1sof")]
-z_index = 100
-position = Vector2(6624, -224)
-
-[node name="BalcaoDespacho2" parent="Balcoes" unique_id=1865953869 instance=ExtResource("27_axask")]
-z_index = 100
-position = Vector2(10284, -227)
-
 [node name="BalcaoInfo1" parent="Balcoes" unique_id=1821576616 instance=ExtResource("14_qdpnv")]
 z_index = 100
-position = Vector2(-81, -257)
+position = Vector2(-129, -248)
 
 [node name="BalcaoInfo2" parent="Balcoes" unique_id=653081061 instance=ExtResource("14_qdpnv")]
 z_index = 100
-position = Vector2(9857, -257)
-scale = Vector2(0.99999994, 1)
+position = Vector2(6775, -256)
 
 [node name="BalcaoCheckin1" parent="Balcoes" unique_id=277880894 instance=ExtResource("13_x30ii")]
 z_index = 100
@@ -3736,23 +3744,67 @@ position = Vector2(1232, -269)
 
 [node name="BalcaoCheckin2" parent="Balcoes" unique_id=176342342 instance=ExtResource("8_sg0di")]
 z_index = 100
-position = Vector2(2686, -177)
+position = Vector2(2518, -179)
 
 [node name="BalcaoCheckin3" parent="Balcoes" unique_id=1870169670 instance=ExtResource("13_x30ii")]
 z_index = 100
 position = Vector2(12559, -269)
 
+[node name="BalcaoCheckin4" parent="Balcoes" unique_id=2056626424 instance=ExtResource("13_x30ii")]
+z_index = 100
+position = Vector2(10454, -269)
+
 [node name="Portoes" type="Node2D" parent="." unique_id=674709993]
 position = Vector2(352, 72)
 
-[node name="Portao1" parent="Portoes" unique_id=1593316182 instance=ExtResource("20_db5or")]
-position = Vector2(-159, -168)
+[node name="Nivel1" type="Node2D" parent="Portoes" unique_id=1727318771]
 
-[node name="Portao2" parent="Portoes" unique_id=1845945643 instance=ExtResource("20_db5or")]
-position = Vector2(1121, -168)
+[node name="Portao1" parent="Portoes/Nivel1" unique_id=1593316182 instance=ExtResource("20_db5or")]
+position = Vector2(-191, -164)
 
-[node name="Portao3" parent="Portoes" unique_id=174353090 instance=ExtResource("20_db5or")]
-position = Vector2(2433, -168)
+[node name="Portao2" parent="Portoes/Nivel1" unique_id=1845945643 instance=ExtResource("20_db5or")]
+position = Vector2(1044, -166)
+
+[node name="Portao3" parent="Portoes/Nivel1" unique_id=174353090 instance=ExtResource("20_db5or")]
+position = Vector2(2316, -168)
+
+[node name="Nivel2" type="Node2D" parent="Portoes" unique_id=713035695]
+
+[node name="Portao1" parent="Portoes/Nivel2" unique_id=1372398414 instance=ExtResource("32_gyto6")]
+visible = false
+position = Vector2(3903, -164)
+
+[node name="Portao2" parent="Portoes/Nivel2" unique_id=354408878 instance=ExtResource("32_gyto6")]
+visible = false
+position = Vector2(5112, -164)
+
+[node name="Portao3" parent="Portoes/Nivel2" unique_id=622060097 instance=ExtResource("32_gyto6")]
+visible = false
+position = Vector2(6362, -164)
+
+[node name="Nivel3" type="Node2D" parent="Portoes" unique_id=1034976993]
+
+[node name="Portao1" parent="Portoes/Nivel3" unique_id=821442634 instance=ExtResource("33_ur7rw")]
+visible = false
+position = Vector2(7885, -164)
+
+[node name="Portao2" parent="Portoes/Nivel3" unique_id=1215612295 instance=ExtResource("33_ur7rw")]
+visible = false
+position = Vector2(9061, -164)
+
+[node name="Portao3" parent="Portoes/Nivel3" unique_id=1945922059 instance=ExtResource("33_ur7rw")]
+visible = false
+position = Vector2(10235, -164)
+
+[node name="Nivel4" type="Node2D" parent="Portoes" unique_id=1648771240]
+
+[node name="Portao1" parent="Portoes/Nivel4" unique_id=367893329 instance=ExtResource("33_ur7rw")]
+visible = false
+position = Vector2(11533, -164)
+
+[node name="Portao2" parent="Portoes/Nivel4" unique_id=1004781146 instance=ExtResource("33_ur7rw")]
+visible = false
+position = Vector2(12805, -164)
 
 [node name="PlacasEstaticas" type="Node2D" parent="." unique_id=242961779]
 position = Vector2(352, 72)
@@ -3771,7 +3823,7 @@ position = Vector2(11804, -418)
 
 [node name="PlacaInfos1" type="Sprite2D" parent="PlacasEstaticas" unique_id=1606555791]
 z_index = 10
-position = Vector2(-17.999985, -478)
+position = Vector2(-55.00001, -478)
 scale = Vector2(1.3813133, 1.37)
 texture = ExtResource("4_pp7t8")
 region_enabled = true
@@ -3796,7 +3848,7 @@ region_filter_clip_enabled = true
 
 [node name="PlacaVoos2" type="Sprite2D" parent="PlacasEstaticas" unique_id=1531205043]
 z_index = 10
-position = Vector2(9012, -477.99997)
+position = Vector2(9141, -477.99997)
 scale = Vector2(1.9287566, 1.8611109)
 texture = ExtResource("3_0k8i5")
 region_enabled = true

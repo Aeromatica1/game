@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://cfe4mavnmc3i4"]
+
+[ext_resource type="PackedScene" uid="uid://bak2v2hi4celj" path="res://aeroporto/mapa/poltronas/poltrona_nivel2.tscn" id="1_7b8yu"]
+[ext_resource type="Texture2D" uid="uid://43y7tfsicaci" path="res://assets/tilesets/3.png" id="2_e7txo"]
+[ext_resource type="Texture2D" uid="uid://cb4k1ha4nc1ol" path="res://assets/areas/balcaoN1.png" id="3_kys0m"]
+[ext_resource type="Texture2D" uid="uid://cpiedmhwshrqv" path="res://assets/areas/aviao.png" id="4_o7fm1"]
+[ext_resource type="PackedScene" uid="uid://32xpnvwoyo7l" path="res://aeroporto/mapa/objetos/ponte_embarque.tscn" id="5_ngwsh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o7fm1"]
+size = Vector2(66, 35)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ngwsh"]
+size = Vector2(66.5, 34.5)
+
+[node name="PortaoN2" type="Node2D" unique_id=1372398414]
+
+[node name="Componentes" type="Node2D" parent="." unique_id=86124380]
+
+[node name="Poltrona" type="Node2D" parent="Componentes" unique_id=1555581046]
+
+[node name="Poltrona_nivel_2" parent="Componentes/Poltrona" unique_id=1494080039 instance=ExtResource("1_7b8yu")]
+position = Vector2(-169, 112)
+
+[node name="Poltrona_nivel_3" parent="Componentes/Poltrona" unique_id=1170473112 instance=ExtResource("1_7b8yu")]
+position = Vector2(461, 112)
+
+[node name="Carpete" type="Node2D" parent="Componentes" unique_id=1455106776]
+
+[node name="Sprite2D" type="Sprite2D" parent="Componentes/Carpete" unique_id=1676237184]
+position = Vector2(280, 216)
+rotation = 1.5707964
+texture = ExtResource("2_e7txo")
+region_enabled = true
+region_rect = Rect2(192, 597, 194, 74)
+
+[node name="PlacaPortao" type="Node2D" parent="Componentes" unique_id=1973387903]
+z_index = 2
+
+[node name="Externo" type="Node2D" parent="Componentes" unique_id=54545231]
+
+[node name="Aviao" type="Sprite2D" parent="Componentes/Externo" unique_id=1163482412]
+z_index = 1000
+position = Vector2(-201, 487)
+scale = Vector2(0.9005779, 0.90057826)
+texture = ExtResource("4_o7fm1")
+
+[node name="ponte_embarque" parent="Componentes/Externo" unique_id=525699968 instance=ExtResource("5_ngwsh")]
+z_index = 500
+position = Vector2(181, 453)
+
+[node name="Balcão" type="Node2D" parent="." unique_id=349664193]
+z_index = 300
+
+[node name="Sprite2D" type="Sprite2D" parent="Balcão" unique_id=522608218]
+z_index = 3
+position = Vector2(280, 264)
+texture = ExtResource("3_kys0m")
+
+[node name="Area2D" type="StaticBody2D" parent="Balcão" unique_id=577971802]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Balcão/Area2D" unique_id=1006303206]
+z_index = 3
+position = Vector2(237, 322.5)
+shape = SubResource("RectangleShape2D_o7fm1")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Balcão/Area2D" unique_id=2029471698]
+z_index = 3
+position = Vector2(321.75, 323.25)
+shape = SubResource("RectangleShape2D_ngwsh")
