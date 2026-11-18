@@ -181,6 +181,7 @@ func _concluir(tipo: String, tipo_aluguel_id: int, acertou: Variant) -> void:
 ## Mostra a loja (e esconde o "+") se esta área já está alugada no save.
 func _sincronizar() -> void:
 	var linha := GameState.aluguel_da_area(numero_area) if numero_area > 0 else {}
+	print(linha)
 	_alugada = not linha.is_empty()
 	if _alugada:
 		_dica.visible = false
@@ -189,8 +190,8 @@ func _sincronizar() -> void:
 			self_modulate = Color(1, 1, 1, 0)        # esconde o "+", mantém a zona e o rótulo
 			if _loja == null:
 				_loja = LOJAS[tipo].instantiate()
-				_loja.z_index = 100
-				get_parent().add_child(_loja)
+				_loja.z_index = 0
+				get_parent().add_child.call_deferred(_loja)
 				_loja.global_position = global_position
 		else:
 			self_modulate = Color(1, 1, 1, 0.35)     # tipo sem cena: só "apaga" o "+"

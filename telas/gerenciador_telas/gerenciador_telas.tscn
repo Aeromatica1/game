@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://7rog0cnh50w0" path="res://ui/barra_usuario/barra_usuario.tscn" id="3_u051b"]
 [ext_resource type="PackedScene" uid="uid://dwkcqdr4joahc" path="res://telas/menu_principal/menu_principal.tscn" id="4_bi4f8"]
 [ext_resource type="PackedScene" uid="uid://fpu5oujg4j2w" path="res://telas/save_slot/save_slot.tscn" id="5_5hkwe"]
+[ext_resource type="PackedScene" uid="uid://qmp7poka7rhr" path="res://telas/opcoes/opcoes.tscn" id="8_5ndnd"]
 
 [node name="GerenciadorTelas" type="Node" unique_id=1570137647]
 script = ExtResource("1_jr6vj")
@@ -41,6 +42,9 @@ offset_right = -84.5
 offset_bottom = -69.0
 
 [node name="SaveSlot" parent="." unique_id=571966553 instance=ExtResource("5_5hkwe")]
+visible = false
+
+[node name="Opcoes" parent="." unique_id=1532181423 instance=ExtResource("8_5ndnd")]
 visible = false
 
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoJogar" to="." method="_on_botao_jogar_pressed"]

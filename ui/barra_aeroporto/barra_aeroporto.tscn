@@ -11,51 +11,103 @@ font_size = 20
 [node name="BarraAeroporto" type="CanvasLayer" unique_id=379957839]
 script = ExtResource("1_gu55u")
 
-[node name="Voltar" type="Button" parent="." unique_id=1824410048]
-offset_left = 24.0
-offset_top = 18.0
-offset_right = 108.0
-offset_bottom = 63.0
-accessibility_name = "Voltar"
-icon = ExtResource("2_cen7h")
-icon_alignment = 1
-expand_icon = true
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=686513490]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 66.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
 
-[node name="Conta" type="Button" parent="." unique_id=2094206470]
-offset_left = 1030.0
-offset_top = 18.0
-offset_right = 1114.0
-offset_bottom = 63.0
-text = "User"
+[node name="Tarefa" type="Control" parent="HBoxContainer" unique_id=1112411192]
+layout_mode = 2
+size_flags_vertical = 0
 
-[node name="NivelLabel" type="Label" parent="." unique_id=1210786944]
-offset_left = 150.0
+[node name="TarefasLabel" type="Label" parent="HBoxContainer/Tarefa" unique_id=160314504]
+layout_mode = 0
+offset_left = 578.0
+offset_top = 25.0
+offset_right = 621.0
+offset_bottom = 51.0
+text = "0/5"
+label_settings = SubResource("LabelSettings_l7tio")
+
+[node name="TarefasIcon" type="Sprite2D" parent="HBoxContainer/Tarefa" unique_id=1040646569]
+position = Vector2(555, 37)
+texture = ExtResource("2_8hvx6")
+
+[node name="Erradas" type="Control" parent="HBoxContainer" unique_id=586088190]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ErradasIcon" type="Sprite2D" parent="HBoxContainer/Erradas" unique_id=1592884314]
+position = Vector2(689, 38)
+texture = ExtResource("2_8hvx6")
+
+[node name="ErradasIcon2" type="Label" parent="HBoxContainer/Erradas" unique_id=282410513]
+layout_mode = 0
+offset_left = 714.0
+offset_top = 24.0
+offset_right = 815.0
+offset_bottom = 53.0
+text = "0/5"
+label_settings = SubResource("LabelSettings_l7tio")
+
+[node name="Alugados" type="Control" parent="HBoxContainer" unique_id=373215647]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ErradasLabel" type="Label" parent="HBoxContainer/Alugados" unique_id=168637572]
+layout_mode = 0
+offset_left = 833.0
+offset_top = 25.0
+offset_right = 934.0
+offset_bottom = 54.0
+text = "0/5"
+label_settings = SubResource("LabelSettings_l7tio")
+
+[node name="ErradasIcon" type="Sprite2D" parent="HBoxContainer/Alugados" unique_id=1583788685]
+position = Vector2(808, 39)
+texture = ExtResource("2_8hvx6")
+
+[node name="Dinheiro" type="Control" parent="HBoxContainer" unique_id=892320652]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="DinheiroLabel" type="Label" parent="HBoxContainer/Dinheiro" unique_id=1969318647]
+layout_mode = 0
+offset_left = 945.0
+offset_top = 24.0
+offset_right = 1063.0
+offset_bottom = 53.0
+text = "1.000.000"
+label_settings = SubResource("LabelSettings_l7tio")
+
+[node name="DolarIcon" type="Sprite2D" parent="HBoxContainer/Dinheiro" unique_id=1426827893]
+position = Vector2(920, 38)
+texture = ExtResource("1_y6bl5")
+
+[node name="Nivel" type="Control" parent="HBoxContainer" unique_id=661140756]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="NivelLabel" type="Label" parent="HBoxContainer/Nivel" unique_id=1210786944]
+layout_mode = 0
+offset_left = 110.0
 offset_top = 27.0
-offset_right = 524.0
+offset_right = 484.0
 offset_bottom = 55.0
 text = "Nível 1 - Aeroporto regional"
 label_settings = SubResource("LabelSettings_l7tio")
 
-[node name="DinheiroLabel" type="Label" parent="." unique_id=1969318647]
-offset_left = 839.0
-offset_top = 25.0
-offset_right = 957.0
-offset_bottom = 54.0
-text = "1.000.000"
-label_settings = SubResource("LabelSettings_l7tio")
-
-[node name="TarefasLabel" type="Label" parent="." unique_id=160314504]
-offset_left = 651.0
-offset_top = 28.0
-offset_right = 752.0
-offset_bottom = 57.0
-text = "0/5"
-label_settings = SubResource("LabelSettings_l7tio")
-
-[node name="DolarIcon" type="Sprite2D" parent="." unique_id=1426827893]
-position = Vector2(802, 38)
-texture = ExtResource("1_y6bl5")
-
-[node name="TarefaIcon" type="Sprite2D" parent="." unique_id=1583788685]
-position = Vector2(611, 39)
-texture = ExtResource("2_8hvx6")
+[node name="Voltar" type="Button" parent="." unique_id=254574463]
+custom_minimum_size = Vector2(48, 48)
+offset_left = 17.0
+offset_top = 18.0
+offset_right = 101.0
+offset_bottom = 66.0
+accessibility_name = "Voltar"
+accessibility_description = "Volta para a tela anterior"
+icon = ExtResource("2_cen7h")
+icon_alignment = 1
+expand_icon = true

@@ -7,6 +7,7 @@ extends Node
 @onready var save_slot: TelaSaveSlot = $SaveSlot
 @onready var barra_usuario: CanvasLayer = $BarraUsuario
 @onready var botao_voltar: Button = $BarraUsuario/Voltar
+@onready var opcoes: Control = $Opcoes
 
 var cena_atual: Control
 var historico_cenas: Array[Control] = []
@@ -17,7 +18,7 @@ func _ready() -> void:
 		Supabase.restore_session()
 
 	# Estado inicial
-	for cena in [cadastro, login, menu_principal, save_slot]:
+	for cena in [cadastro, login, menu_principal, save_slot, opcoes]:
 		cena.visible = false
 
 	# Voltando do mapa: reconstrói o histórico guardado; senão começa no menu.
@@ -107,7 +108,7 @@ func _on_botao_jogar_pressed() -> void:
 
 
 func _on_botao_opcoes_pressed() -> void:
-	_trocar_para(login)
+	_trocar_para(opcoes)
 
 
 func _on_botao_sair_pressed() -> void:
