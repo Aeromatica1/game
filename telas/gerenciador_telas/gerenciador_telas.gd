@@ -16,6 +16,10 @@ var historico_cenas: Array[Control] = []
 
 
 func _ready() -> void:
+	# Nozze di Figaro em loop em todas as telas daqui. Se já estiver tocando (voltando de outra
+	# tela), não reinicia; se vier do mapa, a música do aeroporto sai antes (nunca as duas juntas).
+	Audio.tocar_menu()
+
 	if not Supabase.is_logged_in():
 		Supabase.restore_session()
 
@@ -177,7 +181,8 @@ func _on_sessao_encerrada() -> void:
 
 
 func _on_concluido_pressed() -> void:
-	_trocar_para(menu_principal)
+	# Volta pelo histórico (antes empilhava o menu de novo, e o botão Voltar reabria as Opções).
+	_retornar()
 
 
 func _on_créditos_pressed() -> void:

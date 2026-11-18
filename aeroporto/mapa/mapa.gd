@@ -24,6 +24,10 @@ const PORTOES_POR_NIVEL := {
 @onready var portoes: Node2D = $Portoes
 
 func _ready() -> void:
+	# Violin Concerto (Bach) em loop no aeroporto. Se já estiver tocando (ex.: reiniciar após
+	# game over), não reinicia; se vier do menu, a música do menu sai antes (nunca as duas juntas).
+	Audio.tocar_aeroporto()
+
 	if GameState.aeroporto_id == "":
 		push_warning("[Mapa] Nenhum save carregado (cena aberta direto?). A barra ficará sem dados.")
 
