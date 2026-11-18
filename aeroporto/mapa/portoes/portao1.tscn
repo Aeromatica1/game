@@ -2,7 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://cb4k1ha4nc1ol" path="res://assets/areas/balcaoN1.png" id="2_il7od"]
 [ext_resource type="Texture2D" uid="uid://43y7tfsicaci" path="res://assets/tilesets/3.png" id="3_ij656"]
+[ext_resource type="Texture2D" uid="uid://cpiedmhwshrqv" path="res://assets/areas/aviao.png" id="4_01wx1"]
 [ext_resource type="PackedScene" uid="uid://2n3sc5kr1wju" path="res://aeroporto/mapa/poltronas/poltrona_nivel1.tscn" id="4_on4t0"]
+[ext_resource type="PackedScene" uid="uid://32xpnvwoyo7l" path="res://aeroporto/mapa/objetos/ponte_embarque.tscn" id="5_wxxrb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l7tio"]
 size = Vector2(66, 35)
@@ -60,3 +62,13 @@ position = Vector2(280, 288)
 
 [node name="PEmbarque" type="Marker2D" parent="PontoEmbarque" unique_id=153517709]
 position = Vector2(280, 320)
+
+[node name="Aviao" type="Sprite2D" parent="." unique_id=297509099]
+z_index = 1000
+position = Vector2(-201, 487)
+scale = Vector2(0.9005779, 0.90057826)
+texture = ExtResource("4_01wx1")
+
+[node name="ponte_embarque" parent="." unique_id=525699968 instance=ExtResource("5_wxxrb")]
+z_index = 500
+position = Vector2(181, 453)
