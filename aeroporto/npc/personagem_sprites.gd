@@ -153,7 +153,8 @@ static func _com_direita_espelhada(textura: Texture2D) -> Texture2D:
 	if img.is_compressed():
 		img.decompress()
 	img.convert(Image.FORMAT_RGBA8)
-	var colunas := img.get_width() / TAMANHO.x
+	@warning_ignore("integer_division")
+	var colunas := int(img.get_width() / TAMANHO.x)
 	for base in [0, LINHAS_ANDAR]:
 		var y_esq: int = (base + LINHA_DIRECAO["esquerda"]) * TAMANHO.y
 		var y_dir: int = (base + LINHA_DIRECAO["direita"]) * TAMANHO.y

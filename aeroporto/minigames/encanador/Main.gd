@@ -422,9 +422,13 @@ func _make_cell_backgrounds(kinds: Dictionary) -> void:
 	img.blit_rect(src, Rect2i(o + Vector2i(S - C, S - C), Vector2i(C, C)), Vector2i(size - C, size - C))
 	# bordas (uniformes: repete 1 px de largura entre os cantos)
 	for i in range(C, size - C):
+		@warning_ignore("integer_division")
 		img.blit_rect(src, Rect2i(o + Vector2i(S / 2, 0), Vector2i(1, F)), Vector2i(i, 0))
+		@warning_ignore("integer_division")
 		img.blit_rect(src, Rect2i(o + Vector2i(S / 2, S - F), Vector2i(1, F)), Vector2i(i, size - F))
+		@warning_ignore("integer_division")
 		img.blit_rect(src, Rect2i(o + Vector2i(0, S / 2), Vector2i(F, 1)), Vector2i(0, i))
+		@warning_ignore("integer_division")
 		img.blit_rect(src, Rect2i(o + Vector2i(S - F, S / 2), Vector2i(F, 1)), Vector2i(size - F, i))
 	# células: a 1ª linha/coluna da arte tem também a linha de grade do lado de fora
 	for y in rows:
@@ -591,7 +595,9 @@ func _make_tile(kind: int, x: int, y: int) -> Tile:
 		# O quadro de 32x32 de arte vira 64x64 na tela, exatamente uma célula.
 		sp.texture = straight_frames[0]
 		# contorno preto nas laterais (o recorte tirou o contorno do sprite)
+		@warning_ignore("integer_division")
 		_add_line(t.visual, Vector2(-BELT_W / 2, -CELL / 2.0), Vector2(PIXEL_SCALE, CELL))
+		@warning_ignore("integer_division")
 		_add_line(t.visual, Vector2(BELT_W / 2 - PIXEL_SCALE, -CELL / 2.0), Vector2(PIXEL_SCALE, CELL))
 	else:
 		# Curva: usamos só 24x24 do quadro (canto + parte dos braços), deslocados para
@@ -600,7 +606,9 @@ func _make_tile(kind: int, x: int, y: int) -> Tile:
 		sp.centered = false
 		sp.position = Vector2(-MARGIN, -MARGIN)
 		# linha preta no fim de cada braço (o braço é cortado no meio de uma faixa)
+		@warning_ignore("integer_division")
 		_add_line(t.visual, Vector2(CELL / 2.0 - PIXEL_SCALE, -BELT_W / 2), Vector2(PIXEL_SCALE, BELT_W))
+		@warning_ignore("integer_division")
 		_add_line(t.visual, Vector2(-BELT_W / 2, CELL / 2.0 - PIXEL_SCALE), Vector2(BELT_W, PIXEL_SCALE))
 	return t
 
@@ -613,10 +621,14 @@ func _build_frames() -> void:
 	curve_frames.clear()
 	var img_i := TEX_I.get_image()
 	var img_l := TEX_L.get_image()
+	@warning_ignore("integer_division")
 	for i in int(img_i.get_height() / FRAME):
+		@warning_ignore("integer_division")
 		var r := Rect2i((FRAME - BELT_ART) / 2, i * FRAME, BELT_ART, FRAME)
 		straight_frames.append(ImageTexture.create_from_image(img_i.get_region(r)))
+	@warning_ignore("integer_division")
 	for i in int(img_l.get_height() / FRAME):
+		@warning_ignore("integer_division")
 		var r := Rect2i(0, i * FRAME, CURVE_CROP, CURVE_CROP)
 		curve_frames.append(ImageTexture.create_from_image(img_l.get_region(r)))
 
