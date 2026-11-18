@@ -39,7 +39,7 @@ func _ready() -> void:
 # ------------------------- Fluxo -------------------------
 func _tentar_sessao_salva() -> void:
 	_set_ocupado(true, "Verificando sessão...")
-	var ok := await Supabase.restore_session()
+	var ok = await Supabase.restore_session()
 	if not is_inside_tree():
 		return
 	_set_ocupado(false)
@@ -69,7 +69,7 @@ func _enviar() -> void:
 
 	_limpar_erro()
 	_set_ocupado(true, "Entrando...")
-	var r := await Supabase.sign_in(email, senha)
+	var r = await Supabase.sign_in(email, senha)
 	if not is_inside_tree():
 		return
 	_set_ocupado(false)

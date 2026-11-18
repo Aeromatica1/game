@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://dykofvlkpbe8d"]
 
-[ext_resource type="Script" uid="uid://wxosr5xpbm4w" path="res://telas/gerenciador_telas/gerenciador_telas.gd" id="1_jr6vj"]
+[ext_resource type="Script" uid="uid://dj1ku58du03k3" path="res://telas/gerenciador_telas/gerenciador_telas.gd" id="1_jr6vj"]
 [ext_resource type="PackedScene" uid="uid://c3egba45ye35x" path="res://telas/cadastro/cadastro.tscn" id="2_deupt"]
 [ext_resource type="Texture2D" uid="uid://cgmqpukisr10a" path="res://assets/background/fundo.png" id="2_u051b"]
 [ext_resource type="PackedScene" uid="uid://bcgwlv0eu3ck7" path="res://telas/login/login.tscn" id="3_6napt"]
 [ext_resource type="PackedScene" uid="uid://7rog0cnh50w0" path="res://ui/barra_usuario/barra_usuario.tscn" id="3_u051b"]
 [ext_resource type="PackedScene" uid="uid://dwkcqdr4joahc" path="res://telas/menu_principal/menu_principal.tscn" id="4_bi4f8"]
 [ext_resource type="PackedScene" uid="uid://fpu5oujg4j2w" path="res://telas/save_slot/save_slot.tscn" id="5_5hkwe"]
+[ext_resource type="PackedScene" uid="uid://qmp7poka7rhr" path="res://telas/opcoes/opcoes.tscn" id="8_5ndnd"]
+[ext_resource type="PackedScene" uid="uid://bbwh8ow58otjv" path="res://telas/conta/conta.tscn" id="9_lcebb"]
 
 [node name="GerenciadorTelas" type="Node" unique_id=1570137647]
 script = ExtResource("1_jr6vj")
@@ -43,23 +45,32 @@ offset_bottom = -69.0
 [node name="SaveSlot" parent="." unique_id=571966553 instance=ExtResource("5_5hkwe")]
 visible = false
 
+[node name="Opcoes" parent="." unique_id=1532181423 instance=ExtResource("8_5ndnd")]
+visible = false
+
+[node name="Conta" parent="." unique_id=12880873 instance=ExtResource("9_lcebb")]
+visible = false
+
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoJogar" to="." method="_on_botao_jogar_pressed"]
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoOpcoes" to="." method="_on_botao_opcoes_pressed"]
 [connection signal="pressed" from="MenuPrincipal/Botoes/BotaoSair" to="." method="_on_botao_sair_pressed"]
 [connection signal="pressed" from="BarraUsuario/Voltar" to="." method="_on_voltar_pressed"]
+[connection signal="pressed" from="BarraUsuario/Conta" to="." method="_on_conta_pressed"]
 [connection signal="pressed" from="Cadastro/CadastroArea/VBoxContainer/EnviarCadastro" to="." method="_on_enviar_cadastro_pressed"]
 [connection signal="pressed" from="Cadastro/CadastroArea/VBoxContainer/LogarArea/LogarLink" to="." method="_on_logar_link_pressed"]
 [connection signal="pressed" from="Login/LoginArea/VBoxContainer/EnviarLogin" to="." method="_on_enviar_login_pressed"]
 [connection signal="pressed" from="Login/LoginArea/VBoxContainer/RegistrarArea/RegistrarLink" to="." method="_on_registrar_link_pressed"]
-[connection signal="pressed" from="SaveSlot/AreaSlots/Slot1" to="." method="_on_slot_1_pressed"]
-[connection signal="pressed" from="SaveSlot/AreaSlots/Slot2" to="." method="_on_slot_2_pressed"]
-[connection signal="pressed" from="SaveSlot/AreaSlots/Slot3" to="." method="_on_slot_3_pressed"]
+[connection signal="pressed" from="SaveSlot/AreaSlots/Control/Slot3" to="." method="_on_slot_3_pressed"]
+[connection signal="pressed" from="SaveSlot/AreaSlots/Control/Slot2" to="." method="_on_slot_2_pressed"]
+[connection signal="pressed" from="SaveSlot/AreaSlots/Control/Slot1" to="." method="_on_slot_1_pressed"]
+[connection signal="pressed" from="Opcoes/OpcoesArea/VBoxContainer/Concluido" to="." method="_on_concluido_pressed"]
 
 [editable path="MenuPrincipal"]
 [editable path="BarraUsuario"]
 [editable path="Cadastro"]
 [editable path="Login"]
 [editable path="SaveSlot"]
-[editable path="SaveSlot/AreaSlots/Slot1"]
-[editable path="SaveSlot/AreaSlots/Slot2"]
-[editable path="SaveSlot/AreaSlots/Slot3"]
+[editable path="SaveSlot/AreaSlots/Control/Slot3"]
+[editable path="SaveSlot/AreaSlots/Control/Slot2"]
+[editable path="SaveSlot/AreaSlots/Control/Slot1"]
+[editable path="Opcoes"]

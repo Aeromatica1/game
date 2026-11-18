@@ -32,6 +32,6 @@ func _ready() -> void:
 		return
 
 	# 4) Tela de questões (sorteio local; só a validação vai ao servidor)
-	var quiz := preload("res://questoes/tela_questao.gd").new()
+	var quiz = preload("res://aeroporto/questoes/tela_questao.gd").new()
 	quiz.fechada.connect(quiz.queue_free)
 	add_child(quiz)

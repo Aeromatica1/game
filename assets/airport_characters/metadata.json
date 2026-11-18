@@ -1,0 +1,891 @@
+{
+  "source": "User-provided airport NPC reference image",
+  "cell_size": [
+    32,
+    32
+  ],
+  "characters": {
+    "pilot_m": {
+      "label": "Pilot",
+      "gender_group": "male",
+      "sheet": "spritesheets/pilot_m.png",
+      "sheet_size": [
+        128,
+        256
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "animations": {
+        "walk_down": {
+          "row": 0,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_up": {
+          "row": 1,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_left": {
+          "row": 2,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_right": {
+          "row": 3,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_down": {
+          "row": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_up": {
+          "row": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_left": {
+          "row": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_right": {
+          "row": 7,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "employee_m": {
+      "label": "Employee",
+      "gender_group": "male",
+      "sheet": "spritesheets/employee_m.png",
+      "sheet_size": [
+        128,
+        256
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "animations": {
+        "walk_down": {
+          "row": 0,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_up": {
+          "row": 1,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_left": {
+          "row": 2,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_right": {
+          "row": 3,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_down": {
+          "row": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_up": {
+          "row": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_left": {
+          "row": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_right": {
+          "row": 7,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "passenger_m": {
+      "label": "Passenger",
+      "gender_group": "male",
+      "sheet": "spritesheets/passenger_m.png",
+      "sheet_size": [
+        128,
+        256
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "animations": {
+        "walk_down": {
+          "row": 0,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_up": {
+          "row": 1,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_left": {
+          "row": 2,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_right": {
+          "row": 3,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_down": {
+          "row": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_up": {
+          "row": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_left": {
+          "row": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_right": {
+          "row": 7,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "businessman_m": {
+      "label": "Businessman",
+      "gender_group": "male",
+      "sheet": "spritesheets/businessman_m.png",
+      "sheet_size": [
+        128,
+        256
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "animations": {
+        "walk_down": {
+          "row": 0,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_up": {
+          "row": 1,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_left": {
+          "row": 2,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_right": {
+          "row": 3,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_down": {
+          "row": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_up": {
+          "row": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_left": {
+          "row": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_right": {
+          "row": 7,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "tourist_m": {
+      "label": "Tourist",
+      "gender_group": "male",
+      "sheet": "spritesheets/tourist_m.png",
+      "sheet_size": [
+        128,
+        256
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "animations": {
+        "walk_down": {
+          "row": 0,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_up": {
+          "row": 1,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_left": {
+          "row": 2,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_right": {
+          "row": 3,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_down": {
+          "row": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_up": {
+          "row": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_left": {
+          "row": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_right": {
+          "row": 7,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "staff_f": {
+      "label": "Staff",
+      "gender_group": "female",
+      "sheet": "spritesheets/staff_f.png",
+      "sheet_size": [
+        128,
+        256
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "animations": {
+        "walk_down": {
+          "row": 0,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_up": {
+          "row": 1,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_left": {
+          "row": 2,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_right": {
+          "row": 3,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_down": {
+          "row": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_up": {
+          "row": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_left": {
+          "row": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_right": {
+          "row": 7,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "passenger_f": {
+      "label": "Passenger",
+      "gender_group": "female",
+      "sheet": "spritesheets/passenger_f.png",
+      "sheet_size": [
+        128,
+        256
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "animations": {
+        "walk_down": {
+          "row": 0,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_up": {
+          "row": 1,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_left": {
+          "row": 2,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_right": {
+          "row": 3,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_down": {
+          "row": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_up": {
+          "row": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_left": {
+          "row": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_right": {
+          "row": 7,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "businesswoman_f": {
+      "label": "Businesswoman",
+      "gender_group": "female",
+      "sheet": "spritesheets/businesswoman_f.png",
+      "sheet_size": [
+        128,
+        256
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "animations": {
+        "walk_down": {
+          "row": 0,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_up": {
+          "row": 1,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_left": {
+          "row": 2,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_right": {
+          "row": 3,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_down": {
+          "row": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_up": {
+          "row": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_left": {
+          "row": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_right": {
+          "row": 7,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "tourist_f": {
+      "label": "Tourist",
+      "gender_group": "female",
+      "sheet": "spritesheets/tourist_f.png",
+      "sheet_size": [
+        128,
+        256
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "animations": {
+        "walk_down": {
+          "row": 0,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_up": {
+          "row": 1,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_left": {
+          "row": 2,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_right": {
+          "row": 3,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_down": {
+          "row": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_up": {
+          "row": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_left": {
+          "row": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_right": {
+          "row": 7,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "service_f": {
+      "label": "Service",
+      "gender_group": "female",
+      "sheet": "spritesheets/service_f.png",
+      "sheet_size": [
+        128,
+        256
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "animations": {
+        "walk_down": {
+          "row": 0,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_up": {
+          "row": 1,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_left": {
+          "row": 2,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "walk_right": {
+          "row": 3,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_down": {
+          "row": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_up": {
+          "row": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_left": {
+          "row": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "run_right": {
+          "row": 7,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    }
+  },
+  "row_order": [
+    "walk_down",
+    "walk_up",
+    "walk_left",
+    "walk_right",
+    "run_down",
+    "run_up",
+    "run_left",
+    "run_right"
+  ],
+  "frames_per_animation": 4,
+  "notes": "Walk/run frames are derived from the exact character cutouts in the supplied reference using small limb/body shifts; they are not independently redrawn poses."
+}

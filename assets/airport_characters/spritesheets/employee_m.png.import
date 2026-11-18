@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bljhcopn0aylb"
-path="res://.godot/imported/pressed.png-d3b46c501e6f0a6233440dc7f45b6c23.ctex"
+uid="uid://b7omfmk7ujkaf"
+path="res://.godot/imported/employee_m.png-97058c15fd37d7c04f3e4043783f26ad.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/saveslot/pressed.png"
-dest_files=["res://.godot/imported/pressed.png-d3b46c501e6f0a6233440dc7f45b6c23.ctex"]
+source_file="res://assets/airport_characters/spritesheets/employee_m.png"
+dest_files=["res://.godot/imported/employee_m.png-97058c15fd37d7c04f3e4043783f26ad.ctex"]
 
 [params]
 

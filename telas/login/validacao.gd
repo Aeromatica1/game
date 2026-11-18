@@ -1,6 +1,6 @@
 extends RefCounted
 ## Validações e mensagens de erro compartilhadas por login e cadastro.
-## Uso:  const Validacao = preload("res://login/validacao.gd")
+## Uso:  const Validacao = preload("res://telas/login/validacao.gd")
 ##
 ## IMPORTANTE: validar no cliente é só conforto (feedback rápido). A garantia real
 ## está no servidor (Supabase Auth + constraints do banco); nunca confie só aqui.
@@ -114,6 +114,14 @@ static func traduzir_erro(r: Dictionary) -> String:
 			return "O e-mail informado não foi aceito. Confira e tente de novo."
 		"request_failed":
 			return "Não foi possível conectar ao servidor."
+		"same_password":
+			return "A nova senha precisa ser diferente da atual."
+		"reauthentication_needed", "reauthentication_not_valid":
+			return "Por segurança, saia e entre novamente antes de alterar a senha."
+		"session_not_found", "session_expired", "bad_jwt", "no_authorization", "not_authenticated":
+			return "Sua sessão expirou. Saia e entre novamente."
+	if http == 401:
+		return "Sua sessão expirou. Saia e entre novamente."
 	if http == 429:
 		return "Muitas tentativas seguidas. Aguarde um pouco e tente novamente."
 	if http == 0 or msg.begins_with("sem conexão"):

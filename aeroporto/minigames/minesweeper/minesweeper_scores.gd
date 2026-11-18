@@ -7,7 +7,7 @@ extends RefCounted
 ## sistema de saves da conta ou enviado a um ranking validado pelo servidor.
 ##
 ## Uso:
-##   const Scores = preload("res://minigames/minesweeper/minesweeper_scores.gd")
+##   const Scores = preload("res://aeroporto/minigames/minesweeper/minesweeper_scores.gd")
 ##   var scores := Scores.new()
 ##   var result := scores.submit("beginner", 23450)   # tempo em milissegundos
 ##   scores.best_ms("beginner")

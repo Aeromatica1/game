@@ -1,17 +1,19 @@
 extends CharacterBody2D
 ## Personagem top-down: anda com WASD/setas e corre segurando ESPAÇO.
-## O spritesheet (6 colunas x 4 linhas, células de 28x28) é fatiado por código.
-##   Linhas:  0 = baixo, 1 = esquerda, 2 = cima, 3 = direita
-##   Colunas: 0-2 = andar (parado, passo A, passo B) | 3-5 = correr (parado, passo A, passo B)
+## O spritesheet (células de 32x32, 4 colunas x 8 linhas) é fatiado por código
+## (layout em personagem_sprites.gd). O personagem é escolhido em `personagem`.
 
 @export var velocidade_andar: float = 300.0
 @export var velocidade_correr: float = 600.0
 @export var aceleracao: float = 1200.0
 @export var atrito: float = 1600.0
 @export var camera_zoom: Vector2 = Vector2(1, 1)
-## Linha (em px do sprite de 28) onde a cabeça termina. A cabeça é desenhada num z_index maior,
+## Personagem jogável. Futuramente, a tela de escolha deve definir isto antes do mapa abrir
+## (ex.: `Player.personagem = "businesswoman_f"`).
+@export_enum("businessman_m", "businesswoman_f") var personagem: String = "businessman_m"
+## Linha (em px do sprite de 32) onde a cabeça termina. A cabeça é desenhada num z_index maior,
 ## então ela nunca fica escondida atrás do corpo de outro personagem.
-@export var linha_cabeca: int = 19
+@export var linha_cabeca: int = 20
 
 const Sprites := preload("res://aeroporto/npc/personagem_sprites.gd")
 const FPS_ANDAR := 8.0
@@ -85,7 +87,7 @@ func _atualizar_animacao(movendo: bool) -> void:
 
 
 func _montar_animacoes() -> void:
-	var textura: Texture2D = preload("res://assets/player/personagem.png")
+	var textura: Texture2D = Sprites.textura_de(personagem)
 	var frames := Sprites.montar(textura, linha_cabeca, true, FPS_ANDAR, FPS_CORRER)
 	corpo.sprite_frames = frames["corpo"]
 	cabeca.sprite_frames = frames["cabeca"]
