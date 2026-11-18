@@ -28,7 +28,7 @@ const GRID_CORNER := 24                   # tamanho do recorte dos cantos (paraf
 
 # Sprite da mala: quando você criar o PNG, salve com este nome/caminho.
 # Enquanto o arquivo não existir, um retângulo marrom é usado no lugar.
-const MALA_PATH := "res://Mala.png"
+const MALA_PATH := "res://assets/minigames/encanador/Mala.png"
 const MALA_MAX_SIZE := 40.0      # a mala é reduzida automaticamente se passar disso (px)
 const DELIVERY_SPEED := 280.0    # velocidade da mala em pixels por segundo
 
